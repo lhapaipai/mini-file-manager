@@ -1,0 +1,24 @@
+{
+  "name": "mini-file-manager",
+  "description": "A lightweight File Manager for your application",
+  "version": "0.0.1",
+  "module": "./src/main.js",
+  "main": "./dist/mini-file-manager.umd.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "body-scroll-lock": "^3.1.5",
+    "mini-notifier": "^0.2.0",
+    "pentatrion-lib": "file:../pentatrion-lib",
+    "vue": "^3.0.11",
+    "vuex": "^4.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.2.1",
+    "sass": "^1.32.11",
+    "vite": "^2.1.5"
+  }
+}

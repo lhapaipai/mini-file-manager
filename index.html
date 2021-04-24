@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div id="file-manager"></div>
+    <script type="module" src="/src/main.js"></script>
+    <script type="module">
+      import { createFileManager } from "./src/main.js";
+      let appElt = document.getElementById("file-manager");
+      let options = {
+        endPoints: {
+          getFiles: "http://suivi.pentatrion.local/media-manager/get-files",
+          uploadFile: "http://suivi.pentatrion.local/media-manager/upload",
+          addDirectory:
+            "http://suivi.pentatrion.local/media-manager/add-directory",
+          editFile: "http://suivi.pentatrion.local/media-manager/edit",
+          deleteFile: "http://suivi.pentatrion.local/media-manager/delete",
+          showFile: "http://suivi.pentatrion.local/media-manager/get",
+          downloadArchive:
+            "http://suivi.pentatrion.local/media-manager/download-archive",
+        },
+        isAdmin: true,
+        entryPoints: [
+          {
+            directory: "projet/puplinge-classique/share",
+            origin: "private",
+            readOnly: false,
+            icon: "fa-lock",
+            label: "Puplinge Classique",
+          },
+          {
+            directory: "projet/puplinge-classique/todo",
+            origin: "private",
+            readOnly: true,
+            icon: "fa-eye",
+            label: "Conversations",
+          },
+        ],
+      };
+      createFileManager(options, appElt);
+    </script>
+  </body>
+</html>
