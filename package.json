@@ -23,5 +23,9 @@
     "@vitejs/plugin-vue": "^1.2.1",
     "sass": "^1.32.11",
     "vite": "^2.1.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lhapaipai/mini-file-manager.git"
   }
 }
