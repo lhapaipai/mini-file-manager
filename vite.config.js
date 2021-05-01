@@ -13,6 +13,7 @@ export default defineConfig({
       external: ["vue"],
       output: {
         globals: {
+          // "mini-notifier": "MiniNotifier",
           vue: "Vue",
         },
       },

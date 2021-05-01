@@ -4,6 +4,7 @@ import FileManagerModal from "./components/FileManagerModal.vue";
 import { bodyScrollLockDirective } from "./vue-extends";
 import createStoreWithOptions from "./store";
 
+import "./css/index.scss";
 import "mini-notifier/dist/style.css";
 
 export function createFileManager(elt, options) {

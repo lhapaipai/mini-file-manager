@@ -13,7 +13,8 @@ Copy `file-manager` from static to your webroot directory. it contains thumbnail
 ```
 
 ```js
-import "mini-file-manager/src/css/index.scss";
+import "mini-file-manager/dist/style.css";
+import { createFileManager } from "mini-file-manager";
 const options = {
 	endPoints: {
     deleteFile   :"/media-manager/delete"
