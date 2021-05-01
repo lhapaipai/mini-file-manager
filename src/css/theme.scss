@@ -1,0 +1,42 @@
+/* latin */
+
+.file-manager {
+  * {
+    box-sizing: border-box;
+  }
+
+  a {
+    color: $blackLight;
+    text-decoration: underline;
+    @include transition;
+    &:hover {
+      color: black;
+    }
+  }
+
+  body.with-accessibility & {
+    a {
+      &:focus {
+        box-shadow: 0 0 0 2px white, 0 0 0 4px #{$yellowDark};
+        outline: none;
+        border-radius: $borderRadius;
+      }
+    }
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .success {
+    color: $green;
+  }
+  .danger {
+    color: $red;
+  }
+  .warning {
+    color: $orange;
+  }
+}

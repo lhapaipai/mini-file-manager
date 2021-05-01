@@ -1,5 +1,5 @@
 <template>
-  <div v-if="completeDirectory">
+  <div v-if="completeDirectory !== null">
     <div
       v-if="canUpload"
       class="drop-area"
@@ -35,9 +35,7 @@
       </div>
     </div>
     <div v-else class="drop-area readonly">
-      <label class="label">
-        Répertoire en lecture seule.
-      </label>
+      <label class="label"> Répertoire en lecture seule. </label>
     </div>
   </div>
 </template>
@@ -54,7 +52,7 @@ export default {
       filesToUpload: 0,
       dropActive: false,
       progressFilename: null,
-      progressNumber: 0
+      progressNumber: 0,
     };
   },
   computed: {
@@ -62,7 +60,7 @@ export default {
     ...mapGetters(["completeDirectory"]),
     canUpload() {
       return this.isAdmin || !this.currentEntryPoint.readOnly;
-    }
+    },
   },
   methods: {
     ...mapMutations(["addFile", "setFiles"]),
@@ -102,7 +100,7 @@ export default {
     },
     uploadFile(file) {
       let that = this;
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         let formData = new FormData();
         formData.append("file", file);
         formData.append("directory", this.completeDirectory);
@@ -113,7 +111,7 @@ export default {
         this.progressNumber = 0;
         // console.log(file, file.type);
         let request = new XMLHttpRequest();
-        request.upload.onprogress = function(event) {
+        request.upload.onprogress = function (event) {
           if (event.lengthComputable) {
             that.progressNumber = Math.round(
               (event.loaded * 100) / event.total
@@ -121,7 +119,7 @@ export default {
           }
         };
         request.open("POST", this.endPoints.uploadFile);
-        request.onload = function() {
+        request.onload = function () {
           that.progressNumber = 100;
 
           let response;
@@ -132,12 +130,12 @@ export default {
               that.setFiles(response.files);
             } else {
               notify(response.title || response, {
-                style: "error"
+                style: "error",
               });
             }
           } catch (error) {
             notify(this.responseText, {
-              style: "error"
+              style: "error",
             });
             return;
           } finally {
@@ -146,9 +144,9 @@ export default {
             resolve();
           }
         };
-        request.onerror = function(event) {
+        request.onerror = function (event) {
           notify(event.target.statusText, {
-            style: "error"
+            style: "error",
           });
           that.uploadedFiles++;
           that.checkFinished();
@@ -162,13 +160,13 @@ export default {
         return;
       }
       this.reset();
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../variables.scss";
+@import "../css/variables.scss";
 
 .drop-area {
   overflow: hidden;

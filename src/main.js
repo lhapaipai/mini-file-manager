@@ -6,7 +6,14 @@ import createStoreWithOptions from "./store";
 
 import "mini-notifier/dist/style.css";
 
-export function createFileManager(options, elt) {
+export function createFileManager(elt, options) {
+  if (typeof elt === "string") {
+    elt = document.querySelector(elt);
+  }
+  if (!options) {
+    options = JSON.parse(elt.dataset.props);
+  }
+
   const app = createApp(FileManager);
 
   app.directive("body-scroll-lock", bodyScrollLockDirective);

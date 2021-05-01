@@ -35,19 +35,23 @@ export default function createStoreWithOptions(fileManagerOptions) {
       directory: null,
       files: [],
       selectedFiles: [],
-      editing: false
+      editing: false,
     },
     getters: {
       completeDirectory(state) {
-        let suffixe = "";
+        let suffixe = "",
+          prefix = "";
         if (!state.currentEntryPoint) {
-          return;
+          return null;
         }
         if (state.secondaryDirectories.length > 0) {
-          suffixe = "/" + state.secondaryDirectories.join("/");
+          suffixe = state.secondaryDirectories.join("/");
         }
-        return state.currentEntryPoint.directory + suffixe;
-      }
+        if (state.currentEntryPoint.directory !== "") {
+          prefix = state.currentEntryPoint.directory + "/";
+        }
+        return prefix + suffixe;
+      },
     },
     mutations: {
       setFiles(state, files) {
@@ -63,7 +67,7 @@ export default function createStoreWithOptions(fileManagerOptions) {
         state.files.splice(0, 0, file);
       },
       addFileByIdToSelection(state, fileId) {
-        let file = state.files.find(f => f.id === fileId);
+        let file = state.files.find((f) => f.id === fileId);
         if (!file) {
           return;
         }
@@ -85,7 +89,7 @@ export default function createStoreWithOptions(fileManagerOptions) {
         state.selectedFiles.splice(index, 1);
       },
       selectFileByInode(state, inode) {
-        let file = state.files.find(f => f.inode === inode);
+        let file = state.files.find((f) => f.inode === inode);
         if (!file) {
           return;
         }
@@ -117,7 +121,7 @@ export default function createStoreWithOptions(fileManagerOptions) {
       },
       setSecondaryDirectory(state, arr) {
         state.secondaryDirectories = arr;
-      }
+      },
     },
     actions: {
       async addDirectory(
@@ -129,8 +133,8 @@ export default function createStoreWithOptions(fileManagerOptions) {
           body: {
             filename: newDirectoryName,
             directory: getters.completeDirectory,
-            origin: state.currentEntryPoint.origin
-          }
+            origin: state.currentEntryPoint.origin,
+          },
         }).then(async ({ files, directory }) => {
           await dispatch("setFiles", files);
           commit("selectFileByInode", directory.inode);
@@ -142,8 +146,8 @@ export default function createStoreWithOptions(fileManagerOptions) {
           method: "POST",
           body: {
             file,
-            newFilename: filename
-          }
+            newFilename: filename,
+          },
         }).then(async ({ files }) => {
           // console.log(files);
 
@@ -159,8 +163,8 @@ export default function createStoreWithOptions(fileManagerOptions) {
             {},
             false
           )
-            .then(t => t.blob())
-            .then(b => downloadHelper.downloadFromBlob(b, file.filename));
+            .then((t) => t.blob())
+            .then((b) => downloadHelper.downloadFromBlob(b, file.filename));
           return;
         }
 
@@ -174,19 +178,19 @@ export default function createStoreWithOptions(fileManagerOptions) {
           state.endPoints.downloadArchive,
           {
             method: "POST",
-            body: { files }
+            body: { files },
           },
           false
         )
-          .then(t => t.blob())
-          .then(b => {
+          .then((t) => t.blob())
+          .then((b) => {
             downloadHelper.downloadFromBlob(b, archiveName);
           });
       },
       async deleteSelectedFiles({ commit, dispatch, state }) {
         jsonFetchOrNotify(state.endPoints.deleteFile, {
           method: "POST",
-          body: state.selectedFiles
+          body: state.selectedFiles,
         }).catch(() => {
           dispatch("getFiles");
         });
@@ -197,8 +201,8 @@ export default function createStoreWithOptions(fileManagerOptions) {
           method: "POST",
           body: {
             directory: getters.completeDirectory,
-            origin: state.currentEntryPoint.origin
-          }
+            origin: state.currentEntryPoint.origin,
+          },
         }).then(({ files, directory }) => {
           dispatch("setFiles", files);
           if (directory) {
@@ -233,9 +237,9 @@ export default function createStoreWithOptions(fileManagerOptions) {
         let suffix = path.substring(prefix.length);
         let secondaryDirectories = [];
         if (suffix !== "") {
-          // s'il n'est pas vide il commence par un slash initial
-          // que l'on souhaite retirer
-          secondaryDirectories = suffix.substring(1).split("/");
+          // si prefix est vide il n'y a pas de slash initial sinon il y en a un.
+          suffix = suffix.replace(/^\//, "");
+          secondaryDirectories = suffix.split("/");
         }
         commit("setSecondaryDirectory", secondaryDirectories);
         dispatch("getFiles");
@@ -243,7 +247,7 @@ export default function createStoreWithOptions(fileManagerOptions) {
       },
       async init({ dispatch, state }) {
         dispatch("setCurrentEntryPoint", state.entryPoints[0]);
-      }
-    }
+      },
+    },
   });
 }

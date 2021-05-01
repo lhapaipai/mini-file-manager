@@ -1,0 +1,93 @@
+.btn-factice {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  cursor: pointer;
+  color: $gray;
+  outline: none;
+  @include transition-input;
+  padding: 0;
+  display: inline-block;
+  &:hover {
+    color: $blackLight;
+  }
+  &:focus {
+    background-color: $extraLightGray;
+
+    body.with-accessibility & {
+      box-shadow: 0 0 0 2px white, 0 0 0 4px #{$yellowDark};
+    }
+  }
+}
+
+
+.btn {
+  background-color: $yellow;
+  padding: .5rem 1rem;
+  font-size: 1rem;
+  border-radius: $borderRadius;
+  border: 1px solid $yellow;
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  
+  &.outlined {
+    border: 1px solid $extraLightGray;
+    background-color: transparent;
+    &:hover {
+      border-color: $lightGray;
+    }
+  }
+
+  &, &:hover, &:visited {
+    color: black;
+  }
+
+  @include transition-input;
+
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,0.15),0 2px 2px 0px rgba(0,0,0,0.15),0 1px 5px 0px rgba(0,0,0,0.1);
+  &:focus {
+    outline: none;
+    border-color: $yellowDark;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,0.15),0 2px 2px 0px rgba(0,0,0,0.15),0 1px 5px 0px rgba(0,0,0,0.1);
+
+    body.with-accessibility & {
+      box-shadow: 0 0 0 2px white, 0 0 0 4px #{$yellowDark};
+    }
+  }
+  &:hover {
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,0.15),0 4px 5px 0px rgba(0,0,0,0.15),0 1px 10px 0px rgba(0,0,0,0.1);
+  }
+  &:active {
+    box-shadow: 0 5px 5px -3px rgba(0,0,0,0.15),0 8px 10px 1px rgba(0,0,0,0.15),0 3px 14px 2px rgba(0,0,0,0.1);
+  }
+
+  &.danger {
+    background-color: $redLight;
+    border-color: $red;
+  }
+
+
+}
+
+
+.input-with-button {
+  display: flex;
+
+  .form-input {
+    width: 0;
+    flex: 1 1 0px;
+    border-radius: $borderRadius 0 0 $borderRadius;
+  }
+
+  .btn {
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0 $borderRadius $borderRadius 0;
+    border-left-width: 0;
+    box-shadow: none;
+  }
+}
+

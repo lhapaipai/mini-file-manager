@@ -122,7 +122,7 @@ export default {
   props: ["files"],
   data: () => ({
     filename: "",
-    ext: ""
+    ext: "",
   }),
   computed: {
     ...mapState([
@@ -132,7 +132,7 @@ export default {
       "isAdmin",
       "currentEntryPoint",
       "endPoints",
-      "secondaryDirectories"
+      "secondaryDirectories",
     ]),
     currentDirectoryName() {
       if (this.secondaryDirectories.length > 0) {
@@ -146,7 +146,7 @@ export default {
         return this.files[0];
       }
       return null;
-    }
+    },
   },
   watch: {
     files(val) {
@@ -161,7 +161,7 @@ export default {
           this.ext = completeName.substring(extPos);
         }
       }
-    }
+    },
   },
   methods: {
     ...mapActions(["updateFilename", "download", "deleteSelectedFiles"]),
@@ -193,12 +193,12 @@ export default {
       if (this.editing) {
         if (!this.filename || this.filename[0] === ".") {
           notify("Nom de fichier non valide.", {
-            style: "error"
+            style: "error",
           });
         } else if (completeName !== this.file.filename) {
           this.updateFilename({
             file: this.file,
-            filename: completeName
+            filename: completeName,
           });
         }
       } else {
@@ -223,13 +223,13 @@ export default {
     handleDownload() {
       let files = this.files.length === 0 ? [this.directory] : this.files;
       this.download({ files });
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../variables.scss";
+@import "../css/variables.scss";
 
 .infos {
   overflow: auto;

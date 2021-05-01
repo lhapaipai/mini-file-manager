@@ -10,7 +10,7 @@
         class="img-container"
         :class="{
           'is-icon': isIcon(file),
-          'is-not-icon': !isIcon(file)
+          'is-not-icon': !isIcon(file),
         }"
       >
         <img
@@ -49,13 +49,13 @@ export default {
         e.dataTransfer.setData("text/plain", file.url);
         e.dataTransfer.setData("application/x-editor-js", file.url);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../variables.scss";
+@import "../css/variables.scss";
 
 .file {
   text-decoration: none;

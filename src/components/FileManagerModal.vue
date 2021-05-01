@@ -22,10 +22,10 @@ import FileManager from "./FileManager.vue";
 
 export default {
   components: {
-    FileManager
+    FileManager,
   },
   computed: {
-    ...mapState(["selectedFiles"])
+    ...mapState(["selectedFiles"]),
   },
   methods: {
     handleAbort() {
@@ -34,16 +34,16 @@ export default {
     },
     handleConfirm() {
       let event = new CustomEvent("selectFiles", {
-        detail: this.selectedFiles
+        detail: this.selectedFiles,
       });
       this.$el.dispatchEvent(event);
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../variables.scss";
+@import "../css/variables.scss";
 
 .file-manager-modal {
   position: fixed;

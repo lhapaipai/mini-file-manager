@@ -21,13 +21,13 @@ export default {
         return "";
       }
       return new Intl.DateTimeFormat("fr-FR").format(date);
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../variables.scss";
+@import "../css/variables.scss";
 
 .file {
   text-decoration: none;

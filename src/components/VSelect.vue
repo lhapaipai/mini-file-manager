@@ -3,18 +3,18 @@
     class="custom-select"
     :class="{
       'is-open': isOpen,
-      'with-split-button': splitButton && options.length > 1
+      'with-split-button': splitButton && options.length > 1,
     }"
     @click="handleClickContainer"
   >
     <a
       href="#"
-      class="   select-selected"
+      class="select-selected"
       tabindex="0"
       @click.stop.prevent="handleClickSelect"
     >
-      <span v-if="value && value.icon">
-        <i :class="value.icon"></i>
+      <span v-if="modelValue && modelValue.icon">
+        <i :class="modelValue.icon"></i>
       </span>
       {{ valueLabel }}
     </a>
@@ -47,11 +47,12 @@
 
 <script>
 export default {
-  props: ["options", "placeholder", "value", "splitButton"],
+  props: ["options", "placeholder", "modelValue", "splitButton"],
+  emit: ["update:modelValue"],
   data: () => {
     return {
       isOpen: false,
-      focusListener: null
+      focusListener: null,
     };
   },
   computed: {
@@ -59,17 +60,17 @@ export default {
       return this.isOpen ? "fa-up-open" : "fa-down-open";
     },
     valueLabel() {
-      return this.value ? this.value.label : this.placeholder;
-    }
+      return this.modelValue ? this.modelValue.label : this.placeholder;
+    },
   },
   methods: {
     handleClickOption(option) {
       this.isOpen = false;
-      this.$emit("input", option);
+      this.$emit("update:modelValue", option);
     },
     handleClickSelect(e) {
       if (this.splitButton) {
-        this.$emit("click", this.value);
+        this.$emit("click", this.modelValue);
       } else {
         this.isOpen = !this.isOpen;
       }
@@ -79,13 +80,13 @@ export default {
     },
     handleClickSplit(e) {
       this.isOpen = !this.isOpen;
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../variables.scss";
+@import "../css/variables.scss";
 
 .custom-select {
   position: relative;
