@@ -10,11 +10,20 @@ export default defineConfig({
       name: "miniFileManager",
     },
     rollupOptions: {
-      external: ["vue"],
+      external: [
+        "vue",
+        "vuex",
+        "pentatrion-lib",
+        "mini-notifier",
+        "body-scroll-lock",
+      ],
       output: {
         globals: {
-          // "mini-notifier": "MiniNotifier",
           vue: "Vue",
+          vuex: "Vuex",
+          "pentatrion-lib": "pentatrionLib",
+          "mini-notifier": "miniNotifier",
+          "body-scroll-lock": "bodyScrollLock",
         },
       },
     },
