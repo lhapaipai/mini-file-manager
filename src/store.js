@@ -1,33 +1,44 @@
 import { createStore } from "vuex";
 
 import { apiHelper, downloadHelper, dateHelper } from "pentatrion-lib";
-const { jsonFetchOrNotify } = apiHelper;
+const { jsonFetchOrNotify, formFetchOrNotify, fetchOrNotify } = apiHelper;
+import { parseOriginalSelection, validateFile } from "./utils.js";
 
-export default function createStoreWithOptions(fileManagerOptions) {
+export default function createStoreWithOptions({
+  entryPoints,
+  isAdmin,
+  endPoint,
+  fileValidation,
+  originalSelection,
+}) {
+  originalSelection = parseOriginalSelection(originalSelection, entryPoints);
+
+  let isDebug = true;
+  let debugStr = isDebug ? "?XDEBUG_TRIGGER" : "";
   return createStore({
     state: {
-      ...fileManagerOptions,
-      /* from fileManagerOptions
       endPoints: {
-        deleteFile   :"/media-manager/delete"
-        downloadArchive :"/media-manager/download-archive"
-        showFile     :"/media-manager/get/{mode}/{origin}/{uploadRelativePath}"
-        editFile     :"/media-manager/edit"
-        getFiles     :"/media-manager/get-files"
-        uploadFile   :"/media-manager/upload"
-        addDirectory :"/media-manager/add-directory"
+        deleteFile: `${endPoint}/delete${debugStr}`,
+        downloadArchive: `${endPoint}/download-archive${debugStr}`,
+        getFileContent: `${endPoint}/get-file-content`,
+        editFile: `${endPoint}/edit${debugStr}`,
+        getFiles: `${endPoint}/get-files${debugStr}`,
+        uploadFile: `${endPoint}/upload${debugStr}`,
+        addDirectory: `${endPoint}/add-directory${debugStr}`,
+        cropFile: `${endPoint}/crop${debugStr}`,
       },
-      isAdmin:
-      entryPoints :[
-        {
-            label: 'Conversation',
-            directory: 'projet/puplinge-classique/todo',
-            origin: 'private',
-            readOnly: false,
-            icon: 'fa-lock'
-        },
-      ]
-      */
+      isAdmin,
+      entryPoints,
+      fileValidation,
+      // entryPoints :[
+      //   {
+      //       label: 'Conversation',
+      //       directory: 'projet/puplinge-classique/todo',
+      //       origin: 'private',
+      //       readOnly: false,
+      //       icon: 'fa-lock'
+      //   },
+      // ]
 
       currentEntryPoint: null,
       secondaryDirectories: [],
@@ -35,9 +46,17 @@ export default function createStoreWithOptions(fileManagerOptions) {
       directory: null,
       files: [],
       selectedFiles: [],
+      // when editing filename
       editing: false,
+      editContent: null,
+      sortBy: "filename",
     },
     getters: {
+      sortedFiles(state) {
+        return state.files.sort((a, b) => {
+          return a[state.sortBy] > b[state.sortBy];
+        });
+      },
       completeDirectory(state) {
         let suffixe = "",
           prefix = "";
@@ -52,10 +71,29 @@ export default function createStoreWithOptions(fileManagerOptions) {
         }
         return prefix + suffixe;
       },
+      invalidSelectedFiles(state) {
+        return state.selectedFiles.filter((file) => {
+          return !validateFile(file, fileValidation);
+        });
+      },
     },
     mutations: {
       setFiles(state, files) {
         state.files = files;
+      },
+      replaceFile(state, { file, newFile }) {
+        let pos = state.files.indexOf(file);
+        if (pos === -1) {
+          console.log("impossible de trouver le fichier", file);
+        }
+        state.files.splice(pos, 1, newFile);
+      },
+      removeFile(state, file) {
+        let pos = state.files.indexOf(file);
+        if (pos === -1) {
+          console.log("impossible de trouver le fichier", file);
+        }
+        state.files.splice(pos, 1);
       },
       setDirectory(state, directory) {
         state.directory = directory;
@@ -88,6 +126,9 @@ export default function createStoreWithOptions(fileManagerOptions) {
         let index = state.selectedFiles.indexOf(file);
         state.selectedFiles.splice(index, 1);
       },
+      clearSelection(state) {
+        state.selectedFiles = [];
+      },
       selectFileByInode(state, inode) {
         let file = state.files.find((f) => f.inode === inode);
         if (!file) {
@@ -98,23 +139,11 @@ export default function createStoreWithOptions(fileManagerOptions) {
       unselectFiles(state) {
         state.selectedFiles = [];
       },
-      // le problème c'est que le fichier mis à jour ne se trouve pas nécessairement au même emplacement.
-      // updateFilename(state, file) {
-      //   let filePos = state.files.findIndex(f => f.id === file.id);
-      //   state.files.splice(filePos, 1, file);
-      //   state.selectedFiles = [file];
-      // },
       setEditing(state, focus) {
         state.editing = focus;
       },
-      deleteSelectedFiles(state) {
-        for (let file of state.selectedFiles) {
-          let index = state.files.indexOf(file);
-          if (index !== -1) {
-            state.files.splice(index, 1);
-          }
-        }
-        state.selectedFiles = [];
+      setEditContent(state, file = null) {
+        state.editContent = file;
       },
       setCurrentEntryPoint(state, entryPoint) {
         state.currentEntryPoint = entryPoint;
@@ -128,40 +157,78 @@ export default function createStoreWithOptions(fileManagerOptions) {
         { state, getters, dispatch, commit },
         newDirectoryName
       ) {
-        jsonFetchOrNotify(state.endPoints.addDirectory, {
-          method: "POST",
-          body: {
-            filename: newDirectoryName,
-            directory: getters.completeDirectory,
-            origin: state.currentEntryPoint.origin,
-          },
-        }).then(async ({ files, directory }) => {
-          await dispatch("setFiles", files);
-          commit("selectFileByInode", directory.inode);
-        });
-      },
-      async updateFilename({ commit, state, dispatch }, { file, filename }) {
-        // console.log(file.id);
-        jsonFetchOrNotify(state.endPoints.editFile, {
-          method: "POST",
-          body: {
-            file,
-            newFilename: filename,
-          },
-        }).then(async ({ files }) => {
-          // console.log(files);
+        let { directory } = await formFetchOrNotify(
+          state.endPoints.addDirectory,
+          {
+            body: {
+              filename: newDirectoryName,
+              directory: getters.completeDirectory,
+              origin: state.currentEntryPoint.origin,
+            },
+          }
+        );
 
-          await dispatch("setFiles", files);
-          commit("selectFileByInode", file.inode);
-        });
+        commit("addFile", directory);
+      },
+      async cropFile(
+        { commit, state },
+        { file, dimensions, finalWidth, finalHeight }
+      ) {
+        let { uploadRelativePath, origin } = file;
+        let { x, y, width, height, rotate } = dimensions;
+        // console.log("before crop", file);
+        let { file: newFile } = await formFetchOrNotify(
+          state.endPoints.cropFile,
+          {
+            body: {
+              uploadRelativePath,
+              origin,
+              x,
+              y,
+              width,
+              height,
+              finalWidth,
+              finalHeight,
+              rotate,
+            },
+          }
+        );
+        commit("removeFileToSelection", file);
+        commit("replaceFile", { file, newFile });
+        commit("addFileToSelection", newFile);
+        commit("setEditContent", newFile);
+        // console.log("file cropped", file);
+        return newFile;
+      },
+      async updateFilename({ commit, state, dispatch }, { file, newFilename }) {
+        console.log("before", file);
+        let { origin, uploadRelativePath, directory, filename } = file;
+        let { file: newFile } = await formFetchOrNotify(
+          state.endPoints.editFile,
+          {
+            body: {
+              origin,
+              uploadRelativePath,
+              directory,
+              filename,
+              readOnly: state.currentEntryPoint.readOnly,
+              newFilename,
+            },
+          }
+        );
+
+        console.log("after", newFile);
+
+        commit("unselectFiles");
+
+        commit("replaceFile", { file, newFile });
+        commit("selectFileByInode", newFile.inode);
       },
       async download({ state, getters }, { files = [] }) {
         if (files.length === 1 && !files[0].isDir) {
           let file = files[0];
-          jsonFetchOrNotify(
-            `${state.endPoints.showFile}/download/${file.origin}/${file.uploadRelativePath}`,
-            {},
-            false
+          fetchOrNotify(
+            `${state.endPoints.getFileContent}/download/${file.origin}/${file.uploadRelativePath}`
           )
             .then((t) => t.blob())
             .then((b) => downloadHelper.downloadFromBlob(b, file.filename));
@@ -174,41 +241,60 @@ export default function createStoreWithOptions(fileManagerOptions) {
           dateHelper.toIsoString(new Date()) +
           ".zip";
 
-        jsonFetchOrNotify(
-          state.endPoints.downloadArchive,
-          {
-            method: "POST",
-            body: { files },
+        formFetchOrNotify(state.endPoints.downloadArchive, {
+          body: {
+            files: files.map((f) => f.id),
           },
-          false
-        )
+        })
           .then((t) => t.blob())
           .then((b) => {
             downloadHelper.downloadFromBlob(b, archiveName);
           });
       },
       async deleteSelectedFiles({ commit, dispatch, state }) {
-        jsonFetchOrNotify(state.endPoints.deleteFile, {
-          method: "POST",
-          body: state.selectedFiles,
+        formFetchOrNotify(state.endPoints.deleteFile, {
+          body: {
+            files: state.selectedFiles.map((f) => f.id),
+          },
         }).catch(() => {
           dispatch("getFiles");
         });
-        commit("deleteSelectedFiles");
+
+        let selection = state.selectedFiles;
+        commit("clearSelection");
+        for (let file of selection) {
+          commit("removeFile", file);
+        }
       },
       async getFiles({ dispatch, state, getters, commit }) {
-        jsonFetchOrNotify(state.endPoints.getFiles, {
-          method: "POST",
-          body: {
-            directory: getters.completeDirectory,
-            origin: state.currentEntryPoint.origin,
-          },
-        }).then(({ files, directory }) => {
-          dispatch("setFiles", files);
-          if (directory) {
-            commit("setDirectory", directory);
+        let { files, directory } = await formFetchOrNotify(
+          state.endPoints.getFiles,
+          {
+            body: {
+              directory: getters.completeDirectory,
+              origin: state.currentEntryPoint.origin,
+            },
           }
-        });
+        );
+
+        dispatch("setFiles", files);
+
+        // TODO delete
+        if (!directory) {
+          console.error("no directory !");
+        }
+
+        commit("setDirectory", directory);
+
+        if (originalSelection) {
+          for (let fileSelected of originalSelection) {
+            let file = files.find((f) => f.id === fileSelected[3]);
+            if (file) {
+              commit("addFileToSelection", file);
+            }
+          }
+          originalSelection = null;
+        }
       },
       async setFiles({ commit }, files) {
         commit("unselectFiles");
@@ -216,10 +302,11 @@ export default function createStoreWithOptions(fileManagerOptions) {
       },
       async setCurrentEntryPoint({ commit, dispatch }, entryPoint) {
         commit("setCurrentEntryPoint", entryPoint);
-        dispatch(
-          "setSecondaryDirectoryFromFullDirectory",
-          entryPoint.directory
-        );
+        let directory = entryPoint.directory;
+        if (originalSelection) {
+          directory = originalSelection[0][1];
+        }
+        dispatch("setSecondaryDirectoryFromFullDirectory", directory);
       },
       async setSecondaryDirectoryFromFullDirectory(
         { state, commit, dispatch },
@@ -246,7 +333,18 @@ export default function createStoreWithOptions(fileManagerOptions) {
         // console.log(prefix, suffix);
       },
       async init({ dispatch, state }) {
-        dispatch("setCurrentEntryPoint", state.entryPoints[0]);
+        let entryPoint;
+
+        if (originalSelection) {
+          entryPoint = state.entryPoints.find(
+            (e) => e.origin === originalSelection[0][0]
+          );
+        }
+        if (entryPoint) {
+          dispatch("setCurrentEntryPoint", entryPoint);
+        } else {
+          dispatch("setCurrentEntryPoint", state.entryPoints[0]);
+        }
       },
     },
   });

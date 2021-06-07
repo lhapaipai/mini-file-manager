@@ -11,14 +11,14 @@
     >
       <input
         type="file"
-        name="upload"
         multiple
-        id="fileElem"
+        :id="inputFileId"
+        class="input-file"
         :disabled="sending"
         accept="image/*,text/*,video/*,audio/*,.rtf,.pdf,.xml,font/*,.ods,.odt,.docx,.doc,.xlsx,.xls,.json,.ai,.zip"
         @change="handleChange"
       />
-      <label class="label" for="fileElem" v-if="!sending">
+      <label class="label" :for="inputFileId" v-if="!sending">
         <span><i class="fa-doc-add"></i>Ajouter</span>
       </label>
       <div v-else-if="progressFilename">
@@ -53,6 +53,7 @@ export default {
       dropActive: false,
       progressFilename: null,
       progressNumber: 0,
+      inputFileId: "file-" + Math.ceil(Math.random() * 10000),
     };
   },
   computed: {
@@ -84,6 +85,7 @@ export default {
     },
     handleChange(e) {
       let files = e.currentTarget.files;
+      console.log("amont", this);
       this.handleFiles(files);
     },
     async handleFiles(files) {
@@ -105,7 +107,6 @@ export default {
         formData.append("file", file);
         formData.append("directory", this.completeDirectory);
         formData.append("origin", this.currentEntryPoint.origin);
-        formData.append("fileManager", true);
 
         this.progressFilename = file.name;
         this.progressNumber = 0;
@@ -126,8 +127,11 @@ export default {
           try {
             response = JSON.parse(this.responseText);
 
-            if (this.status === 200 && response && response.files) {
-              that.setFiles(response.files);
+            if (this.status === 200 && response && response.data) {
+              console.log("addFile", that);
+
+              that.addFile(response.data);
+              // that.setFiles(response.files);
             } else {
               notify(response.title || response, {
                 style: "error",
@@ -225,7 +229,7 @@ export default {
     bottom: 2px;
   }
 }
-#fileElem {
+.input-file {
   display: none;
 }
 

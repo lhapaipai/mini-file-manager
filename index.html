@@ -1,45 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-    <style>
-      body {
-        font-family: sans-serif;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="file-manager"></div>
-    <script type="module">
-      import { createFileManager } from "./src/main.js";
-      let appElt = document.getElementById("file-manager");
-      let options = {
-        endPoints: {
-          getFiles: "http://symfony-php74.local/media-manager/get-files",
-          uploadFile: "http://symfony-php74.local/media-manager/upload",
-          addDirectory:
-            "http://symfony-php74.local/media-manager/add-directory",
-          editFile: "http://symfony-php74.local/media-manager/edit",
-          deleteFile: "http://symfony-php74.local/media-manager/delete",
-          showFile: "http://symfony-php74.local/media-manager/get",
-          downloadArchive:
-            "http://symfony-php74.local/media-manager/download-archive",
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    #file-manager {
+      height: 600px;
+    }
+  </style>
+</head>
+
+<body>
+  <button id="pick-file">Pick File</button>
+  <div id="file-manager"></div>
+  <div id="file-manager1"></div>
+  <script type="module">
+    import { createFileManager, openFileManager } from "./src/main.js";
+    let appElt = document.getElementById("file-manager");
+    let appElt1 = document.getElementById("file-manager1");
+    let options = {
+      endPoint: "http://symfony-php74.local/media-manager",
+      isAdmin: true,
+      entryPoints: [
+        {
+          directory: "posts",
+          origin: "public_uploads",
+          readOnly: false,
+          icon: "fa-lock",
+          label: "Uploads",
         },
-        isAdmin: true,
-        entryPoints: [
-          {
-            directory: "",
-            origin: "public_uploads",
-            readOnly: false,
-            icon: "fa-lock",
-            label: "Uploads",
-          },
-        ],
-      };
-      createFileManager(appElt, options);
-    </script>
-  </body>
+      ],
+      fileValidation: {
+        type: 'image',
+        ratio: 1
+      },
+      // originalSelection: ["posts/autre/ign.jpg"]
+      originalSelection: ["@public_uploads:posts/autre/ign.jpg"]
+    };
+    // createFileManager(appElt, options);
+    // createFileManager(appElt1, options);
+
+    let filePicker = document.getElementById("pick-file");
+    filePicker.addEventListener("click", e => {
+      openFileManager(
+        options,
+        (files) => {
+          console.log("onSuccess", files);
+        },
+        () => {
+          console.log("onAbort");
+        }
+      );
+    })
+  </script>
+</body>
+
 </html>

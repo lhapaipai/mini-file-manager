@@ -16,16 +16,7 @@ Copy `file-manager` from static to your webroot directory. it contains thumbnail
 import "mini-file-manager/dist/style.css";
 import { createFileManager } from "mini-file-manager";
 const options = {
-	endPoints: {
-    deleteFile   :"/media-manager/delete"
-    downloadArchive :"/media-manager/download-archive"
-    // /media-manager/get/{mode}/{origin}/{uploadRelativePath}
-    showFile     :"/media-manager/get"
-    editFile     :"/media-manager/edit"
-    getFiles     :"/media-manager/get-files"
-    uploadFile   :"/media-manager/upload"
-    addDirectory :"/media-manager/add-directory"
-  },
+	endPoint: "/media-manager",
   isAdmin:
   entryPoints :[
     {
@@ -65,14 +56,14 @@ class ShareController extends AbstractController
         ]);
 
         return $this->render('share/index.html.twig', [
-            'FileMangerConfig' => $config,
+            'FileManagerConfig' => $config,
         ]);
     }
 }
 ```
 
 ```twig
-<div id="file-manager" data-props="{{ FileMangerConfig | json_encode | e('html_attr') }}"></div>
+<div id="file-manager" data-props="{{ FileManagerConfig | json_encode | e('html_attr') }}"></div>
 ```
 
 ```js

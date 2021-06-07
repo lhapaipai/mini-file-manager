@@ -54,14 +54,31 @@
           </div>
         </div>
       </form>
-      <div class="form-group compact">
+      <!-- <div class="form-group compact">
         <label>Accès</label>
         <div v-if="canEdit(file)">Lecture et modification</div>
         <div v-else>Lecture seule</div>
-      </div>
+      </div> -->
       <div class="form-group compact">
         <label>Ajouté le</label>
         <div>{{ formatDate(file.createdAt) }}</div>
+      </div>
+      <div
+        v-if="file.mimeGroup === 'image' && file.details"
+        class="form-group compact"
+      >
+        <label>
+          Dimensions
+          <button
+            v-if="canEditContent(file)"
+            class="btn-factice with-icon"
+            @click="editContent"
+          >
+            <i class="fa-crop"></i>
+          </button>
+        </label>
+        <div>{{ file.details.width }} x {{ file.details.height }} pixels</div>
+        <div>ratio : {{ formatRatio(file.details.ratio) }}</div>
       </div>
       <div class="form-group compact">
         <label>Taille</label>
@@ -126,7 +143,6 @@ export default {
   }),
   computed: {
     ...mapState([
-      "urlUploadFile",
       "directory",
       "editing",
       "isAdmin",
@@ -165,13 +181,16 @@ export default {
   },
   methods: {
     ...mapActions(["updateFilename", "download", "deleteSelectedFiles"]),
-    ...mapMutations(["setEditing"]),
+    ...mapMutations(["setEditing", "setEditContent"]),
     formatDate(strDate) {
       let date = new Date(strDate);
       if (!(date instanceof Date) || isNaN(date)) {
         return "";
       }
       return new Intl.DateTimeFormat("fr-FR").format(date);
+    },
+    formatRatio(floatRatio) {
+      return Math.round(floatRatio * 100) / 100;
     },
     canEdit(file) {
       if (this.isAdmin) {
@@ -182,11 +201,17 @@ export default {
       }
       return !file.readOnly;
     },
+    canEditContent(file) {
+      return !!file.details;
+    },
     copyToClipboard() {
       let input = this.$refs.inputUrl;
       input.select();
       document.execCommand("copy");
       notify("URL copiée");
+    },
+    editContent() {
+      this.setEditContent(this.file);
     },
     editFilename() {
       let completeName = this.filename + this.ext;
@@ -198,7 +223,7 @@ export default {
         } else if (completeName !== this.file.filename) {
           this.updateFilename({
             file: this.file,
-            filename: completeName,
+            newFilename: completeName,
           });
         }
       } else {
@@ -214,7 +239,7 @@ export default {
         window.open(this.file.url, "_blank");
       } else {
         window.open(
-          `${window.location.origin}${this.endPoints.showFile}/show/${this.file.origin}/${this.file.uploadRelativePath}`,
+          `${window.location.origin}${this.endPoints.getFileContent}/show/${this.file.origin}/${this.file.uploadRelativePath}`,
           "_blank"
         );
       }

@@ -1,5 +1,6 @@
 <template>
-  <div class="file-manager" @dragover="noDragging">
+  <ImageEditor class="image-editor" v-if="editContent" :file="editContent" />
+  <div v-else class="file-manager" @dragover="noDragging">
     <div class="action">
       <button class="btn btn-outlined" @click.prevent="toggleOrder()">
         <i class="fa-order-list" v-if="presentation === 'list'"></i>
@@ -40,7 +41,7 @@
     >
       <div class="files">
         <component
-          v-for="file in files"
+          v-for="file in sortedFiles"
           :key="file.id"
           :is="fileComponent"
           class="file"
@@ -63,6 +64,7 @@ import Infos from "./Infos.vue";
 import VSelect from "./VSelect.vue";
 import ListItem from "./ListItem.vue";
 import Icon from "./Icon.vue";
+import ImageEditor from "./ImageEditor.vue";
 
 import { notify, prompt } from "mini-notifier";
 
@@ -73,6 +75,7 @@ export default {
     VSelect,
     Icon,
     ListItem,
+    ImageEditor,
   },
   props: {
     isModal: {
@@ -92,12 +95,14 @@ export default {
     ...mapState([
       "editing",
       "files",
-      "selectedFiles",
       "entryPoints",
       "secondaryDirectories",
       "currentEntryPoint",
       "isAdmin",
+      "selectedFiles",
+      "editContent",
     ]),
+    ...mapGetters(["sortedFiles"]),
     canEdit() {
       if (this.isAdmin) {
         return true;
@@ -218,7 +223,9 @@ export default {
 * {
   box-sizing: border-box;
 }
-
+.image-editor {
+  padding: 10px;
+}
 .file-manager {
   overflow: hidden;
   padding: 10px;
