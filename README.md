@@ -6,15 +6,41 @@ Work In Progress
 npm install mini-file-manager
 ```
 
-Copy `file-manager` from static to your webroot directory. it contains thumbnail for each file type and icons.
+Copy `dist/file-manager` from static to your webroot directory. it contains thumbnail for each file type and icons.
+
+## FrontEnd
+
+### Importation
 
 ```html
+<!-- with UMD -->
+<link rel="stylesheet" href="/dist/style.css" />
 <div id="file-manager"></div>
+<script src="/dist/mini-file-manager.umd.js"></script>
+<script>
+  let createFileManager = miniFileManager.createFileManager;
+  // etc...
+</script>
+```
+
+```html
+<!-- with ES modules -->
+<link rel="stylesheet" href="/dist/style.css" />
+<div id="file-manager"></div>
+<script type="module">
+  import { createFileManager } from "/dist/mini-file-manager.es.js";
+  // etc...
+</script>
 ```
 
 ```js
-import "mini-file-manager/dist/style.css";
+// with bundler
 import { createFileManager } from "mini-file-manager";
+```
+
+### Configuration
+
+```js
 const options = {
 	endPoint: "/media-manager",
   isAdmin:
@@ -27,13 +53,37 @@ const options = {
         readOnly: false,
         icon: 'fa-lock'
     },
-  ]
+  ],
+
+  // if you want to filter files you can select
+  // only for the modal "openFileManager"
+  fileValidation: {
+    mimeGroup: 'image',
+    allowDir: false,
+    imageOptions: {
+      allowSvg: false,
+      width: 1200,
+      height: 900,
+      minWidth: 1200,
+      maxWidth: 800,
+      minHeight: 1200,
+      maxHeight: 800,
+      ratio: 0.66 // float number : width/height
+
+      // note : if you give a width and a height, the ratio is calculated
+      // and only the width and the ratio are used.
+    }
+  },
+
+  originalSelection: ["@public_uploads:posts/autre/ign.jpg"]
+  // note : you can remove the origin if you have only one origin
+  // originalSelection: ["posts/autre/ign.jpg"]
 };
 
 createFileManager('#file-manager', options);
 ```
 
-## With pentatrion/upload-bundle
+## Backend with Symfony and pentatrion/upload-bundle
 
 ```php
 use Pentatrion\UploadBundle\Service\FileManagerHelper;
@@ -45,6 +95,7 @@ class ShareController extends AbstractController
      */
     public function index(FileManagerHelper $fileManagerHelper): Response
     {
+        $isAdmin = true;
         $config = $fileManagerHelper->getConfig([
             [
                 'label' => 'Uploads',
@@ -53,7 +104,7 @@ class ShareController extends AbstractController
                 'readOnly' => false,
                 'icon' => 'fa-lock'
             ]
-        ]);
+        ], $isAdmin);
 
         return $this->render('share/index.html.twig', [
             'FileManagerConfig' => $config,
@@ -70,6 +121,8 @@ class ShareController extends AbstractController
 //file-manager.js
 import "mini-file-manager/src/css/index.scss";
 import { createFileManager } from "mini-file-manager";
+
+// config is parsed from data-props
 createFileManager("#file-manager");
 ```
 
