@@ -465,10 +465,6 @@ input.form-input {
     border-color: $grayDark;
   }
 }
-</style>
-
-<style lang="scss">
-@import "../css/variables.scss";
 .image-editor {
   display: flex;
   flex-direction: column;
