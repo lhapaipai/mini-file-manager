@@ -1,7 +1,7 @@
 import { createApp, toRaw } from "vue";
 import FileManager from "./components/FileManager.vue";
 import FileManagerModal from "./components/FileManagerModal.vue";
-import { bodyScrollLockDirective } from "./vue-extends";
+import { scrollLockDirective } from "scroll-blocker/scroll-lock-directive";
 import createStoreWithOptions from "./store";
 
 import "./css/index.scss";
@@ -17,7 +17,7 @@ export function createFileManager(elt, options) {
 
   const app = createApp(FileManager);
 
-  app.directive("body-scroll-lock", bodyScrollLockDirective);
+  app.directive("scroll-lock", scrollLockDirective);
 
   app.use(createStoreWithOptions(options));
   app.mount(elt);
@@ -53,7 +53,7 @@ export function openFileManager(options, onSuccess, onAbort) {
   }
 
   const app = createApp(FileManagerModal);
-  app.directive("body-scroll-lock", bodyScrollLockDirective);
+  app.directive("scroll-lock", scrollLockDirective);
   app.use(createStoreWithOptions(options));
   const vm = app.mount(elt);
   vm.$el.addEventListener("selectFiles", onSelectFiles);

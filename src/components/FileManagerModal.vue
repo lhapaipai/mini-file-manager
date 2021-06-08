@@ -1,11 +1,10 @@
 <template>
-  <div class="file-manager-modal">
+  <div class="file-manager-modal" v-scroll-lock:enabled>
     <div class="box">
       <FileManager
         class="main-content"
-        v-body-scroll-lock:reserve-scroll-bar-gap="true"
         :is-modal="true"
-        @confirm="handleConfirm"
+        @confirm="handleSelect"
       />
       <div class="actions">
         <button
@@ -16,23 +15,40 @@
           Annuler
         </button>
         <div class="sep"></div>
+        <!-- <ValidationString v-if="fileValidation" /> -->
+        <!-- la sélection n'est pas valide mais on peut éditer les fichiers pour la rendre valide -->
         <button
-          v-if="!editContent && invalidSelectedFiles.length > 0"
-          class="btn"
-          @click="goImageEditor"
-        >
-          <i class="fa-picture"></i> Éditer
-          <!-- <i class="fa-wrench"></i>
-          <i class="fa-picture"></i> -->
-        </button>
-        <button
-          :disabled="
-            invalidSelectedFiles.length > 0 || selectedFiles.length === 0
+          v-if="
+            invalidSelectedFiles.length > 0 &&
+            !editContent &&
+            uneditableSelectedFiles.length === 0
           "
           class="btn"
-          @click="handleConfirm"
+          @click="goEditor"
         >
-          Sélectionner
+          Éditer puis sélectionner
+        </button>
+        <!-- on est en train d'éditer un élément la sélection n'est toujours pas valide mais on
+         peut éditer les fichiers pour la rendre valide -->
+        <button
+          v-else-if="
+            invalidSelectedFiles.length > 0 &&
+            invalidSelectedFiles[0] !== editContent &&
+            uneditableSelectedFiles.length === 0
+          "
+          class="btn"
+          @click="handleNext"
+          :disabled="uneditableSelectedFiles.length > 0"
+        >
+          <span>Continuer</span>
+        </button>
+        <button
+          v-else-if="invalidSelectedFiles.length === 0"
+          class="btn"
+          @click="handleSelect"
+          :disabled="invalidSelectedFiles.length > 0"
+        >
+          <span>Sélectionner</span>
         </button>
       </div>
     </div>
@@ -44,37 +60,45 @@
 import { mapGetters, mapMutations, mapState } from "vuex";
 import FileManager from "./FileManager.vue";
 import ImageEditor from "./ImageEditor.vue";
-
-import { validateFile } from "../utils.js";
+import ValidationString from "./ValidationString.vue";
 
 export default {
   components: {
     FileManager,
     ImageEditor,
+    ValidationString,
+  },
+  data() {
+    return {};
   },
   computed: {
     ...mapState(["selectedFiles", "fileValidation", "editContent"]),
-    ...mapGetters(["invalidSelectedFiles"]),
+    ...mapGetters(["invalidSelectedFiles", "uneditableSelectedFiles"]),
   },
   methods: {
     ...mapMutations(["setEditContent"]),
-    goImageEditor() {
-      this.setEditContent(this.invalidSelectedFiles[0]);
-    },
     handleAbort() {
       let event = new CustomEvent("abortSelect");
       this.$el.dispatchEvent(event);
     },
     // handleCrop() {},
-    handleConfirm() {
-      if (this.invalidSelectedFiles.length > 0) {
-        console.error("il y a des règles de validation non satisfaites");
-        return;
+    goEditor() {
+      console.log("goEditor");
+      this.setEditContent(this.invalidSelectedFiles[0]);
+    },
+    handleNext() {
+      console.log("handleNext");
+      this.setEditContent(this.invalidSelectedFiles[0]);
+    },
+    handleSelect() {
+      if (this.invalidSelectedFiles.length === 0) {
+        let event = new CustomEvent("selectFiles", {
+          detail: this.selectedFiles,
+        });
+        this.$el.dispatchEvent(event);
+      } else if (this.uneditableSelectedFiles.length === 0) {
+        this.goEditor();
       }
-      let event = new CustomEvent("selectFiles", {
-        detail: this.selectedFiles,
-      });
-      this.$el.dispatchEvent(event);
     },
   },
 };
@@ -113,7 +137,7 @@ export default {
     .actions {
       display: flex;
       padding: 0 10px 10px 10px;
-
+      align-items: center;
       .abort {
         margin-left: 0;
       }
@@ -133,7 +157,7 @@ export default {
       }
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 800px) {
       width: 100%;
       height: 100%;
     }

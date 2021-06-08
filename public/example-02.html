@@ -10,20 +10,18 @@
   <style>
     body {
       font-family: sans-serif;
-
     }
 
-    h1 {
-      font-family: "fontello";
+    #file-manager {
+      height: 600px;
     }
   </style>
 </head>
 
 <body>
-  <h1>hello</h1>
   <div id="file-manager"></div>
-  <script type="module">
-    import { createFileManager } from "/mini-file-manager.es.js";
+  <script src="/mini-file-manager.umd.js"></script>
+  <script>
     let appElt = document.getElementById("file-manager");
     let options = {
       endPoint: "http://symfony-php74.local/media-manager",
@@ -37,8 +35,15 @@
           label: "Uploads",
         },
       ],
+      fileValidation: {
+        type: 'image',
+        ratio: 1
+      },
+      // originalSelection: ["posts/autre/ign.jpg"]
+      originalSelection: ["@public_uploads:posts/autre/ign.jpg"]
+
     };
-    createFileManager(appElt, options);
+    miniFileManager.createFileManager(appElt, options);
   </script>
 </body>
 

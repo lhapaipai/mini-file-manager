@@ -2,7 +2,12 @@ import { createStore } from "vuex";
 
 import { apiHelper, downloadHelper, dateHelper } from "pentatrion-lib";
 const { jsonFetchOrNotify, formFetchOrNotify, fetchOrNotify } = apiHelper;
-import { parseOriginalSelection, validateFile } from "./utils.js";
+import {
+  parseOriginalSelection,
+  verifyValidation,
+  isValidFile,
+  isEditableFile,
+} from "./utils.js";
 
 export default function createStoreWithOptions({
   entryPoints,
@@ -29,7 +34,7 @@ export default function createStoreWithOptions({
       },
       isAdmin,
       entryPoints,
-      fileValidation,
+      fileValidation: verifyValidation(fileValidation),
       // entryPoints :[
       //   {
       //       label: 'Conversation',
@@ -73,7 +78,12 @@ export default function createStoreWithOptions({
       },
       invalidSelectedFiles(state) {
         return state.selectedFiles.filter((file) => {
-          return !validateFile(file, fileValidation);
+          return !isValidFile(file, state.fileValidation);
+        });
+      },
+      uneditableSelectedFiles(state) {
+        return state.selectedFiles.filter((file) => {
+          return !isEditableFile(file, state.fileValidation);
         });
       },
     },

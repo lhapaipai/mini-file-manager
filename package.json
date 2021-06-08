@@ -2,7 +2,7 @@
   "name": "mini-file-manager",
   "description": "A lightweight File Manager for your application",
   "version": "0.0.4",
-  "module": "./dist/mini-file-manager.es.js",
+  "module": "./src/main.js",
   "main": "./dist/mini-file-manager.umd.js",
   "files": [
     "dist"
@@ -13,10 +13,10 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "body-scroll-lock": "^3.1.5",
     "cropperjs": "^1.5.11",
     "mini-notifier": "^0.2.0",
-    "pentatrion-lib": "file:../pentatrion-lib",
+    "pentatrion-lib": "github:lhapaipai/pentatrion-lib#v0.1.5",
+    "scroll-blocker": "github:lhapaipai/scroll-blocker#v1.0.1",
     "vue": "^3.0.11",
     "vuex": "^4.0.0"
   },

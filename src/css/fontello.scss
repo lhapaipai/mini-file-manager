@@ -20,6 +20,7 @@
   }
 }
 */
+
 [class^="fa-"]:before,
 [class*=" fa-"]:before {
   font-family: "fontello";
@@ -55,6 +56,7 @@
   /* Uncomment for 3D effect */
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
+
 .fa-edit:before {
   content: "\e800";
 } /* '' */
@@ -172,6 +174,12 @@
 .fa-resize-vertical:before {
   content: "\e826";
 } /* '' */
+.fa-edit-image:before {
+  content: "\e827";
+} /* '' */
+.fa-gauge:before {
+  content: "\e828";
+} /* '' */
 .fa-move:before {
   content: "\f047";
 } /* '' */

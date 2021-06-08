@@ -15,7 +15,7 @@ export default defineConfig({
         "vuex",
         "pentatrion-lib",
         "mini-notifier",
-        "body-scroll-lock",
+        "scroll-blocker",
       ],
       output: {
         globals: {
@@ -23,7 +23,7 @@ export default defineConfig({
           vuex: "Vuex",
           "pentatrion-lib": "pentatrionLib",
           "mini-notifier": "miniNotifier",
-          "body-scroll-lock": "bodyScrollLock",
+          "scroll-blocker": "scrollBlocker",
         },
       },
     },

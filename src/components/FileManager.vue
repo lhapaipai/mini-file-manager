@@ -233,14 +233,14 @@ export default {
   gap: 5px;
 
   grid-template-columns: 1fr 200px;
-  grid-template-rows: 39px 39px 1fr 160px;
+  grid-template-rows: 39px 39px 1fr 200px;
   grid-template-areas:
     "action    dropzone"
     "hierarchy hierarchy"
     "files     files"
     "infos     infos";
 }
-@media (min-width: 700px) {
+@media (min-width: 800px) {
   .file-manager {
     grid-template-columns: 105px 1fr 200px;
     grid-template-rows: 39px 100px 1fr;
@@ -277,7 +277,7 @@ export default {
   flex-wrap: wrap;
   // overflow: hidden;
 
-  @media (max-width: 699.99px) {
+  @media (max-width: 799.99px) {
     .hierarchy {
       margin-top: 10px;
       width: 100%;
@@ -307,8 +307,12 @@ export default {
   grid-area: files;
   overflow-x: hidden;
   overflow-y: visible;
-  // border: 1px solid $extraLightGray;
-  // border-radius: $borderRadius;
+
+  @media (max-width: 799.9px) {
+    border-bottom: 1px solid $lightGray;
+    border-top: 1px solid $lightGray;
+    margin: 10px 0;
+  }
   user-select: none;
 }
 
@@ -328,13 +332,7 @@ export default {
     gap: 15px;
   }
 
-  @media (min-width: 360px) {
-    .files {
-      grid-template-columns: repeat(auto-fill, minmax(154px, 1fr));
-    }
-  }
-
-  @media (min-width: 750px) {
+  @media (min-width: 400px) {
     .files {
       grid-template-columns: repeat(auto-fill, minmax(154px, 1fr));
     }

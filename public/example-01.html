@@ -11,6 +11,10 @@
     body {
       font-family: sans-serif;
     }
+
+    #file-manager {
+      height: 600px;
+    }
   </style>
 </head>
 
@@ -31,6 +35,13 @@
           label: "Uploads",
         },
       ],
+      fileValidation: {
+        type: 'image',
+        ratio: 1
+      },
+      // originalSelection: ["posts/autre/ign.jpg"]
+      originalSelection: ["@public_uploads:posts/autre/ign.jpg"]
+
     };
     createFileManager(appElt, options);
   </script>
