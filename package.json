@@ -1,7 +1,7 @@
 {
   "name": "mini-file-manager",
   "description": "A lightweight File Manager for your application",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "module": "./src/main.js",
   "main": "./dist/mini-file-manager.umd.js",
   "files": [
