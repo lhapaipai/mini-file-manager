@@ -17,8 +17,8 @@ export default function createStoreWithOptions({
   originalSelection,
 }) {
   originalSelection = parseOriginalSelection(originalSelection, entryPoints);
-
-  let isDebug = true;
+  console.log(entryPoints);
+  let isDebug = false;
   let debugStr = isDebug ? "?XDEBUG_TRIGGER" : "";
   return createStore({
     state: {
@@ -72,9 +72,9 @@ export default function createStoreWithOptions({
           suffixe = state.secondaryDirectories.join("/");
         }
         if (state.currentEntryPoint.directory !== "") {
-          prefix = state.currentEntryPoint.directory + "/";
+          prefix = state.currentEntryPoint.directory;
         }
-        return prefix + suffixe;
+        return prefix + (suffixe !== "" ? "/" + suffixe : "");
       },
       invalidSelectedFiles(state) {
         return state.selectedFiles.filter((file) => {

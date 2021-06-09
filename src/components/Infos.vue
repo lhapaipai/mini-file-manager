@@ -207,12 +207,24 @@ export default {
     },
     editFilename() {
       if (this.editing) {
-        // if (!this.filename || this.filename[0] === ".") {
-        //   notify("Nom de fichier non valide.", {
-        //     style: "error",
-        //   });
-        // }
         if (this.filename !== this.file.filename) {
+          let oldLastDot, lastDot, oldExt, ext;
+
+          oldLastDot = this.file.filename.lastIndexOf(".");
+          // seulement si l'original a une extension
+          if (oldLastDot !== -1) {
+            oldExt = this.file.filename.substring(oldLastDot).toLowerCase();
+
+            lastDot = this.filename.lastIndexOf(".");
+            if (lastDot !== -1) {
+              ext = this.filename.substring(lastDot).toLowerCase();
+            } else {
+              ext = "";
+            }
+            if (ext !== oldExt) {
+              this.filename += oldExt;
+            }
+          }
           this.updateFilename({
             file: this.file,
             newFilename: this.filename,

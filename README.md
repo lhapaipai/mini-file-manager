@@ -38,6 +38,17 @@ Copy `dist/file-manager` from static to your webroot directory. it contains thum
 import { createFileManager } from "mini-file-manager";
 ```
 
+```js
+// without css/index.scss import
+// if you want to custom your theme
+
+import { createFileManager } from "mini-file-manager/src/main-without-theme.js";
+
+// modify files and add them manually
+import "mini-notifier/dist/style.css";
+import "./css/index.scss";
+```
+
 ### Configuration
 
 ```js

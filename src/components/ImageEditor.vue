@@ -50,7 +50,7 @@
           class="original"
           ref="imageElt"
           crossorigin=""
-          :src="file.url"
+          :src="file.urlTimestamped"
           @load="onImageLoad"
         />
       </div>
@@ -428,7 +428,7 @@ export default {
         finalWidth: this.finalWidth,
         finalHeight: this.finalHeight,
       });
-      console.log("handleSave", data);
+      // console.log("handleSave", data);
       // seems to bug with multiple crop
       // cropperInstance.replace(newFile.url);
       this.destroyCropper();
