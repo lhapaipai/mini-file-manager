@@ -1,7 +1,9 @@
 import { createStore } from "vuex";
 
-import { apiHelper, downloadHelper, dateHelper } from "pentatrion-lib";
-const { jsonFetchOrNotify, formFetchOrNotify, fetchOrNotify } = apiHelper;
+import { downloadFromBlob } from "pentatrion-lib/downloadHelper";
+import { toIsoString } from "pentatrion-lib/dateHelper";
+import { formFetchOrNotify, fetchOrNotify } from "pentatrion-lib/apiHelper";
+
 import {
   parseOriginalSelection,
   verifyValidation,
@@ -241,15 +243,12 @@ export default function createStoreWithOptions({
             `${state.endPoints.getFileContent}/download/${file.origin}/${file.uploadRelativePath}`
           )
             .then((t) => t.blob())
-            .then((b) => downloadHelper.downloadFromBlob(b, file.filename));
+            .then((b) => downloadFromBlob(b, file.filename));
           return;
         }
 
         let archiveName =
-          state.directory.filename +
-          "-" +
-          dateHelper.toIsoString(new Date()) +
-          ".zip";
+          state.directory.filename + "-" + toIsoString(new Date()) + ".zip";
 
         formFetchOrNotify(state.endPoints.downloadArchive, {
           body: {
@@ -258,7 +257,7 @@ export default function createStoreWithOptions({
         })
           .then((t) => t.blob())
           .then((b) => {
-            downloadHelper.downloadFromBlob(b, archiveName);
+            downloadFromBlob(b, archiveName);
           });
       },
       async deleteSelectedFiles({ commit, dispatch, state }) {
