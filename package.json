@@ -4,6 +4,15 @@
   "version": "0.1.0",
   "module": "./src/main.js",
   "main": "./dist/mini-file-manager.umd.js",
+  "license": "MIT",
+  "author": "Hugues Tavernier",
+  "keywords": [
+    "symfony",
+    "vue",
+    "file",
+    "browser",
+    "manager"
+  ],
   "files": [
     "dist"
   ],

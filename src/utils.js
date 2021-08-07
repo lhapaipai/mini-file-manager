@@ -1,5 +1,5 @@
 export function parseOriginalSelection(originalSelection, entryPoints) {
-  if (!originalSelection) {
+  if (!originalSelection || originalSelection.length === 0) {
     return null;
   }
 

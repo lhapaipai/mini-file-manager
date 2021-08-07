@@ -1,16 +1,40 @@
-Work In Progress
+<p align="center">
+  <img width="100" src="https://raw.githubusercontent.com/lhapaipai/vite-bundle/main/docs/symfony.svg" alt="Symfony logo">
+</p>
+
+Mini File Manager is a file management interface which is associated with a Symfony backend. The connection is made with `pentatrion/upload-bundle`.
+
+<img alt="Mini File Manager" src="https://user-images.githubusercontent.com/1088155/128615403-2b41fbb4-dd4e-452e-b2c2-6926642bf146.jpg">
+
+# Example
+
+You can see a live example and clone this template repository who contain source code [mini-file-manager-template](https://github.com/lhapaipai/mini-file-manager-template).
+
+<img alt="Crop image" src="https://user-images.githubusercontent.com/1088155/128615409-8ba709cf-dd51-40c8-a5f5-93aaacd98fe3.jpg"><img alt="Mobile first" src="https://user-images.githubusercontent.com/1088155/128615401-10dca575-3beb-4cc2-885f-d80498d181d6.jpg" width="400">
+
+# Dépendances
+
+- Symfony v5
+  - pentatrion/upload-bundle
+  - liip/imagine-bundle
+  - symfony/validator
 
 # Installation
+
+before you can configure the mini-file-manager, you must first install and configure the backend under Symfony with [pentatrion/upload-bundle](https://github.com/lhapaipai/upload-bundle).
+the configuration may seem daunting.
 
 ```bash
 npm install mini-file-manager
 ```
 
-Copy `dist/file-manager` from static to your webroot directory. it contains thumbnail for each file type and icons.
+Copy `dist/file-manager` from static to your webroot directory. it contains icons for each file type.
 
 ## FrontEnd
 
 ### Importation
+
+if you want to use compiled files, copy `/dist` directory into your public dir and use script bellow.
 
 ```html
 <!-- with UMD -->
@@ -23,6 +47,8 @@ Copy `dist/file-manager` from static to your webroot directory. it contains thum
 </script>
 ```
 
+or
+
 ```html
 <!-- with ES modules -->
 <link rel="stylesheet" href="/dist/style.css" />
@@ -32,6 +58,9 @@ Copy `dist/file-manager` from static to your webroot directory. it contains thum
   // etc...
 </script>
 ```
+
+if you want to use mini-file-manager with a bundler (Rollup/Vite/Webpack)
+you probably need to install Vue v3 and one loader for your bundler : vue-loader vue-template-compiler / @vitejs/plugin-vue, etc...
 
 ```js
 // with bundler
@@ -107,25 +136,28 @@ class ShareController extends AbstractController
     public function index(FileManagerHelper $fileManagerHelper): Response
     {
         $isAdmin = true;
-        $config = $fileManagerHelper->getConfig([
-            [
-                'label' => 'Uploads',
-                'directory' => '',
-                'origin' => 'public_uploads',
-                'readOnly' => false,
-                'icon' => 'fa-lock'
+        $config = $fileManagerHelper->completeConfig([
+            'isAdmin' => true,
+            'entryPoints' => [
+                [
+                    'label' => 'Uploads',
+                    'directory' => '',
+                    'origin' => 'public_uploads',
+                    'readOnly' => false,
+                    'icon' => 'fa-lock'
+                ]
             ]
-        ], $isAdmin);
+        ]);
 
         return $this->render('share/index.html.twig', [
-            'FileManagerConfig' => $config,
+            'fileManagerConfig' => $config,
         ]);
     }
 }
 ```
 
 ```twig
-<div id="file-manager" data-props="{{ FileManagerConfig | json_encode | e('html_attr') }}"></div>
+<div id="file-manager" data-props="{{ fileManagerConfig | json_encode | e('html_attr') }}"></div>
 ```
 
 ```js
