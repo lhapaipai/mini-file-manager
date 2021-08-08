@@ -345,6 +345,12 @@
       "css": "gauge",
       "code": 59432,
       "src": "entypo"
+    },
+    {
+      "uid": "83e7b366e9b39bc4006b821f7c5efa4d",
+      "css": "folder",
+      "code": 59433,
+      "src": "typicons"
     }
   ]
 }

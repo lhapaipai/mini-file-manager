@@ -1,40 +1,60 @@
-<p align="center">
-  <img width="100" src="https://raw.githubusercontent.com/lhapaipai/vite-bundle/main/docs/symfony.svg" alt="Symfony logo">
-</p>
+# Mini File Manager
 
-Mini File Manager is a file management interface which is associated with a Symfony backend. The connection is made with `pentatrion/upload-bundle`.
+Mini File Manager is a file management interface for your Symfony backend. The connection is made with `pentatrion/upload-bundle`.
 
 <img alt="Mini File Manager" src="https://user-images.githubusercontent.com/1088155/128615403-2b41fbb4-dd4e-452e-b2c2-6926642bf146.jpg">
 
-# Example
+## Dépendances
 
-You can see a live example and clone this template repository who contain source code [mini-file-manager-template](https://github.com/lhapaipai/mini-file-manager-template).
+Mini File Manager is designed with Vue (unless you modify the sources, the dependencies are integrated into the module) and you have to configure a Symfony backend to manage your files.
 
-<img alt="Crop image" src="https://user-images.githubusercontent.com/1088155/128615409-8ba709cf-dd51-40c8-a5f5-93aaacd98fe3.jpg"><img alt="Mobile first" src="https://user-images.githubusercontent.com/1088155/128615401-10dca575-3beb-4cc2-885f-d80498d181d6.jpg" width="400">
-
-# Dépendances
+<p align="center">
+  <img width="100" src="https://raw.githubusercontent.com/lhapaipai/mini-file-manager/main/docs/symfony.svg" alt="Symfony logo">
+  <img width="100" src="https://raw.githubusercontent.com/lhapaipai/mini-file-manager/main/docs/vue.svg" alt="Vue logo">
+</p>
 
 - Symfony v5
   - pentatrion/upload-bundle
   - liip/imagine-bundle
   - symfony/validator
 
-# Installation
+## Examples
+
+### Full integration
+
+You can see a live example here :
+
+Sources of this example is available in a separate repository [mini-file-manager-template](https://github.com/lhapaipai/mini-file-manager-template). This example contain full integration of the manager with form (file picker, wysiwyg), and simple file manager.
+
+### Partial integration
+
+If you want to see basic utilisation of the manager you can see examples in the public directory.
+
+After configuring a backend, change the `endPoint` option in the `example-01-umd.html` file and type :
+
+```console
+npm run serve
+```
+
+Your example is available on `http://localhost:5000/example-01-umd.html`
+
+## Installation
+
+### BackEnd
 
 before you can configure the mini-file-manager, you must first install and configure the backend under Symfony with [pentatrion/upload-bundle](https://github.com/lhapaipai/upload-bundle).
-the configuration may seem daunting.
 
-```bash
+### FrontEnd
+
+```console
 npm install mini-file-manager
 ```
 
-Copy `dist/file-manager` from static to your webroot directory. it contains icons for each file type.
+Copy `dist/file-manager` directory from `node_modules/mini-file-manager` to your webroot directory. it contains icons for each file type and icons for buttons.
 
-## FrontEnd
+#### with UMD / ES Modules
 
-### Importation
-
-if you want to use compiled files, copy `/dist` directory into your public dir and use script bellow.
+`mini-file-manager.umd.js` provides `miniFileManager` global variable.
 
 ```html
 <!-- with UMD -->
@@ -42,7 +62,7 @@ if you want to use compiled files, copy `/dist` directory into your public dir a
 <div id="file-manager"></div>
 <script src="/dist/mini-file-manager.umd.js"></script>
 <script>
-  let createFileManager = miniFileManager.createFileManager;
+  let { createFileManager, openFileManager } = miniFileManager;
   // etc...
 </script>
 ```
@@ -54,51 +74,79 @@ or
 <link rel="stylesheet" href="/dist/style.css" />
 <div id="file-manager"></div>
 <script type="module">
-  import { createFileManager } from "/dist/mini-file-manager.es.js";
+  import {
+    createFileManager,
+    openFileManager,
+  } from "/dist/mini-file-manager.es.js";
   // etc...
 </script>
 ```
 
-if you want to use mini-file-manager with a bundler (Rollup/Vite/Webpack)
-you probably need to install Vue v3 and one loader for your bundler : vue-loader vue-template-compiler / @vitejs/plugin-vue, etc...
+or
 
 ```js
 // with bundler
-import { createFileManager } from "mini-file-manager";
+import { createFileManager, openFileManager } from "mini-file-manager";
+import "mini-file-manager/dist/style.css";
+```
+
+#### Custom installation
+
+if you want to customize styles, you need to use mini-file-manager with a bundler (Rollup/Vite/Webpack)
+you probably need to install custom loader to compile Vue 3 template files and mini-notifier (if you want to import style files)
+
+```console
+npm i mini-notifier
 ```
 
 ```js
-// without css/index.scss import
-// if you want to custom your theme
+import {
+  createFileManager,
+  openFileManager,
+} from "mini-file-manager/src/main-without-theme";
 
-import { createFileManager } from "mini-file-manager/src/main-without-theme.js";
-
-// modify files and add them manually
+import "mini-file-manager/src/css/index.scss";
 import "mini-notifier/dist/style.css";
-import "./css/index.scss";
 ```
 
-### Configuration
+## Configuration
+
+Mini File Manager export 2 functions
+
+```js
+createFileManager("#selector", options);
+
+openFileManager(options, onSuccess, onAbort);
+
+function onSuccess(files) {
+  console.log("selected files", files);
+}
+function onAbort() {
+  console.log("abort");
+}
+```
 
 ```js
 const options = {
-	endPoint: "/media-manager",
-  isAdmin:
-  entryPoints :[
+  endPoint: "http://url-to-backend.com/media-manager",
+  entryPoints: [
     {
-        label: 'Conversation',
-        // base directory relative to origin
-        directory: 'projet/mon-projet',
-        origin: 'private_uploads',
-        readOnly: false,
-        icon: 'fa-lock'
+      label: "Conversation",
+      // base directory relative to origin
+      directory: "projet/mon-projet",
+      origin: "private_uploads",
+      readOnly: false,
+      icon: "fa-lock",
     },
   ],
+
+  // if you want a readonly manager
+  isAdmin: true,
 
   // if you want to filter files you can select
   // only for the modal "openFileManager"
   fileValidation: {
-    mimeGroup: 'image',
+    mimeGroup: "image",
     allowDir: false,
     imageOptions: {
       allowSvg: false,
@@ -108,116 +156,21 @@ const options = {
       maxWidth: 800,
       minHeight: 1200,
       maxHeight: 800,
-      ratio: 0.66 // float number : width/height
+      ratio: 0.66, // float number : width/height
 
       // note : if you give a width and a height, the ratio is calculated
       // and only the width and the ratio are used.
-    }
+    },
   },
 
-  originalSelection: ["@public_uploads:posts/autre/ign.jpg"]
-  // note : you can remove the origin if you have only one origin
-  // originalSelection: ["posts/autre/ign.jpg"]
+  originalSelection: ["posts/autre/ign.jpg"],
 };
-
-createFileManager('#file-manager', options);
 ```
 
-## Backend with Symfony and pentatrion/upload-bundle
+## Screenshots
 
-```php
-use Pentatrion\UploadBundle\Service\FileManagerHelper;
+<img alt="Crop image" src="https://user-images.githubusercontent.com/1088155/128615409-8ba709cf-dd51-40c8-a5f5-93aaacd98fe3.jpg"><br>
 
-class ShareController extends AbstractController
-{
-    /**
-     * @Route("/share", name="share")
-     */
-    public function index(FileManagerHelper $fileManagerHelper): Response
-    {
-        $isAdmin = true;
-        $config = $fileManagerHelper->completeConfig([
-            'isAdmin' => true,
-            'entryPoints' => [
-                [
-                    'label' => 'Uploads',
-                    'directory' => '',
-                    'origin' => 'public_uploads',
-                    'readOnly' => false,
-                    'icon' => 'fa-lock'
-                ]
-            ]
-        ]);
+### Mobile friendly
 
-        return $this->render('share/index.html.twig', [
-            'fileManagerConfig' => $config,
-        ]);
-    }
-}
-```
-
-```twig
-<div id="file-manager" data-props="{{ fileManagerConfig | json_encode | e('html_attr') }}"></div>
-```
-
-```js
-//file-manager.js
-import "mini-file-manager/src/css/index.scss";
-import { createFileManager } from "mini-file-manager";
-
-// config is parsed from data-props
-createFileManager("#file-manager");
-```
-
-### FileManager With Button
-
-```php
-use Pentatrion\UploadBundle\Service\FileManagerHelper;
-
-class ShareController extends AbstractController
-{
-    /**
-     * @Route("/find", name="find")
-     */
-    public function find(FileManagerHelper $fileManagerHelper): Response
-    {
-        $config = $fileManagerHelper->getConfig([
-            [
-                'label' => 'Uploads',
-                // base directory, relative to origin
-                'directory' => '',
-                'origin' => 'public_uploads',
-                'readOnly' => false,
-                'icon' => 'fa-lock'
-            ]
-        ]);
-
-        return $this->render('share/find.html.twig', [
-            'FileManagerConfig' => $config,
-        ]);
-    }
-}
-```
-
-```twig
-<button id="find-file" data-props="{{ FileManagerConfig | json_encode | e('html_attr') }}">Find</button>
-```
-
-```js
-import "mini-file-manager/src/css/index.scss";
-import { openFileManager } from "mini-file-manager";
-
-let findBtn = document.getElementById("find-file");
-findBtn.addEventListener("click", () => {
-  let options = JSON.parse(findBtn.dataset.props);
-  openFileManager(
-    options,
-    (files) => {
-      console.log("onSuccess", files);
-    },
-    () => {
-      console.log("onAbort");
-    }
-  );
-});
-```
+<img alt="Mobile first" style="border: 1px solid #aaa; margin-right: 10px;" src="https://user-images.githubusercontent.com/1088155/128615401-10dca575-3beb-4cc2-885f-d80498d181d6.jpg" width="400"><img alt="Crop mobile first" style="border: 1px solid #aaa;" src="https://user-images.githubusercontent.com/1088155/128623126-8fdda390-fc3a-455e-a8ad-5f3ab9d7d2e1.jpg" width="400">

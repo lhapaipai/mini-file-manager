@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/style.css" />
+  <title>Vite App</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    #file-manager {
+      height: 600px;
+    }
+  </style>
+</head>
+
+<body>
+  <button id="pick-file">Pick File</button>
+  <script src="/mini-file-manager.umd.js"></script>
+  <script>
+    let filePicker = document.getElementById("pick-file");
+    filePicker.addEventListener("click", e => {
+      miniFileManager.openFileManager(
+        {
+          endPoint: "http://mini-file-manager.local/media-manager",
+          isAdmin: true,
+          entryPoints: [
+            {
+              directory: "",
+              origin: "public_uploads",
+              readOnly: false,
+              icon: "fa-lock",
+              label: "Uploads",
+            },
+          ],
+          fileValidation: {
+            type: 'image',
+          },
+          // originalSelection: ["posts/autre/ign.jpg"]
+
+        },
+        (files) => {
+          console.log("onSuccess", files);
+        },
+        () => {
+          console.log("onAbort");
+        }
+      );
+    })
+
+  </script>
+</body>
+
+</html>
