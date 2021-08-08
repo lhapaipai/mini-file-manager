@@ -1,8 +1,10 @@
 import { createApp, toRaw } from "vue";
+import { createI18n } from "vue-i18n-lite";
 import FileManager from "./components/FileManager.vue";
 import FileManagerModal from "./components/FileManagerModal.vue";
 import { scrollLockDirective } from "scroll-blocker/scroll-lock-directive";
 import createStoreWithOptions from "./store";
+import localesData from "./locales";
 
 export function createFileManager(elt, options) {
   if (typeof elt === "string") {
@@ -11,12 +13,20 @@ export function createFileManager(elt, options) {
   if (!options) {
     options = JSON.parse(elt.dataset.props);
   }
-
+  let locale = options.locale || "en";
   const app = createApp(FileManager);
 
   app.directive("scroll-lock", scrollLockDirective);
 
   app.use(createStoreWithOptions(options));
+  app.use(
+    createI18n({
+      locale: locale,
+      fallbackLocale: locale,
+      messages: localesData,
+    })
+  );
+
   app.mount(elt);
 
   return app;
@@ -25,6 +35,7 @@ export function createFileManager(elt, options) {
 export function openFileManager(options, onSuccess, onAbort) {
   let elt = document.createElement("div");
   document.body.appendChild(elt);
+  let locale = options.locale || "en";
 
   function destroyFileManager() {
     vm.$el.removeEventListener("selectFiles", onSelectFiles);
@@ -52,6 +63,14 @@ export function openFileManager(options, onSuccess, onAbort) {
   const app = createApp(FileManagerModal);
   app.directive("scroll-lock", scrollLockDirective);
   app.use(createStoreWithOptions(options));
+  app.use(
+    createI18n({
+      locale: locale,
+      fallbackLocale: locale,
+      messages: localesData,
+    })
+  );
+
   const vm = app.mount(elt);
   vm.$el.addEventListener("selectFiles", onSelectFiles);
   vm.$el.addEventListener("abortSelect", onAbortSelect);

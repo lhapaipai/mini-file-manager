@@ -12,7 +12,7 @@
           class="btn outlined abort"
           @click="handleAbort"
         >
-          Annuler
+          {{ $t("cancel") }}
         </button>
         <div class="sep"></div>
         <!-- <ValidationString v-if="fileValidation" /> -->
@@ -26,7 +26,7 @@
           class="btn"
           @click="goEditor"
         >
-          Éditer puis sélectionner
+          {{ $t("editAndSelect") }}
         </button>
         <!-- on est en train d'éditer un élément la sélection n'est toujours pas valide mais on
          peut éditer les fichiers pour la rendre valide -->
@@ -40,7 +40,7 @@
           @click="handleNext"
           :disabled="uneditableSelectedFiles.length > 0"
         >
-          <span>Continuer</span>
+          <span> {{ $t("continue") }}</span>
         </button>
         <button
           v-else-if="invalidSelectedFiles.length === 0"
@@ -48,7 +48,7 @@
           @click="handleSelect"
           :disabled="invalidSelectedFiles.length > 0"
         >
-          <span>Sélectionner</span>
+          <span>{{ $t("select") }}</span>
         </button>
       </div>
     </div>

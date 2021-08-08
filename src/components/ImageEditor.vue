@@ -1,7 +1,9 @@
 <template>
   <div v-if="file" class="image-editor">
     <div class="header">
-      <button class="btn outlined back" @click="handleReturn">Retour</button>
+      <button class="btn outlined back" @click="handleReturn">
+        {{ $t("return") }}
+      </button>
       <label v-if="fileValidation" class="btn outlined validation-string">
         <input
           type="checkbox"
@@ -261,7 +263,7 @@ export default {
         this.finalWidthLockedByValidation ||
         this.finalHeightLockedByValidation
       ) {
-        notify("Désactivez les règles de validation pour changer les verrous", {
+        notify(this.$t("disableRules"), {
           style: "error",
         });
         return;

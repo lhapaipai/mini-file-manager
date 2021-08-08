@@ -2,20 +2,20 @@
   <div class="infos" v-if="directory">
     <div v-if="files.length === 0">
       <div class="form-group">
-        <label>Nom du dossier</label>
+        <label>{{ $t("directoryName") }}</label>
         <div>{{ directory.filename }}</div>
       </div>
       <div class="form-group">
-        <label>Accès</label>
+        <label>{{ $t("access") }}</label>
         <div v-if="currentEntryPoint.readOnly">
-          <div>Lecture seule</div>
+          <div>{{ $t("readonly") }}</div>
         </div>
         <div v-else>
-          <div>Lecture et modification</div>
+          <div>{{ $t("editable") }}</div>
         </div>
       </div>
       <div class="form-group">
-        <label>Télécharger tout le dossier</label>
+        <label>{{ $t("downloadAll") }}</label>
         <div class="btns">
           <button class="btn" @click.prevent="handleDownload">
             <i class="fa-download"></i>
@@ -25,7 +25,7 @@
     </div>
     <div v-else-if="files.length === 1">
       <form @submit.prevent="editFilename" class="form-group filename">
-        <label>Nom</label>
+        <label>{{ $t("name") }}</label>
         <div v-if="!canEdit(file)">
           <div>{{ file.filename }}</div>
         </div>
@@ -49,7 +49,7 @@
         </div>
       </form>
       <div class="form-group" v-if="file.url">
-        <label>URL</label>
+        <label>{{ $t("url") }}</label>
         <div class="input-with-button">
           <input
             size="1"
@@ -70,15 +70,15 @@
         </div>
       </div>
       <div class="form-group">
-        <label>Ajouté le</label>
+        <label>{{ $t("createdAt") }}</label>
         <div>{{ formatDate(file.createdAt) }}</div>
       </div>
       <div class="form-group">
-        <label>Infos</label>
+        <label>{{ $t("infos") }}</label>
         <template v-if="file.mimeGroup === 'image' && file.details">
           <div>
             <i class="fa-picture"></i> {{ file.details.width }},
-            {{ file.details.height }} px
+            {{ file.details.height }} {{ $t("px") }}
           </div>
           <div>
             <i class="fa-ratio"></i> {{ formatRatio(file.details.ratio) }}
@@ -114,7 +114,7 @@
       </div>
     </div>
     <div v-else-if="files.length > 1">
-      {{ files.length }} éléments sélectionnés
+      {{ files.length }} {{ $t("selectedFiles") }}
     </div>
   </div>
 </template>

@@ -19,7 +19,7 @@
         @change="handleChange"
       />
       <label class="label" :for="inputFileId" v-if="!sending">
-        <span><i class="fa-doc-add"></i>Ajouter</span>
+        <span><i class="fa-doc-add"></i>{{ $t("add") }}</span>
       </label>
       <div v-else-if="progressFilename">
         <div
@@ -35,7 +35,7 @@
       </div>
     </div>
     <div v-else class="drop-area readonly">
-      <label class="label"> Répertoire en lecture seule. </label>
+      <label class="label">{{ $t("readonlyDir") }}</label>
     </div>
   </div>
 </template>

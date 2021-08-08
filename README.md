@@ -8,6 +8,8 @@ Mini File Manager is a file management interface for your Symfony backend. The c
 
 Mini File Manager is designed with Vue (unless you modify the sources, the dependencies are integrated into the module) and you have to configure a Symfony backend to manage your files.
 
+i18n integration, available in English and French. PRs are welcome.
+
 <p align="center">
   <img width="100" src="https://raw.githubusercontent.com/lhapaipai/mini-file-manager/main/docs/symfony.svg" alt="Symfony logo">
   <img width="100" src="https://raw.githubusercontent.com/lhapaipai/mini-file-manager/main/docs/vue.svg" alt="Vue logo">
@@ -139,6 +141,8 @@ const options = {
       icon: "fa-lock",
     },
   ],
+
+  locale: "en", // "en" | "fr"
 
   // if you want a readonly manager
   isAdmin: true,
