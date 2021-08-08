@@ -1,10 +1,10 @@
 # Mini File Manager
 
-Mini File Manager is a file management interface for your Symfony backend. The connection is made with `pentatrion/upload-bundle`.
+Mini File Manager is a file management interface for your Symfony backend. The connection is made with [pentatrion/upload-bundle](https://github.com/lhapaipai/upload-bundle).
 
 <img alt="Mini File Manager" src="https://user-images.githubusercontent.com/1088155/128615403-2b41fbb4-dd4e-452e-b2c2-6926642bf146.jpg">
 
-## Dépendances
+## Dependances
 
 Mini File Manager is designed with Vue (unless you modify the sources, the dependencies are integrated into the module) and you have to configure a Symfony backend to manage your files.
 
@@ -22,9 +22,9 @@ Mini File Manager is designed with Vue (unless you modify the sources, the depen
 
 ### Full integration
 
-You can see a live example here :
+You can see an example here : [**Live Demo**](https://mini-file-manager.pentatrion.com/)
 
-Sources of this example is available in a separate repository [mini-file-manager-template](https://github.com/lhapaipai/mini-file-manager-template). This example contain full integration of the manager with form (file picker, wysiwyg), and simple file manager.
+Sources of this example are available in a separate repository [mini-file-manager-template](https://github.com/lhapaipai/mini-file-manager-template). This example contain full integration of the manager with form (file picker, wysiwyg), and simple file manager.
 
 ### Partial integration
 
@@ -42,7 +42,7 @@ Your example is available on `http://localhost:5000/example-01-umd.html`
 
 ### BackEnd
 
-before you can configure the mini-file-manager, you must first install and configure the backend under Symfony with [pentatrion/upload-bundle](https://github.com/lhapaipai/upload-bundle).
+before you configure the mini-file-manager, you must first install and configure the backend under Symfony with [pentatrion/upload-bundle](https://github.com/lhapaipai/upload-bundle).
 
 ### FrontEnd
 

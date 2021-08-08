@@ -4,7 +4,11 @@
   "version": "0.2.0",
   "main": "./dist/mini-file-manager.es.js",
   "license": "MIT",
-  "author": "Hugues Tavernier",
+  "author": {
+    "name": "Lhapaipai",
+    "url": "https://huguestavernier.com"
+  },
+  "homepage": "https://mini-file-manager.pentatrion.com/",
   "keywords": [
     "symfony",
     "vue",
