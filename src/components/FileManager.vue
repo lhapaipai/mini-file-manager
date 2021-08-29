@@ -103,6 +103,8 @@ export default {
       "editContent",
     ]),
     ...mapGetters(["sortedFiles"]),
+    ...mapMutations(["setEditContent"]),
+
     canEdit() {
       if (this.isAdmin) {
         return true;

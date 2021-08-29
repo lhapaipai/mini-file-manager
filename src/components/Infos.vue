@@ -155,7 +155,6 @@ export default {
   watch: {
     file() {
       this.filename = this.file?.filename;
-      console.log("file change");
     },
     files(val) {
       // if (val.length === 1) {

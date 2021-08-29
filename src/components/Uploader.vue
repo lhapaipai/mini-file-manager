@@ -85,7 +85,6 @@ export default {
     },
     handleChange(e) {
       let files = e.currentTarget.files;
-      console.log("amont", this);
       this.handleFiles(files);
     },
     async handleFiles(files) {
@@ -128,10 +127,7 @@ export default {
             response = JSON.parse(this.responseText);
 
             if (this.status === 200 && response && response.data) {
-              console.log("addFile", that);
-
               that.addFile(response.data);
-              // that.setFiles(response.files);
             } else {
               notify(response.title || response, {
                 style: "error",

@@ -83,11 +83,9 @@ export default {
     },
     // handleCrop() {},
     goEditor() {
-      console.log("goEditor");
       this.setEditContent(this.invalidSelectedFiles[0]);
     },
     handleNext() {
-      console.log("handleNext");
       this.setEditContent(this.invalidSelectedFiles[0]);
     },
     handleSelect() {

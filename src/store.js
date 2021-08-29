@@ -19,7 +19,7 @@ export default function createStoreWithOptions({
   originalSelection,
 }) {
   originalSelection = parseOriginalSelection(originalSelection, entryPoints);
-  console.log(entryPoints);
+  // console.log(entryPoints);
   let isDebug = false;
   let debugStr = isDebug ? "?XDEBUG_TRIGGER" : "";
   return createStore({

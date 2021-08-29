@@ -4,7 +4,11 @@
       <button class="btn outlined back" @click="handleReturn">
         {{ $t("return") }}
       </button>
-      <label v-if="fileValidation" class="btn outlined validation-string">
+      <div v-if="isCropping" class="toolbar loader"><Spinner /></div>
+      <label
+        v-if="fileValidation && fileValidation.imageOptions"
+        class="btn outlined validation-string"
+      >
         <input
           type="checkbox"
           class="form-checkbox"
@@ -50,8 +54,8 @@
       <div class="abs-content">
         <img
           class="original"
+          :class="{ 'is-image-loading': isImageLoading }"
           ref="imageElt"
-          crossorigin=""
           :src="file.urlTimestamped"
           @load="onImageLoad"
         />
@@ -138,7 +142,8 @@
 <script>
 import ValidationString from "./ValidationString.vue";
 import Cropper from "cropperjs";
-// import "cropperjs/dist/cropper.min.css";
+import Spinner from "./Spinner.vue";
+
 import { nextTick } from "vue";
 import { mapActions, mapMutations, mapState } from "vuex";
 import { notify } from "mini-notifier";
@@ -146,7 +151,7 @@ import { notify } from "mini-notifier";
 let cropperInstance = null;
 let cropperConfig = {
   autoCrop: false,
-  toggleDragModeOnDblclick: true,
+  toggleDragModeOnDblclick: false,
   dragMode: "crop",
   viewMode: 1,
   checkOrientation: true,
@@ -155,6 +160,7 @@ let cropperConfig = {
 export default {
   components: {
     ValidationString,
+    Spinner,
   },
   props: ["file"],
   data() {
@@ -174,6 +180,8 @@ export default {
       finalHeight: 0,
       finalHeightLocked: false,
       finalHeightLockedByValidation: false,
+      isImageLoading: true,
+      isCropping: false,
     };
   },
   computed: {
@@ -219,7 +227,6 @@ export default {
     },
   },
   watch: {
-    finalWidth(newVal) {},
     isValidationActive() {
       this.checkValidation();
     },
@@ -243,7 +250,7 @@ export default {
       if (colonValue.length === 2) {
         a = parseInt(colonValue[0]);
         b = parseInt(colonValue[1]);
-        console.log("ah", a, b, a / b, isNaN(a / b));
+        // console.log("ah", a, b, a / b, isNaN(a / b));
         floatValue = a / b;
       } else if (slashValue.length === 2) {
         a = parseInt(slashValue[0]);
@@ -372,16 +379,8 @@ export default {
         );
       }
     },
-    async onImageLoad() {
-      await nextTick();
-      this.initCropper();
-    },
-    initCropper() {
-      this.$refs.imageElt.addEventListener("crop", this.handleCrop);
-      this.$refs.imageElt.addEventListener("ready", this.isReady);
-      cropperInstance = new Cropper(this.$refs.imageElt, cropperConfig);
-    },
     isReady() {
+      // console.log("isReady");
       let imageData = cropperInstance.getImageData();
       this.naturalWidth = imageData.naturalWidth;
       this.naturalHeight = imageData.naturalHeight;
@@ -392,7 +391,6 @@ export default {
       this.checkValidation();
     },
     checkValidation() {
-      console.log("checkvalidation");
       if (!this.imageValidation) {
         return;
       }
@@ -417,24 +415,53 @@ export default {
           }
         }
       } else {
+        cropperInstance.setAspectRatio(NaN);
         this.ratioLockedByValidation = false;
         this.finalWidthLockedByValidation = false;
         this.finalHeightLockedByValidation = false;
       }
     },
+    async onImageLoad() {
+      // console.log("onImageLoad");
+      if (!this.$refs.imageElt) {
+        // fix bug onImageLoad called onDestroy
+        return;
+      }
+      this.isImageLoading = false;
+      await nextTick();
+      this.initCropper();
+    },
+    initCropper() {
+      // console.log("initCropper");
+      // only for the first cropping
+      if (!cropperInstance && this.$refs.imageElt) {
+        this.$refs.imageElt.addEventListener("crop", this.handleCrop);
+        this.$refs.imageElt.addEventListener("ready", this.isReady);
+        cropperInstance = new Cropper(this.$refs.imageElt, cropperConfig);
+      }
+    },
     async handleSave() {
+      this.isCropping = true;
       let data = cropperInstance.getData();
-      let newFile = await this.cropFile({
-        file: this.file,
-        dimensions: data,
-        finalWidth: this.finalWidth,
-        finalHeight: this.finalHeight,
-      });
-      // console.log("handleSave", data);
-      // seems to bug with multiple crop
-      // cropperInstance.replace(newFile.url);
-      this.destroyCropper();
-      await this.initCropper();
+      try {
+        let newFile = await this.cropFile({
+          file: this.file,
+          dimensions: data,
+          finalWidth: this.finalWidth,
+          finalHeight: this.finalHeight,
+        });
+        this.isImageLoading = true;
+
+        if (newFile.url) {
+          // cropFile va aussi commiter setEditContent avec le nouveau
+          // nom de fichier donc initCropper sera appeler 1 voire 2 fois
+          // donc il est important d'avoir le test if (!cropperInstance ..
+          // dans initCropper
+          cropperInstance.replace(newFile.url);
+        }
+      } finally {
+        this.isCropping = false;
+      }
     },
 
     destroyCropper() {
@@ -451,6 +478,10 @@ export default {
       this.$refs.imageElt.removeEventListener("crop", this.handleCrop);
       this.$refs.imageElt.removeEventListener("ready", this.isReady);
     },
+    // mounted() {
+    //   this.localFile = this.file;
+    // },
+
     unmounted() {
       this.destroyCropper();
     },
@@ -466,6 +497,9 @@ input.form-input {
   &:focus {
     border-color: $grayDark;
   }
+}
+.is-image-loading {
+  opacity: 0;
 }
 .image-editor {
   display: flex;
@@ -488,7 +522,9 @@ input.form-input {
     margin-bottom: 10px;
     margin-right: 10px;
   }
-
+  .toolbar.loader {
+    margin-right: 10px;
+  }
   .toolbar {
     display: flex;
     align-items: center;
