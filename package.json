@@ -29,7 +29,7 @@
     "@vitejs/plugin-vue": "^1.4.0",
     "cropperjs": "^1.5.11",
     "mini-notifier": "^0.2.0",
-    "pentatrion-lib": "^0.2.0",
+    "pentatrion-lib": "^0.3.2",
     "sass": "^1.32.11",
     "scroll-blocker": "^1.0.1",
     "spassr": "^2.6.0",

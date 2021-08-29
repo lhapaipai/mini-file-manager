@@ -213,7 +213,7 @@ export default function createStoreWithOptions({
         return newFile;
       },
       async updateFilename({ commit, state, dispatch }, { file, newFilename }) {
-        console.log("before", file);
+        // console.log("before", file);
         let { origin, uploadRelativePath, directory, filename } = file;
         let { file: newFile } = await formFetchOrNotify(
           state.endPoints.editFile,
@@ -229,7 +229,7 @@ export default function createStoreWithOptions({
           }
         );
 
-        console.log("after", newFile);
+        // console.log("after", newFile);
 
         commit("unselectFiles");
 

@@ -422,7 +422,7 @@ export default {
       }
     },
     async onImageLoad() {
-      // console.log("onImageLoad");
+      // console.log("onImageLoad 1", cropperInstance, this.$refs.imageElt);
       if (!this.$refs.imageElt) {
         // fix bug onImageLoad called onDestroy
         return;
@@ -432,9 +432,13 @@ export default {
       this.initCropper();
     },
     initCropper() {
-      // console.log("initCropper");
+      // console.log("init cropper 1", cropperInstance, this.$refs.imageElt);
       // only for the first cropping
-      if (!cropperInstance && this.$refs.imageElt) {
+      if (cropperInstance) {
+        cropperInstance.destroy();
+      }
+
+      if (this.$refs.imageElt) {
         this.$refs.imageElt.addEventListener("crop", this.handleCrop);
         this.$refs.imageElt.addEventListener("ready", this.isReady);
         cropperInstance = new Cropper(this.$refs.imageElt, cropperConfig);
@@ -444,6 +448,7 @@ export default {
       this.isCropping = true;
       let data = cropperInstance.getData();
       try {
+        this.destroyCropper();
         let newFile = await this.cropFile({
           file: this.file,
           dimensions: data,
@@ -452,12 +457,16 @@ export default {
         });
         this.isImageLoading = true;
 
-        if (newFile.url) {
+        if (newFile.urlTimestamped) {
+          // fonctionne mal lorsque le nouveau fichier est le même que le précédent
+          // cropperInstance.replace(newFile.urlTimestamped);
+
           // cropFile va aussi commiter setEditContent avec le nouveau
-          // nom de fichier donc initCropper sera appeler 1 voire 2 fois
+          // nom de fichier donc initCropper sera appelé 1 voire 2 fois
           // donc il est important d'avoir le test if (!cropperInstance ..
           // dans initCropper
-          cropperInstance.replace(newFile.url);
+
+          this.initCropper();
         }
       } finally {
         this.isCropping = false;
@@ -465,6 +474,7 @@ export default {
     },
 
     destroyCropper() {
+      // console.log("destroyCropper 1", cropperInstance, this.$refs.imageElt);
       if (cropperInstance) {
         cropperInstance.destroy();
       }
@@ -477,6 +487,7 @@ export default {
       cropperInstance = null;
       this.$refs.imageElt.removeEventListener("crop", this.handleCrop);
       this.$refs.imageElt.removeEventListener("ready", this.isReady);
+      // console.log("destroyCropper 2", cropperInstance, this.$refs.imageElt);
     },
     // mounted() {
     //   this.localFile = this.file;
@@ -557,6 +568,7 @@ input.form-input {
   img.original {
     height: 100%;
     width: auto;
+    opacity: 0;
   }
 }
 
