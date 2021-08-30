@@ -1,5 +1,6 @@
 export default {
   fr: {
+    apply: "Appliquer",
     cancel: "Annuler",
     editAndSelect: "Éditer puis sélectionner",
     continue: "Continuer",
@@ -24,6 +25,7 @@ export default {
     px: "px",
   },
   en: {
+    apply: "Apply",
     cancel: "Cancel",
     editAndSelect: "Edit and Select",
     continue: "Continue",

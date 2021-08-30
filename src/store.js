@@ -13,7 +13,6 @@ import {
 
 export default function createStoreWithOptions({
   entryPoints,
-  isAdmin,
   endPoint,
   fileValidation,
   originalSelection,
@@ -34,7 +33,6 @@ export default function createStoreWithOptions({
         addDirectory: `${endPoint}/add-directory${debugStr}`,
         cropFile: `${endPoint}/crop${debugStr}`,
       },
-      isAdmin,
       entryPoints,
       fileValidation: verifyValidation(fileValidation),
       // entryPoints :[

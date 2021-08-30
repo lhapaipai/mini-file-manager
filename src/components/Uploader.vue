@@ -57,10 +57,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(["endPoints", "currentEntryPoint", "isAdmin"]),
+    ...mapState(["endPoints", "currentEntryPoint"]),
     ...mapGetters(["completeDirectory"]),
     canUpload() {
-      return this.isAdmin || !this.currentEntryPoint.readOnly;
+      return !this.currentEntryPoint.readOnly;
     },
   },
   methods: {

@@ -46,7 +46,7 @@
           <i class="fa-cancel"></i>
         </button>
         <button class="btn" @click="handleSave">
-          <i class="fa-ok"></i>
+          <i class="fa-ok"></i>{{ $t("apply") }}
         </button>
       </div>
     </div>
@@ -87,7 +87,7 @@
         <i class="fa-resize-horizontal"></i>
         <input
           type="text"
-          v-model="finalWidth"
+          v-model.number="finalWidth"
           class="nb form-input"
           :class="{ 'is-invalid': !isFinalWidthValid }"
           :disabled="
@@ -97,6 +97,7 @@
           "
           @input="userChangeFinalWidth"
         />
+
         <span class="lock" @click="handleLock('width')">
           <i
             :class="{
@@ -114,7 +115,7 @@
 
         <input
           type="text"
-          v-model="finalHeight"
+          v-model.number="finalHeight"
           class="nb form-input"
           :class="{ 'is-invalid': !isFinalHeightValid }"
           :disabled="
@@ -448,12 +449,15 @@ export default {
       this.isCropping = true;
       let data = cropperInstance.getData();
       try {
+        // because we loose this values with destroyCropper();
+        let finalWidth = this.finalWidth;
+        let finalHeight = this.finalHeight;
         this.destroyCropper();
         let newFile = await this.cropFile({
           file: this.file,
           dimensions: data,
-          finalWidth: this.finalWidth,
-          finalHeight: this.finalHeight,
+          finalWidth,
+          finalHeight,
         });
         this.isImageLoading = true;
 
@@ -593,11 +597,11 @@ input.form-input {
 }
 
 input.nb {
-  width: 40px;
+  width: 60px;
 }
 input.ratio {
   margin-left: 5px;
-  width: 70px;
+  width: 80px;
 }
 
 input.is-invalid {

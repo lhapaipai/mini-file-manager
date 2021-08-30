@@ -14,6 +14,11 @@ export function createFileManager(elt, options) {
     options = JSON.parse(elt.dataset.props);
   }
   let locale = options.locale || "en";
+  if (locale === "custom" && options.localeData) {
+    localesData["custom"] = locale;
+    locale = "custom";
+  }
+
   const app = createApp(FileManager);
 
   app.directive("scroll-lock", scrollLockDirective);
@@ -22,7 +27,7 @@ export function createFileManager(elt, options) {
   app.use(
     createI18n({
       locale: locale,
-      fallbackLocale: locale,
+      fallbackLocale: "en",
       messages: localesData,
     })
   );
@@ -35,7 +40,12 @@ export function createFileManager(elt, options) {
 export function openFileManager(options, onSuccess, onAbort) {
   let elt = document.createElement("div");
   document.body.appendChild(elt);
+
   let locale = options.locale || "en";
+  if (locale === "custom" && options.localeData) {
+    localesData["custom"] = locale;
+    locale = "custom";
+  }
 
   function destroyFileManager() {
     vm.$el.removeEventListener("selectFiles", onSelectFiles);
@@ -66,7 +76,7 @@ export function openFileManager(options, onSuccess, onAbort) {
   app.use(
     createI18n({
       locale: locale,
-      fallbackLocale: locale,
+      fallbackLocale: "en",
       messages: localesData,
     })
   );

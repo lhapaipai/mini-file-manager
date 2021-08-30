@@ -98,7 +98,6 @@ export default {
       "entryPoints",
       "secondaryDirectories",
       "currentEntryPoint",
-      "isAdmin",
       "selectedFiles",
       "editContent",
     ]),
@@ -106,9 +105,6 @@ export default {
     ...mapMutations(["setEditContent"]),
 
     canEdit() {
-      if (this.isAdmin) {
-        return true;
-      }
       return this.currentEntryPoint && !this.currentEntryPoint.readOnly;
     },
     currentEntryPoint: {

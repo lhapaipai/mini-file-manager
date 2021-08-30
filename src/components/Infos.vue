@@ -133,7 +133,6 @@ export default {
     ...mapState([
       "directory",
       "editing",
-      "isAdmin",
       "currentEntryPoint",
       "endPoints",
       "secondaryDirectories",
@@ -184,16 +183,13 @@ export default {
       return Math.round(floatRatio * 100) / 100;
     },
     canEdit(file) {
-      if (this.isAdmin) {
-        return true;
-      }
       if (this.currentEntryPoint.readOnly) {
         return false;
       }
       return !file.readOnly;
     },
     canEditContent(file) {
-      return !!file.details;
+      return !this.currentEntryPoint.readOnly && !!file.details;
     },
     copyToClipboard() {
       let input = this.$refs.inputUrl;

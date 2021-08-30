@@ -43,7 +43,7 @@
           <span> {{ $t("continue") }}</span>
         </button>
         <button
-          v-else-if="invalidSelectedFiles.length === 0"
+          v-else-if="!editContent && invalidSelectedFiles.length === 0"
           class="btn"
           @click="handleSelect"
           :disabled="invalidSelectedFiles.length > 0"
