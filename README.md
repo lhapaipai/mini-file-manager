@@ -98,7 +98,7 @@ if you want to customize styles, you need to use mini-file-manager with a bundle
 you probably need to install custom loader to compile Vue 3 template files and mini-notifier (if you want to import style files)
 
 ```console
-npm i mini-notifier
+npm i mini-notifier cropperjs mini-notifier pentatrion-lib scroll-blocker vue-i18n-lite vuex@next
 ```
 
 ```js
