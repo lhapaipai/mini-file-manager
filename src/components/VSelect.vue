@@ -9,7 +9,7 @@
   >
     <a
       href="#"
-      class="select-selected"
+      class="select-selected penta-button outlined"
       tabindex="0"
       @click.stop.prevent="handleClickSelect"
     >
@@ -22,7 +22,7 @@
       href="#"
       v-if="splitButton && options.length > 1"
       tabindex="0"
-      class="split-button"
+      class="split-button penta-button outlined"
       @click.stop.prevent="handleClickSplit"
     >
       <i :class="spinnerClass"></i>
@@ -85,16 +85,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@import "../css/variables.scss";
+<style lang="postcss" scoped>
 
 .custom-select {
   position: relative;
   display: flex;
-  cursor: pointer;
-  user-select: none;
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.15),
-    0 1px 5px 0px rgba(0, 0, 0, 0.1);
 
   &.is-open {
     &::before {
@@ -110,43 +105,28 @@ export default {
   }
 }
 .select-selected {
-  border: 1px solid $lightGray;
-  border-radius: $borderRadius;
+  border-radius: var(--form-border-radius);
   padding: 0.5rem 1rem;
   flex: 1;
   .is-open & {
-    border-color: $yellowDark;
+    /* border-color: var(--primary-color-dark); */
   }
   .with-split-button & {
-    border-radius: $borderRadius 0 0 $borderRadius;
+    border-radius: var(--form-border-radius) 0 0 var(--form-border-radius);
   }
 }
-.split-button {
+.split-button.outlined {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 0 $borderRadius $borderRadius 0;
-  border: 1px solid $lightGray;
-  border-left-width: 0;
+  border-radius: 0 var(--form-border-radius) var(--form-border-radius) 0;
+  border-left-width: 0px;
   width: 40px;
 }
 .select-selected,
 .split-button,
 .select-items a {
   text-decoration: none;
-}
-
-.select-selected,
-.split-button {
-  @include transition;
-  &:hover {
-    box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.05),
-      0 3px 7px 0px rgba(0, 0, 0, 0.05);
-  }
-  &:active {
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.05),
-      0 8px 10px 1px rgba(0, 0, 0, 0.05), 0 3px 14px 2px rgba(0, 0, 0, 0.03);
-  }
 }
 
 .select-items {
@@ -156,15 +136,17 @@ export default {
   right: 0;
   z-index: 20;
   background-color: white;
-  border: 1px solid $extraLightGray;
-  border-radius: $borderRadius;
+  border: 1px solid var(--gray-extra-light);
+  border-radius: var(--form-border-radius);
 
   .select-item {
     margin: 2px;
     padding: 0.5rem 1rem;
     cursor: pointer;
+    color: var(--gray);
     &:hover {
-      background-color: $extraLightGray;
+      background-color: var(--gray-extra-light);
+      color: var(--gray-dark);
     }
   }
 }
@@ -174,7 +156,7 @@ export default {
   align-items: center;
   svg {
     margin-right: 0.5rem;
-    color: $gray;
+    color: var(--gray);
   }
 }
 </style>

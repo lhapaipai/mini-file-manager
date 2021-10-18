@@ -17,12 +17,20 @@
   </style>
 </head>
 
-<body>
+<body class="pentatrion-theme">
   <button id="pick-file">Pick File</button>
   <div id="file-manager"></div>
   <div id="file-manager1"></div>
   <script type="module">
     import { createFileManager, openFileManager } from "./src/main.js";
+
+    document.addEventListener("keyup", (e) => {
+      if (e.code === "Tab") {
+        document.body.classList.add("with-a11y");
+      }
+    });
+
+
     let appElt = document.getElementById("file-manager");
     let appElt1 = document.getElementById("file-manager1");
     let options = {
@@ -36,6 +44,13 @@
           icon: "fa-lock",
           label: "Posts",
         },
+        {
+          directory: "posts/abc",
+          origin: "public_uploads",
+          readOnly: false,
+          icon: "fa-lock",
+          label: "Posts abc",
+        },
       ],
       fileValidation: {
         mimeGroup: 'image',
@@ -46,6 +61,7 @@
           height: 900,
         }
       },
+      locale: "fr"
       // originalSelection: ["posts/autre/ign.jpg"]
     };
     createFileManager(appElt, options);

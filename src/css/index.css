@@ -1,0 +1,14 @@
+@import "./variables.css";
+@import "./fontello/fontello.css";
+@import "./cropper.css";
+
+.file-manager {
+  * {
+    box-sizing: border-box;
+  }
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+}

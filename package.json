@@ -27,9 +27,18 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.4.0",
+    "autoprefixer": "^10.3.7",
     "cropperjs": "^1.5.11",
-    "mini-notifier": "^0.2.0",
-    "pentatrion-lib": "^0.3.2",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^7.19.1",
+    "mini-notifier": "^0.4.5",
+    "postcss": "^8.3.9",
+    "postcss-import": "^14.0.2",
+    "postcss-nested": "^5.0.6",
+    "prettier": "^2.4.1",
+    "resumablejs": "^1.1.0",
     "sass": "^1.32.11",
     "scroll-blocker": "^1.0.1",
     "spassr": "^2.6.0",
@@ -41,5 +50,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/lhapaipai/mini-file-manager.git"
+  },
+  "dependencies": {
+    "pentatrion-lib": "file:../pentatrion-lib/dist",
+    "pentatrion-theme": "file:../pentatrion-theme"
   }
 }

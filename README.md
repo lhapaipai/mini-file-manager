@@ -52,7 +52,9 @@ before you configure the mini-file-manager, you must first install and configure
 npm install mini-file-manager
 ```
 
-Copy `dist/file-manager` directory from `node_modules/mini-file-manager` to your webroot directory. it contains icons for each file type and icons for buttons.
+Copy `dist/file-manager` directory from `node_modules/mini-file-manager` to your webroot directory. it contains icons for each file type.
+
+Copy `dist/fonts` directory from `node_modules/mini-file-manager` to your webroot directory. it contains icons for buttons.
 
 #### with UMD / ES Modules
 

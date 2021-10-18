@@ -1,13 +1,17 @@
 <template>
-  <ImageEditor class="image-editor" v-if="editContent" :file="editContent" />
-  <div v-else class="file-manager" @dragover="noDragging">
+  <ImageEditor
+    v-if="editContent"
+    class="pentatrion-theme image-editor"
+    :file="editContent"
+  />
+  <div v-else class="pentatrion-theme file-manager">
     <div class="action">
-      <button class="btn btn-outlined" @click.prevent="toggleOrder()">
-        <i class="fa-order-list" v-if="presentation === 'list'"></i>
-        <i class="fa-order-icons" v-if="presentation === 'icons'"></i>
+      <button class="penta-button outlined" @click.prevent="toggleOrder()">
+        <i v-if="presentation === 'list'" class="fa-order-list"></i>
+        <i v-if="presentation === 'icons'" class="fa-order-icons"></i>
       </button>
       <button
-        class="btn btn-outlined"
+        class="penta-button outlined"
         :disabled="!canEdit"
         @click="handleAddDirectory"
       >
@@ -17,18 +21,18 @@
     <Uploader class="dropzone" />
     <div class="hierarchy">
       <VSelect
+        v-model="currentEntryPoint"
         class="directory-selector"
         :split-button="true"
         :options="entryPoints"
-        v-model="currentEntryPoint"
-        @click="handleChangeSecondaryDirectory(0)"
         placeholder="Répertoire"
+        @click="handleChangeSecondaryDirectory(0)"
       />
       <button
-        class="btn btn-outlined"
-        @click="handleChangeSecondaryDirectory(key + 1)"
         v-for="(secondaryDirectory, key) in secondaryDirectories"
         :key="key"
+        class="penta-button outlined"
+        @click="handleChangeSecondaryDirectory(key + 1)"
       >
         {{ secondaryDirectory }}
       </button>
@@ -41,9 +45,9 @@
     >
       <div class="files">
         <component
+          :is="fileComponent"
           v-for="file in sortedFiles"
           :key="file.id"
-          :is="fileComponent"
           class="file"
           :file="file"
           :class="{ selected: isSelected(file) }"
@@ -62,8 +66,10 @@ import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import Uploader from "./Uploader.vue";
 import Infos from "./Infos.vue";
 import VSelect from "./VSelect.vue";
-import ListItem from "./ListItem.vue";
-import Icon from "./Icon.vue";
+
+import RowItem from "./items/RowItem.vue";
+import IconItem from "./items/IconItem.vue";
+
 import ImageEditor from "./ImageEditor.vue";
 
 import { notify, prompt } from "mini-notifier";
@@ -73,8 +79,8 @@ export default {
     Uploader,
     Infos,
     VSelect,
-    Icon,
-    ListItem,
+    IconItem,
+    RowItem,
     ImageEditor,
   },
   props: {
@@ -83,6 +89,7 @@ export default {
       default: false,
     },
   },
+  emits: ["confirm"],
   data() {
     return {
       presentation: "icons",
@@ -102,8 +109,6 @@ export default {
       "editContent",
     ]),
     ...mapGetters(["sortedFiles"]),
-    ...mapMutations(["setEditContent"]),
-
     canEdit() {
       return this.currentEntryPoint && !this.currentEntryPoint.readOnly;
     },
@@ -116,13 +121,19 @@ export default {
       },
     },
     fileComponent() {
-      return this.presentation === "list" ? ListItem : Icon;
+      return this.presentation === "list" ? RowItem : IconItem;
     },
     presentationClass() {
       return `${this.presentation}-presentation`;
     },
   },
-
+  mounted() {
+    this.init();
+    window.addEventListener("keydown", this.handleKeyPressed);
+  },
+  unmounted() {
+    window.removeEventListener("keydown", this.handleKeyPressed);
+  },
   methods: {
     ...mapMutations([
       "selectFile",
@@ -202,22 +213,14 @@ export default {
         suffix = "/" + suffix;
       }
       this.setSecondaryDirectoryFromFullDirectory(
-        this.currentEntryPoint.directory + suffix
+        this.currentEntryPoint.directory + suffix,
       );
     },
-  },
-  mounted() {
-    this.init();
-    window.addEventListener("keydown", this.handleKeyPressed);
-  },
-  unmounted() {
-    window.removeEventListener("keydown", this.handleKeyPressed);
   },
 };
 </script>
 
-<style lang="scss" scoped>
-@import "../css/variables.scss";
+<style lang="postcss" scoped>
 * {
   box-sizing: border-box;
 }
@@ -234,19 +237,19 @@ export default {
   grid-template-rows: 39px 39px 1fr 200px;
   grid-template-areas:
     "action    dropzone"
-    "hierarchy hierarchy"
+    "hierarchy dropzone"
     "files     files"
     "infos     infos";
 }
 @media (min-width: 800px) {
   .file-manager {
-    grid-template-columns: 105px 1fr 200px;
+    grid-template-columns: 92px 1fr 200px;
     grid-template-rows: 39px 100px 1fr;
     grid-template-areas:
       "action hierarchy dropzone"
       "files  files     dropzone"
       "files  files     infos";
-    gap: 15px;
+    gap: 10px;
   }
 }
 
@@ -273,7 +276,6 @@ export default {
   grid-area: action;
   display: flex;
   flex-wrap: wrap;
-  // overflow: hidden;
 
   @media (max-width: 799.99px) {
     .hierarchy {
@@ -296,7 +298,7 @@ export default {
     }
   }
 
-  .btn {
+  .penta-button {
     padding: 0.5rem;
   }
 }
@@ -307,8 +309,8 @@ export default {
   overflow-y: visible;
 
   @media (max-width: 799.9px) {
-    border-bottom: 1px solid $lightGray;
-    border-top: 1px solid $lightGray;
+    border-bottom: 1px solid var(--gray-light);
+    border-top: 1px solid var(--gray-light);
     margin: 10px 0;
   }
   user-select: none;

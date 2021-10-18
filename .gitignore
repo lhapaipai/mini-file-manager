@@ -1,3 +1,6 @@
 node_modules/
 README.local.md
 /.fontello
+
+/.local
+/dist

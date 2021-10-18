@@ -30,6 +30,8 @@ export default function createStoreWithOptions({
         editFile: `${endPoint}/edit${debugStr}`,
         getFiles: `${endPoint}/get-files${debugStr}`,
         uploadFile: `${endPoint}/upload${debugStr}`,
+        uploadChunkFile: `${endPoint}/upload-chunk${debugStr}`,
+        testChunk: `${endPoint}/test-chunk${debugStr}`,
         addDirectory: `${endPoint}/add-directory${debugStr}`,
         cropFile: `${endPoint}/crop${debugStr}`,
       },
@@ -98,6 +100,23 @@ export default function createStoreWithOptions({
         }
         state.files.splice(pos, 1, newFile);
       },
+      updateFileUploadProgress(state, { tempInode, progression }) {
+        let pos = state.files.findIndex((f) => f.inode === tempInode);
+        if (pos === -1) {
+          console.log(
+            "impossible de trouver le fichier",
+            state.files.map((f) => f.inode).join(","),
+            tempInode,
+            progression,
+          );
+          return;
+        }
+        if (!state.files[pos].uploadInfos) {
+          console.log("le fichier n'a pas d'options d'upload", state.files[pos]);
+          return;
+        }
+        state.files[pos].uploadInfos.progression = progression;
+      },
       removeFile(state, file) {
         let pos = state.files.indexOf(file);
         if (pos === -1) {
@@ -163,82 +182,78 @@ export default function createStoreWithOptions({
       },
     },
     actions: {
-      async addDirectory(
-        { state, getters, dispatch, commit },
-        newDirectoryName
-      ) {
-        let { directory } = await formFetchOrNotify(
-          state.endPoints.addDirectory,
-          {
-            body: {
-              filename: newDirectoryName,
-              directory: getters.completeDirectory,
-              origin: state.currentEntryPoint.origin,
-            },
-          }
-        );
-
-        commit("addFile", directory);
+      async addDirectory({ state, getters, commit }, newDirectoryName) {
+        return formFetchOrNotify(state.endPoints.addDirectory, {
+          body: {
+            filename: newDirectoryName,
+            directory: getters.completeDirectory,
+            origin: state.currentEntryPoint.origin,
+          },
+        }).then(({ directory }) => {
+          commit("addFile", directory);
+        });
       },
-      async cropFile(
-        { commit, state },
-        { file, dimensions, finalWidth, finalHeight }
-      ) {
+      async cropFile({ commit, state }, { file, dimensions, finalWidth, finalHeight }) {
         let { uploadRelativePath, origin } = file;
         let { x, y, width, height, rotate } = dimensions;
         // console.log("before crop", file);
-        let { file: newFile } = await formFetchOrNotify(
-          state.endPoints.cropFile,
-          {
-            body: {
-              uploadRelativePath,
-              origin,
-              x,
-              y,
-              width,
-              height,
-              finalWidth,
-              finalHeight,
-              rotate,
-            },
-          }
-        );
-        commit("removeFileToSelection", file);
-        commit("replaceFile", { file, newFile });
-        commit("addFileToSelection", newFile);
-        commit("setEditContent", newFile);
-        // console.log("file cropped", file);
-        return newFile;
+        return formFetchOrNotify(state.endPoints.cropFile, {
+          body: {
+            uploadRelativePath,
+            origin,
+            x,
+            y,
+            width,
+            height,
+            finalWidth,
+            finalHeight,
+            rotate,
+          },
+        }).then(({ file: newFile }) => {
+          commit("removeFileToSelection", file);
+          commit("replaceFile", { file, newFile });
+          commit("addFileToSelection", newFile);
+          commit("setEditContent", newFile);
+          // console.log("file cropped", file);
+          return newFile;
+        });
       },
-      async updateFilename({ commit, state, dispatch }, { file, newFilename }) {
+      async updateFile({ commit, state }, { tempInode, newFile }) {
+        let file = state.files.find((f) => f.inode === tempInode);
+        let isSelected = state.selectedFiles.some((f) => f.inode === tempInode);
+
+        if (isSelected) {
+          commit("unselectFiles");
+        }
+
+        commit("replaceFile", { file, newFile });
+        if (isSelected) {
+          commit("selectFileByInode", newFile.inode);
+        }
+      },
+      async updateFilename({ commit, state }, { file, newFilename }) {
         // console.log("before", file);
         let { origin, uploadRelativePath, directory, filename } = file;
-        let { file: newFile } = await formFetchOrNotify(
-          state.endPoints.editFile,
-          {
-            body: {
-              origin,
-              uploadRelativePath,
-              directory,
-              filename,
-              readOnly: state.currentEntryPoint.readOnly,
-              newFilename,
-            },
-          }
-        );
-
-        // console.log("after", newFile);
-
-        commit("unselectFiles");
-
-        commit("replaceFile", { file, newFile });
-        commit("selectFileByInode", newFile.inode);
+        return formFetchOrNotify(state.endPoints.editFile, {
+          body: {
+            origin,
+            uploadRelativePath,
+            directory,
+            filename,
+            readOnly: state.currentEntryPoint.readOnly,
+            newFilename,
+          },
+        }).then(({ file: newFile }) => {
+          commit("unselectFiles");
+          commit("replaceFile", { file, newFile });
+          commit("selectFileByInode", newFile.inode);
+        });
       },
-      async download({ state, getters }, { files = [] }) {
+      async download({ state }, { files = [] }) {
         if (files.length === 1 && !files[0].isDir) {
           let file = files[0];
           fetchOrNotify(
-            `${state.endPoints.getFileContent}/download/${file.origin}/${file.uploadRelativePath}`
+            `${state.endPoints.getFileContent}/download/${file.origin}/${file.uploadRelativePath}`,
           )
             .then((t) => t.blob())
             .then((b) => downloadFromBlob(b, file.filename));
@@ -248,7 +263,7 @@ export default function createStoreWithOptions({
         let archiveName =
           state.directory.filename + "-" + toIsoString(new Date()) + ".zip";
 
-        formFetchOrNotify(state.endPoints.downloadArchive, {
+        return formFetchOrNotify(state.endPoints.downloadArchive, {
           body: {
             files: files.map((f) => f.id),
           },
@@ -274,34 +289,25 @@ export default function createStoreWithOptions({
         }
       },
       async getFiles({ dispatch, state, getters, commit }) {
-        let { files, directory } = await formFetchOrNotify(
-          state.endPoints.getFiles,
-          {
-            body: {
-              directory: getters.completeDirectory,
-              origin: state.currentEntryPoint.origin,
-            },
-          }
-        );
+        return formFetchOrNotify(state.endPoints.getFiles, {
+          body: {
+            directory: getters.completeDirectory,
+            origin: state.currentEntryPoint.origin,
+          },
+        }).then(({ files, directory }) => {
+          dispatch("setFiles", files);
+          commit("setDirectory", directory);
 
-        dispatch("setFiles", files);
-
-        // TODO delete
-        if (!directory) {
-          console.error("no directory !");
-        }
-
-        commit("setDirectory", directory);
-
-        if (originalSelection) {
-          for (let fileSelected of originalSelection) {
-            let file = files.find((f) => f.id === fileSelected[3]);
-            if (file) {
-              commit("addFileToSelection", file);
+          if (originalSelection) {
+            for (let fileSelected of originalSelection) {
+              let file = files.find((f) => f.id === fileSelected[3]);
+              if (file) {
+                commit("addFileToSelection", file);
+              }
             }
+            originalSelection = null;
           }
-          originalSelection = null;
-        }
+        });
       },
       async setFiles({ commit }, files) {
         commit("unselectFiles");
@@ -315,10 +321,7 @@ export default function createStoreWithOptions({
         }
         dispatch("setSecondaryDirectoryFromFullDirectory", directory);
       },
-      async setSecondaryDirectoryFromFullDirectory(
-        { state, commit, dispatch },
-        path
-      ) {
+      async setSecondaryDirectoryFromFullDirectory({ state, commit, dispatch }, path) {
         let prefix = state.currentEntryPoint.directory;
         if (path.indexOf(prefix) !== 0) {
           console.error("répertoire inconnu");
@@ -344,7 +347,7 @@ export default function createStoreWithOptions({
 
         if (originalSelection) {
           entryPoint = state.entryPoints.find(
-            (e) => e.origin === originalSelection[0][0]
+            (e) => e.origin === originalSelection[0][0],
           );
         }
         if (entryPoint) {

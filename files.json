@@ -1,0 +1,294 @@
+{
+  "files": [
+    {
+      "inode": 9837393,
+      "id": "@public_uploads:posts\/abc",
+      "filename": "abc",
+      "directory": "posts",
+      "uploadRelativePath": "posts\/abc",
+      "mimeType": "directory",
+      "mimeGroup": "directory",
+      "type": "dir",
+      "uploader": "Hugues",
+      "origin": "public_uploads",
+      "size": 4096,
+      "humanSize": "4.0 Ko",
+      "createdAt": "2021-10-18T10:00:13+00:00",
+      "isDir": true,
+      "url": null,
+      "urlTimestamped": null,
+      "icon": "\/file-manager\/icons\/folder.svg"
+    },
+    {
+      "inode": 9837396,
+      "id": "@public_uploads:posts\/dsc00070.jpg",
+      "filename": "dsc00070.jpg",
+      "directory": "posts",
+      "uploadRelativePath": "posts\/dsc00070.jpg",
+      "mimeType": "image\/jpeg",
+      "mimeGroup": "image",
+      "type": "file",
+      "uploader": "Hugues",
+      "origin": "public_uploads",
+      "size": 4619036,
+      "humanSize": "4.4 Mo",
+      "createdAt": "2021-10-18T10:06:14+00:00",
+      "isDir": false,
+      "url": "http:\/\/mini-file-manager.local\/uploads\/posts\/dsc00070.jpg",
+      "urlTimestamped": "http:\/\/mini-file-manager.local\/uploads\/posts\/dsc00070.jpg?1634568037",
+      "icon": "\/file-manager\/icons\/image-jpg.svg",
+      "details": {
+        "type": "image",
+        "width": 5472,
+        "height": 3648,
+        "ratio": 1.5
+      },
+      "thumbnails": {
+        "small": "http:\/\/mini-file-manager.local\/media\/cache\/small\/uploads\/posts\/dsc00070.jpg?1634568037"
+      }
+    },
+    {
+      "inode": 9837397,
+      "id": "@public_uploads:posts\/dsc00072.jpg",
+      "filename": "dsc00072.jpg",
+      "directory": "posts",
+      "uploadRelativePath": "posts\/dsc00072.jpg",
+      "mimeType": "image\/jpeg",
+      "mimeGroup": "image",
+      "type": "file",
+      "uploader": "Hugues",
+      "origin": "public_uploads",
+      "size": 4497178,
+      "humanSize": "4.3 Mo",
+      "createdAt": "2021-10-18T10:21:12+00:00",
+      "isDir": false,
+      "url": "http:\/\/mini-file-manager.local\/uploads\/posts\/dsc00072.jpg",
+      "urlTimestamped": "http:\/\/mini-file-manager.local\/uploads\/posts\/dsc00072.jpg?1634568037",
+      "icon": "\/file-manager\/icons\/image-jpg.svg",
+      "details": {
+        "type": "image",
+        "width": 5472,
+        "height": 3648,
+        "ratio": 1.5
+      },
+      "thumbnails": {
+        "small": "http:\/\/mini-file-manager.local\/media\/cache\/small\/uploads\/posts\/dsc00072.jpg?1634568037"
+      }
+    },
+    {
+      "inode": 9838036,
+      "id": "@public_uploads:posts\/foo.baz",
+      "filename": "foo.baz",
+      "directory": "posts",
+      "uploadRelativePath": "posts\/foo.baz",
+      "mimeType": "image\/jpeg",
+      "mimeGroup": "image",
+      "type": "file",
+      "uploader": "Hugues",
+      "origin": "public_uploads",
+      "size": 1793,
+      "humanSize": "1.8 Ko",
+      "createdAt": "2021-10-18T13:38:19+00:00",
+      "isDir": false,
+      "url": "http:\/\/mini-file-manager.local\/uploads\/posts\/foo.baz",
+      "urlTimestamped": "http:\/\/mini-file-manager.local\/uploads\/posts\/foo.baz?1634568037",
+      "icon": "\/file-manager\/icons\/image-jpg.svg",
+      "details": {
+        "type": "image",
+        "width": 50,
+        "height": 51,
+        "ratio": 0.9803921568627451
+      },
+      "thumbnails": {
+        "small": "http:\/\/mini-file-manager.local\/media\/cache\/small\/uploads\/posts\/foo.baz?1634568037"
+      }
+    },
+    {
+      "inode": 9837391,
+      "id": "@public_uploads:posts\/hugues-violon.jpg",
+      "filename": "hugues-violon.jpg",
+      "directory": "posts",
+      "uploadRelativePath": "posts\/hugues-violon.jpg",
+      "mimeType": "image\/jpeg",
+      "mimeGroup": "image",
+      "type": "file",
+      "uploader": "Hugues",
+      "origin": "public_uploads",
+      "size": 15693,
+      "humanSize": "15.3 Ko",
+      "createdAt": "2021-10-18T10:04:29+00:00",
+      "isDir": false,
+      "url": "http:\/\/mini-file-manager.local\/uploads\/posts\/hugues-violon.jpg",
+      "urlTimestamped": "http:\/\/mini-file-manager.local\/uploads\/posts\/hugues-violon.jpg?1634568037",
+      "icon": "\/file-manager\/icons\/image-jpg.svg",
+      "details": {
+        "type": "image",
+        "width": 160,
+        "height": 160,
+        "ratio": 1
+      },
+      "thumbnails": {
+        "small": "http:\/\/mini-file-manager.local\/media\/cache\/small\/uploads\/posts\/hugues-violon.jpg?1634568037"
+      }
+    },
+    {
+      "inode": 9838043,
+      "id": "@public_uploads:posts\/ici-tout-commence-s02e36-french-webdl720p-h264-notagmkv-1.jpg",
+      "filename": "ici-tout-commence-s02e36-french-webdl720p-h264-notagmkv-1.jpg",
+      "directory": "posts",
+      "uploadRelativePath": "posts\/ici-tout-commence-s02e36-french-webdl720p-h264-notagmkv-1.jpg",
+      "mimeType": "image\/jpeg",
+      "mimeGroup": "image",
+      "type": "file",
+      "uploader": "Hugues",
+      "origin": "public_uploads",
+      "size": 1793,
+      "humanSize": "1.8 Ko",
+      "createdAt": "2021-10-18T14:36:44+00:00",
+      "isDir": false,
+      "url": "http:\/\/mini-file-manager.local\/uploads\/posts\/ici-tout-commence-s02e36-french-webdl720p-h264-notagmkv-1.jpg",
+      "urlTimestamped": "http:\/\/mini-file-manager.local\/uploads\/posts\/ici-tout-commence-s02e36-french-webdl720p-h264-notagmkv-1.jpg?1634568037",
+      "icon": "\/file-manager\/icons\/image-jpg.svg",
+      "details": {
+        "type": "image",
+        "width": 50,
+        "height": 51,
+        "ratio": 0.9803921568627451
+      },
+      "thumbnails": {
+        "small": "http:\/\/mini-file-manager.local\/media\/cache\/small\/uploads\/posts\/ici-tout-commence-s02e36-french-webdl720p-h264-notagmkv-1.jpg?1634568037"
+      }
+    },
+    {
+      "inode": 9838040,
+      "id": "@public_uploads:posts\/ici-tout-commence-s02e36-french-webdl720p-h264-notagmkv.jpg",
+      "filename": "ici-tout-commence-s02e36-french-webdl720p-h264-notagmkv.jpg",
+      "directory": "posts",
+      "uploadRelativePath": "posts\/ici-tout-commence-s02e36-french-webdl720p-h264-notagmkv.jpg",
+      "mimeType": "image\/jpeg",
+      "mimeGroup": "image",
+      "type": "file",
+      "uploader": "Hugues",
+      "origin": "public_uploads",
+      "size": 1793,
+      "humanSize": "1.8 Ko",
+      "createdAt": "2021-10-18T14:35:50+00:00",
+      "isDir": false,
+      "url": "http:\/\/mini-file-manager.local\/uploads\/posts\/ici-tout-commence-s02e36-french-webdl720p-h264-notagmkv.jpg",
+      "urlTimestamped": "http:\/\/mini-file-manager.local\/uploads\/posts\/ici-tout-commence-s02e36-french-webdl720p-h264-notagmkv.jpg?1634568037",
+      "icon": "\/file-manager\/icons\/image-jpg.svg",
+      "details": {
+        "type": "image",
+        "width": 50,
+        "height": 51,
+        "ratio": 0.9803921568627451
+      },
+      "thumbnails": {
+        "small": "http:\/\/mini-file-manager.local\/media\/cache\/small\/uploads\/posts\/ici-tout-commence-s02e36-french-webdl720p-h264-notagmkv.jpg?1634568037"
+      }
+    },
+    {
+      "inode": 9838033,
+      "id": "@public_uploads:posts\/tete-1.jpg",
+      "filename": "tete-1.jpg",
+      "directory": "posts",
+      "uploadRelativePath": "posts\/tete-1.jpg",
+      "mimeType": "image\/jpeg",
+      "mimeGroup": "image",
+      "type": "file",
+      "uploader": "Hugues",
+      "origin": "public_uploads",
+      "size": 1793,
+      "humanSize": "1.8 Ko",
+      "createdAt": "2021-10-18T13:35:43+00:00",
+      "isDir": false,
+      "url": "http:\/\/mini-file-manager.local\/uploads\/posts\/tete-1.jpg",
+      "urlTimestamped": "http:\/\/mini-file-manager.local\/uploads\/posts\/tete-1.jpg?1634568037",
+      "icon": "\/file-manager\/icons\/image-jpg.svg",
+      "details": {
+        "type": "image",
+        "width": 50,
+        "height": 51,
+        "ratio": 0.9803921568627451
+      },
+      "thumbnails": {
+        "small": "http:\/\/mini-file-manager.local\/media\/cache\/small\/uploads\/posts\/tete-1.jpg?1634568037"
+      }
+    },
+    {
+      "inode": 9838039,
+      "id": "@public_uploads:posts\/tete-2.jpg",
+      "filename": "tete-2.jpg",
+      "directory": "posts",
+      "uploadRelativePath": "posts\/tete-2.jpg",
+      "mimeType": "image\/jpeg",
+      "mimeGroup": "image",
+      "type": "file",
+      "uploader": "Hugues",
+      "origin": "public_uploads",
+      "size": 1793,
+      "humanSize": "1.8 Ko",
+      "createdAt": "2021-10-18T14:33:04+00:00",
+      "isDir": false,
+      "url": "http:\/\/mini-file-manager.local\/uploads\/posts\/tete-2.jpg",
+      "urlTimestamped": "http:\/\/mini-file-manager.local\/uploads\/posts\/tete-2.jpg?1634568037",
+      "icon": "\/file-manager\/icons\/image-jpg.svg",
+      "details": {
+        "type": "image",
+        "width": 50,
+        "height": 51,
+        "ratio": 0.9803921568627451
+      },
+      "thumbnails": {
+        "small": "http:\/\/mini-file-manager.local\/media\/cache\/small\/uploads\/posts\/tete-2.jpg?1634568037"
+      }
+    },
+    {
+      "inode": 9838030,
+      "id": "@public_uploads:posts\/tete.jpg",
+      "filename": "tete.jpg",
+      "directory": "posts",
+      "uploadRelativePath": "posts\/tete.jpg",
+      "mimeType": "image\/jpeg",
+      "mimeGroup": "image",
+      "type": "file",
+      "uploader": "Hugues",
+      "origin": "public_uploads",
+      "size": 1793,
+      "humanSize": "1.8 Ko",
+      "createdAt": "2021-10-18T13:18:26+00:00",
+      "isDir": false,
+      "url": "http:\/\/mini-file-manager.local\/uploads\/posts\/tete.jpg",
+      "urlTimestamped": "http:\/\/mini-file-manager.local\/uploads\/posts\/tete.jpg?1634568037",
+      "icon": "\/file-manager\/icons\/image-jpg.svg",
+      "details": {
+        "type": "image",
+        "width": 50,
+        "height": 51,
+        "ratio": 0.9803921568627451
+      },
+      "thumbnails": {
+        "small": "http:\/\/mini-file-manager.local\/media\/cache\/small\/uploads\/posts\/tete.jpg?1634568037"
+      }
+    }
+  ],
+  "directory": {
+    "inode": 9837387,
+    "id": "@public_uploads:posts",
+    "filename": "posts",
+    "directory": "",
+    "uploadRelativePath": "posts",
+    "mimeType": "directory",
+    "mimeGroup": "directory",
+    "type": "dir",
+    "uploader": "Hugues",
+    "origin": "public_uploads",
+    "size": 4096,
+    "humanSize": "4.0 Ko",
+    "createdAt": "2021-10-18T14:36:44+00:00",
+    "isDir": true,
+    "url": null,
+    "urlTimestamped": null,
+    "icon": "\/file-manager\/icons\/folder.svg"
+  }
+}

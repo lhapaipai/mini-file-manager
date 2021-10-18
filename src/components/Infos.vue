@@ -1,11 +1,11 @@
 <template>
-  <div class="infos" v-if="directory">
+  <div v-if="directory" class="infos">
     <div v-if="files.length === 0">
-      <div class="form-group">
+      <div class="infos-row">
         <label>{{ $t("directoryName") }}</label>
         <div>{{ directory.filename }}</div>
       </div>
-      <div class="form-group">
+      <div class="infos-row">
         <label>{{ $t("access") }}</label>
         <div v-if="currentEntryPoint.readOnly">
           <div>{{ $t("readonly") }}</div>
@@ -14,108 +14,104 @@
           <div>{{ $t("editable") }}</div>
         </div>
       </div>
-      <div class="form-group">
+      <div class="infos-row">
         <label>{{ $t("downloadAll") }}</label>
-        <div class="btns">
-          <button class="btn" @click.prevent="handleDownload">
+        <div class="penta-button-group">
+          <button class="penta-button outlined" @click.prevent="handleDownload">
             <i class="fa-download"></i>
           </button>
         </div>
       </div>
     </div>
     <div v-else-if="files.length === 1">
-      <form @submit.prevent="editFilename" class="form-group filename">
+      <form class="infos-row filename" @submit.prevent="editFilename">
         <label>{{ $t("name") }}</label>
         <div v-if="!canEdit(file)">
           <div>{{ file.filename }}</div>
         </div>
-        <div v-else class="input-with-button">
+        <div v-else class="penta-input-button">
           <input
-            size="1"
-            class="form-input"
             ref="inputFilename"
+            v-model="filename"
+            size="1"
+            class="penta-input-text"
             type="text"
             :disabled="!editing"
-            v-model="filename"
           />
           <a
             href="#"
+            class="penta-button outlined penta-icon"
             @click.prevent="editFilename"
-            class="btn outlined btn-factice"
           >
             <i v-if="editing" class="fa-ok"></i>
             <i v-else class="fa-pencil"></i>
           </a>
         </div>
       </form>
-      <div class="form-group" v-if="file.url">
+      <div v-if="file.url" class="infos-row">
         <label>{{ $t("url") }}</label>
-        <div class="input-with-button">
+        <div class="penta-input-button">
           <input
-            size="1"
-            class="form-input"
             ref="inputUrl"
-            @focus="$event.target.select()"
+            size="1"
+            class="penta-input-text"
             type="text"
             readOnly
             :value="file.url"
+            @focus="$event.target.select()"
           />
           <a
             href="#"
+            class="penta-button outlined penta-icon"
             @click.prevent="copyToClipboard"
-            class="btn outlined btn-factice"
           >
             <i class="fa-clipboard"></i>
           </a>
         </div>
       </div>
-      <div class="form-group">
+      <div class="infos-row">
         <label>{{ $t("createdAt") }}</label>
         <div>{{ formatDate(file.createdAt) }}</div>
       </div>
-      <div class="form-group">
+      <div class="infos-row">
         <label>{{ $t("infos") }}</label>
         <template v-if="file.mimeGroup === 'image' && file.details">
           <div>
             <i class="fa-picture"></i> {{ file.details.width }},
             {{ file.details.height }} {{ $t("px") }}
           </div>
-          <div>
-            <i class="fa-ratio"></i> {{ formatRatio(file.details.ratio) }}
-          </div>
+          <div><i class="fa-ratio"></i> {{ formatRatio(file.details.ratio) }}</div>
         </template>
         <div><i class="fa-gauge"></i> {{ file.humanSize }}</div>
       </div>
-      <div class="form-group btns">
+      <div class="infos-row penta-button-group">
         <button
           v-if="file && !file.isDir"
-          class="btn btn-outlined"
+          class="penta-button outlined"
           @click.prevent="handleOpen"
         >
           <i class="fa-eye"></i>
         </button>
         <button
           v-if="canEditContent(file)"
-          class="btn"
+          class="penta-button outlined"
           @click.prevent="editContent"
         >
           <i class="fa-edit-image"></i>
         </button>
-        <button class="btn" @click.prevent="handleDownload">
+        <button class="penta-button outlined" @click.prevent="handleDownload">
           <i class="fa-download"></i>
         </button>
         <button
           v-if="canEdit(file)"
-          class="btn btn-outlined"
+          class="penta-button outlined"
           @click.prevent="deleteSelectedFiles"
         >
           <i class="fa-trash"></i>
         </button>
       </div>
     </div>
-    <div v-else-if="files.length > 1">
-      {{ files.length }} {{ $t("selectedFiles") }}
-    </div>
+    <div v-else-if="files.length > 1">{{ files.length }} {{ $t("selectedFiles") }}</div>
   </div>
 </template>
 
@@ -155,7 +151,7 @@ export default {
     file() {
       this.filename = this.file?.filename;
     },
-    files(val) {
+    files() {
       // if (val.length === 1) {
       //   let completeName = val[0].filename;
       //   let extPos = completeName.lastIndexOf(".");
@@ -223,6 +219,8 @@ export default {
           this.updateFilename({
             file: this.file,
             newFilename: this.filename,
+          }).catch(() => {
+            this.filename = this.file.filename;
           });
         }
       } else {
@@ -239,7 +237,7 @@ export default {
       } else {
         window.open(
           `${window.location.origin}${this.endPoints.getFileContent}/show/${this.file.origin}/${this.file.uploadRelativePath}`,
-          "_blank"
+          "_blank",
         );
       }
     },
@@ -252,19 +250,53 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@import "../css/variables.scss";
-
+<style lang="postcss" scoped>
 .infos {
   overflow: auto;
-  .form-group {
-    margin: 0 0 0.5rem;
+}
+.infos-row {
+  /* 3px pour afficher les ombres de box-shadow malgré un overflow: auto */
+  margin: 1.5rem 3px;
+  display: flex;
+  flex-direction: column;
+
+  & > label {
+    display: block;
+    margin: 4px 0;
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+  & > input {
+    display: block;
+  }
+  .help-text {
+    color: $gray;
+    font-size: 0.9rem;
   }
 }
 
-.btns {
+.penta-input-button {
+  display: flex;
+
+  input {
+    width: 0;
+    flex: 1 1 0px;
+    border-radius: var(--form-border-radius) 0 0 var(--form-border-radius);
+  }
+
+  .penta-button {
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0 var(--form-border-radius) var(--form-border-radius) 0;
+    border-left-width: 0;
+    box-shadow: none;
+  }
+}
+
+.penta-button-group {
   display: grid;
-  gap: 10px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 
   button {
@@ -272,7 +304,7 @@ export default {
     padding: 0.25rem;
   }
 }
-.form-group.filename {
+.infos-row.filename {
   overflow: hidden;
 }
 
@@ -281,7 +313,7 @@ export default {
     padding: 0;
     margin-left: 0.25rem;
   }
-  // 19px habituel plus bordure
+  /* 19px habituel plus bordure */
   height: 21px;
 }
 .div-filename {
@@ -292,9 +324,9 @@ export default {
 }
 .rename {
   font-size: 0.8rem;
-  color: $gray;
+  color: var(--gray);
   &:hover {
-    color: $grayDark;
+    color: var(--gray-dark);
   }
 }
 @media (max-width: 799.99px) {
@@ -304,7 +336,7 @@ export default {
     gap: 5px;
   }
 
-  .infos .form-group {
+  .infos .infos-row {
     margin: 0;
   }
   .div-filename {

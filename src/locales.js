@@ -4,10 +4,11 @@ export default {
     cancel: "Annuler",
     editAndSelect: "Éditer puis sélectionner",
     continue: "Continuer",
+    chunkError:
+      "Erreur lors de l'upload la totalité du fichier n'a pas été reçue, réessayez s'il vous plait",
     select: "Sélectionner",
     return: "Retour",
-    disableRules:
-      "Désactivez les règles de validation pour changer les verrous",
+    disableRules: "Désactivez les règles de validation pour changer les verrous",
     directoryName: "Nom du dossier",
     readonly: "Lecture seule",
     editable: "Lecture et modification",
@@ -29,6 +30,8 @@ export default {
     cancel: "Cancel",
     editAndSelect: "Edit and Select",
     continue: "Continue",
+    chunkError:
+      "Error while uploading the whole file was not received, please try again ",
     select: "Select",
     return: "Return",
     disableRules: "Disable validation rules to change locks ",

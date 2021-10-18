@@ -1,186 +1,186 @@
 <template>
-  <div v-if="completeDirectory !== null">
+  <div class="uploader">
     <div
-      v-if="canUpload"
+      ref="dropArea"
       class="drop-area"
-      :class="{ highlight: dropActive, sending: sending }"
-      @dragenter.prevent.stop="highlight"
-      @dragover.prevent.stop="highlight"
-      @dragleave.prevent.stop="unhighlight"
-      @drop.prevent.stop="handleDrop"
+      :class="{
+        highlight: dropActive,
+        'is-uploading': isUploading,
+        readonly: !canUpload,
+      }"
+      @dragenter="highlight"
+      @dragover="highlight"
+      @dragleave="unhighlight"
+      @drop="unhighlight"
     >
-      <input
-        type="file"
-        multiple
-        :id="inputFileId"
-        class="input-file"
-        :disabled="sending"
-        accept="image/*,text/*,video/*,audio/*,.rtf,.pdf,.xml,font/*,.ods,.odt,.docx,.doc,.xlsx,.xls,.json,.ai,.zip"
-        @change="handleChange"
-      />
-      <label class="label" :for="inputFileId" v-if="!sending">
-        <span><i class="fa-doc-add"></i>{{ $t("add") }}</span>
-      </label>
-      <div v-else-if="progressFilename">
-        <div
-          class="progress-value"
-          :style="{ width: progressNumber + '%' }"
-        ></div>
-        <div class="filename">
-          {{ progressFilename }}
-        </div>
-        <div class="counter ref">
-          {{ uploadedFiles + 1 }} / {{ filesToUpload }}
-        </div>
-      </div>
-    </div>
-    <div v-else class="drop-area readonly">
-      <label class="label">{{ $t("readonlyDir") }}</label>
+      <span class="label"
+        ><i class="fa-doc-add"></i>{{ $t(canUpload ? "add" : "readonlyDir") }}</span
+      >
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapState } from "vuex";
+import Resumable from "resumablejs";
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { notify } from "mini-notifier";
+import { nextTick } from "vue";
+import { createFileInfosFromUpload, filename2dirname, sanitizeFilename } from "../utils";
+
+let resumable = null;
 
 export default {
   data() {
     return {
-      sending: false,
-      uploadedFiles: 0,
-      filesToUpload: 0,
+      isUploading: false,
       dropActive: false,
       progressFilename: null,
-      progressNumber: 0,
-      inputFileId: "file-" + Math.ceil(Math.random() * 10000),
     };
   },
   computed: {
-    ...mapState(["endPoints", "currentEntryPoint"]),
+    ...mapState(["endPoints", "currentEntryPoint", "files"]),
     ...mapGetters(["completeDirectory"]),
     canUpload() {
+      if (!this.currentEntryPoint) {
+        return false;
+      }
       return !this.currentEntryPoint.readOnly;
     },
   },
+  async mounted() {
+    resumable = new Resumable({
+      target: this.endPoints.uploadChunkFile,
+      testTarget: this.endPoints.testChunk,
+      chunkSize: 1 * 1024 * 1024,
+      simultaneousUploads: 4,
+      testChunks: true,
+      throttleProgressCallbacks: 1,
+      query: (fileUploadInfos) => {
+        return {
+          directory: this.completeDirectory,
+          origin: this.currentEntryPoint.origin,
+          inode: fileUploadInfos.tempInode,
+        };
+      },
+      // testMethod: "POST",
+      uploadMethod: "POST",
+      maxFileSize: 500 * 1024 * 1024,
+      maxFileSizeErrorCallback: (file, errorCount) => {
+        notify(`${file.name} a dépassé la taille maxi de 500Mo.`);
+        console.log(file, errorCount);
+      },
+      dragOverClass: "paipai",
+    });
+    await nextTick();
+    // console.log(r.support, this.$refs.inputFile, this.$refs.dropArea)
+    resumable.assignDrop(this.$refs.dropArea);
+    resumable.assignBrowse(this.$refs.dropArea);
+
+    resumable.on("fileAdded", this.onFileAdded);
+    resumable.on("fileSuccess", this.onFileSuccess);
+    resumable.on("fileError", this.onFileError);
+    resumable.on("fileProgress", (fileUploadInfos) => {
+      // console.log("onprogress", fileUploadInfos);
+      this.updateFileUploadProgress({
+        tempInode: fileUploadInfos.tempInode,
+        progression: fileUploadInfos.progress(),
+      });
+    });
+  },
   methods: {
-    ...mapMutations(["addFile", "setFiles"]),
-    reset() {
-      this.sending = false;
-      this.uploadedFiles = 0;
-      this.filesToUpload = 0;
-      this.progressNumber = 0;
-      this.progressFilename = null;
-    },
+    ...mapMutations(["addFile", "updateFileUploadProgress"]),
+    ...mapActions(["updateFile"]),
     highlight() {
       this.dropActive = true;
     },
     unhighlight() {
       this.dropActive = false;
     },
-    handleDrop(e) {
-      this.unhighlight();
-      let files = e.dataTransfer.files;
-      this.handleFiles(files);
+
+    async onFileAdded(fileUploadInfos) {
+      // on renomme le fichier afin qu'il n'entre pas en conflit avec les fichiers déjà présents
+      // dans le répertoire.
+      fileUploadInfos.fileName = sanitizeFilename(fileUploadInfos.fileName, this.files);
+      fileUploadInfos.relativePath = fileUploadInfos.fileName;
+      fileUploadInfos.uniqueIdentifier = `${fileUploadInfos.size}-${filename2dirname(
+        fileUploadInfos.fileName,
+      )}`;
+      fileUploadInfos.tempInode = `temp-${Math.floor(Math.random() * 999999)}`;
+
+      resumable.upload();
+
+      let fileInfos = await createFileInfosFromUpload(
+        fileUploadInfos,
+        this.completeDirectory,
+        this.currentEntryPoint.origin,
+      );
+
+      this.addFile(fileInfos);
+      console.log("fileadded", fileUploadInfos, this.files.map((f) => f.inode).join(","));
+
+      // this.isUploading = true;
     },
-    handleChange(e) {
-      let files = e.currentTarget.files;
-      this.handleFiles(files);
-    },
-    async handleFiles(files) {
-      // console.log('handlefiles', files);
-      if (files.length === 0) {
+    onFileSuccess(file, message) {
+      let response = JSON.parse(message);
+      console.log("fileSuccess", file, file.relativePath, response.file?.filename);
+
+      // chunkSuccess renvoyé quand l'upload d'un chunk a réussi mais normalement avec onFileSuccess
+      // c'est l'upload complet qui doit avoir réussi.
+      if (response.chunkSuccess) {
+        console.log(response);
+        notify(this.$t("chunkError"), {
+          style: "error",
+        });
         return;
       }
-      this.filesToUpload = files.length;
-      this.sending = true;
 
-      for (let file of files) {
-        await this.uploadFile(file);
-      }
-    },
-    uploadFile(file) {
-      let that = this;
-      return new Promise((resolve) => {
-        let formData = new FormData();
-        formData.append("file", file);
-        formData.append("directory", this.completeDirectory);
-        formData.append("origin", this.currentEntryPoint.origin);
-
-        this.progressFilename = file.name;
-        this.progressNumber = 0;
-        // console.log(file, file.type);
-        let request = new XMLHttpRequest();
-        request.upload.onprogress = function (event) {
-          if (event.lengthComputable) {
-            that.progressNumber = Math.round(
-              (event.loaded * 100) / event.total
-            );
-          }
-        };
-        request.open("POST", this.endPoints.uploadFile);
-        request.onload = function () {
-          that.progressNumber = 100;
-
-          let response;
-          try {
-            response = JSON.parse(this.responseText);
-
-            if (this.status === 200 && response && response.data) {
-              that.addFile(response.data);
-            } else {
-              notify(response.title || response, {
-                style: "error",
-              });
-            }
-          } catch (error) {
-            notify(this.responseText, {
-              style: "error",
-            });
-            return;
-          } finally {
-            that.uploadedFiles++;
-            that.checkFinished();
-            resolve();
-          }
-        };
-        request.onerror = function (event) {
-          notify(event.target.statusText, {
-            style: "error",
-          });
-          that.uploadedFiles++;
-          that.checkFinished();
-          resolve();
-        };
-        request.send(formData);
+      this.updateFile({
+        newFile: response.file,
+        tempInode: response.tempInode,
       });
     },
-    checkFinished() {
-      if (this.uploadedFiles < this.filesToUpload) {
-        return;
-      }
-      this.reset();
+    onFileError(file, message) {
+      let response = JSON.parse(message);
+      notify(response.title || response, {
+        style: "error",
+      });
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
-@import "../css/variables.scss";
+<style>
+.dragover {
+  padding: 30px;
+  color: #555;
+  background-color: #ddd;
+  border: 1px solid #999;
+}
+</style>
+
+<style lang="postcss" scoped>
+.uploader {
+  display: flex;
+  flex-direction: column;
+
+  /* &.is-uploading {
+    border: 1px solid var(--gray-light);
+  } */
+}
 
 .drop-area {
-  overflow: hidden;
-  height: 100%;
+  /* overflow: hidden; */
+  flex: 1;
   position: relative;
-  border: 1px solid transparent;
-  border-radius: $borderRadius;
-  &.sending {
-    border: 1px solid $lightGray;
+  border: 2px dashed var(--primary-color);
+  /* border-radius: var(--form-border-radius); */
+  border-radius: 20px;
+  transition: var(--transition-border), var(--transition-background);
+  &:hover {
+    border-color: var(--primary-color-dark);
   }
 
   .label {
-    border: 2px dashed $yellow;
-    border-radius: 20px;
     width: 100%;
     height: 100%;
     display: flex;
@@ -189,50 +189,40 @@ export default {
     text-align: center;
     cursor: pointer;
   }
-  &.highlight .label {
-    border-color: $yellowDark;
-    background-color: $yellowLight;
+  &.highlight {
+    background-color: var(--primary-color-light);
   }
   &.readonly {
     .label {
       cursor: default;
-      border: 2px dashed $lightGray;
+      border: 2px dashed var(--gray-light);
     }
   }
-  .progress-value {
-    background: $yellow;
-    transition: width 0.1s ease;
-    height: 4px;
-    display: flex;
-    width: 0px;
-    border-radius: 20px;
-  }
-  .filename {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-  }
-  .counter {
-    position: absolute;
-    font-size: 0.8rem;
-    right: 2px;
-    bottom: 2px;
-  }
-}
-.input-file {
-  display: none;
 }
 
-.files {
-  display: grid;
-  grid-template-columns: 150px 150px 150px;
-  row-gap: 15px;
-  column-gap: 15px;
+.progress-value {
+  background: var(--primary-color);
+  transition: width 0.1s ease;
+  height: 4px;
+  display: flex;
+  width: 0px;
+  border-radius: 20px;
+}
+.filename {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+.counter {
+  position: absolute;
+  font-size: 0.8rem;
+  right: 2px;
+  bottom: 2px;
 }
 </style>

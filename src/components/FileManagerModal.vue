@@ -9,7 +9,7 @@
       <div class="actions">
         <button
           v-if="!editContent"
-          class="btn outlined abort"
+          class="penta-button outlined abort"
           @click="handleAbort"
         >
           {{ $t("cancel") }}
@@ -23,7 +23,7 @@
             !editContent &&
             uneditableSelectedFiles.length === 0
           "
-          class="btn"
+          class="penta-button"
           @click="goEditor"
         >
           {{ $t("editAndSelect") }}
@@ -36,7 +36,7 @@
             invalidSelectedFiles[0] !== editContent &&
             uneditableSelectedFiles.length === 0
           "
-          class="btn"
+          class="penta-button"
           @click="handleNext"
           :disabled="uneditableSelectedFiles.length > 0"
         >
@@ -44,7 +44,7 @@
         </button>
         <button
           v-else-if="!editContent && invalidSelectedFiles.length === 0"
-          class="btn"
+          class="penta-button"
           @click="handleSelect"
           :disabled="invalidSelectedFiles.length > 0"
         >
@@ -102,8 +102,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@import "../css/variables.scss";
+<style lang="postcss" scoped>
 
 .file-manager-modal {
   position: fixed;
@@ -123,7 +122,7 @@ export default {
     background-color: white;
     overflow: auto;
     box-shadow: 0 0 48px rgba(0, 0, 0, 0.075);
-    border: 1px solid $lightGray;
+    border: 1px solid var(--gray-light);
 
     display: flex;
     flex-direction: column;

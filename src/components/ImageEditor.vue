@@ -1,51 +1,51 @@
 <template>
   <div v-if="file" class="image-editor">
     <div class="header">
-      <button class="btn outlined back" @click="handleReturn">
+      <button class="penta-button outlined back" @click="handleReturn">
         {{ $t("return") }}
       </button>
       <div v-if="isCropping" class="toolbar loader"><Spinner /></div>
       <label
         v-if="fileValidation && fileValidation.imageOptions"
-        class="btn outlined validation-string"
+        class="penta-button outlined validation-string"
       >
         <input
-          type="checkbox"
-          class="form-checkbox"
           v-model="isValidationActive"
+          type="checkbox"
+          class="penta-input-checkbox"
         />
         <ValidationString />
       </label>
       <div class="toolbar">
-        <div class="btn-group">
+        <div class="penta-button-group">
           <button
-            class="btn outlined"
+            class="penta-button outlined"
             :class="{ active: dragMode === 'move' }"
             @click="changeMode('move')"
           >
             <i class="fa-move"></i>
           </button>
           <button
-            class="btn outlined"
+            class="penta-button outlined"
             :class="{ active: dragMode === 'crop' }"
             @click="changeMode('crop')"
           >
             <i class="fa-crop"></i>
           </button>
         </div>
-        <div class="btn-group">
-          <button class="btn outlined" @click="rotate(-90)">
+        <div class="penta-button-group">
+          <button class="penta-button outlined" @click="rotate(-90)">
             <i class="fa-ccw"></i>
           </button>
-          <button class="btn outlined" @click="rotate(90)">
+          <button class="penta-button outlined" @click="rotate(90)">
             <i class="fa-cw"></i>
           </button>
         </div>
 
-        <button class="btn outlined" @click="handleClear">
+        <button class="penta-button outlined" @click="handleClear">
           <i class="fa-cancel"></i>
         </button>
-        <button class="btn" @click="handleSave">
+        <button class="penta-button" @click="handleSave">
           <i class="fa-ok"></i>{{ $t("apply") }}
         </button>
       </div>
@@ -53,9 +53,9 @@
     <div class="content">
       <div class="abs-content">
         <img
+          ref="imageElt"
           class="original"
           :class="{ 'is-image-loading': isImageLoading }"
-          ref="imageElt"
           :src="file.urlTimestamped"
           @load="onImageLoad"
         />
@@ -69,12 +69,12 @@
         <i class="fa-ratio"></i>
         <input
           type="text"
-          class="ratio form-input"
+          class="ratio penta-input-text"
           :class="{ 'is-invalid': !isValidRatio }"
           :value="ratio"
           :disabled="ratioLockedByValidation"
-          @input="updateRatio"
           placeholder="ex: 16:9"
+          @input="updateRatio"
         />
       </span>
       <span>
@@ -86,9 +86,9 @@
         <i class="fa-right-open"></i>
         <i class="fa-resize-horizontal"></i>
         <input
-          type="text"
           v-model.number="finalWidth"
-          class="nb form-input"
+          type="text"
+          class="nb penta-input-text"
           :class="{ 'is-invalid': !isFinalWidthValid }"
           :disabled="
             finalWidthLockedByValidation ||
@@ -102,9 +102,7 @@
           <i
             :class="{
               'fa-lock': finalWidthLockedByValidation || finalWidthLocked,
-              'fa-lock-open': !(
-                finalWidthLockedByValidation || finalWidthLocked
-              ),
+              'fa-lock-open': !(finalWidthLockedByValidation || finalWidthLocked),
             }"
           ></i>
         </span>
@@ -114,9 +112,9 @@
         <i class="fa-resize-vertical"></i>
 
         <input
-          type="text"
           v-model.number="finalHeight"
-          class="nb form-input"
+          type="text"
+          class="nb penta-input-text"
           :class="{ 'is-invalid': !isFinalHeightValid }"
           :disabled="
             finalWidthLockedByValidation ||
@@ -129,9 +127,7 @@
           <i
             :class="{
               'fa-lock': finalHeightLockedByValidation || finalHeightLocked,
-              'fa-lock-open': !(
-                finalHeightLockedByValidation || finalHeightLocked
-              ),
+              'fa-lock-open': !(finalHeightLockedByValidation || finalHeightLocked),
             }"
           ></i>
         </span>
@@ -267,10 +263,7 @@ export default {
       cropperInstance.setAspectRatio(floatValue);
     },
     handleLock(pos) {
-      if (
-        this.finalWidthLockedByValidation ||
-        this.finalHeightLockedByValidation
-      ) {
+      if (this.finalWidthLockedByValidation || this.finalHeightLockedByValidation) {
         notify(this.$t("disableRules"), {
           style: "error",
         });
@@ -288,19 +281,15 @@ export default {
         }
       }
     },
-    userChangeFinalWidth(e) {
+    userChangeFinalWidth() {
       this.finalWidthLocked = true;
       this.finalHeightLocked = false;
-      this.finalHeight = Math.round(
-        (this.finalWidth * this.cropHeight) / this.cropWidth
-      );
+      this.finalHeight = Math.round((this.finalWidth * this.cropHeight) / this.cropWidth);
     },
-    userChangeFinalHeight(e) {
+    userChangeFinalHeight() {
       this.finalHeightLocked = true;
       this.finalWidthLocked = false;
-      this.finalWidth = Math.round(
-        (this.finalHeight * this.cropWidth) / this.cropHeight
-      );
+      this.finalWidth = Math.round((this.finalHeight * this.cropWidth) / this.cropHeight);
     },
     ...mapMutations(["setEditContent"]),
     ...mapActions(["cropFile"]),
@@ -318,11 +307,11 @@ export default {
         this.finalHeight = this.naturalHeight;
       } else if (this.finalWidthLocked) {
         this.finalHeight = Math.round(
-          (this.finalWidth * this.cropHeight) / this.cropWidth
+          (this.finalWidth * this.cropHeight) / this.cropWidth,
         );
       } else if (this.finalHeightLocked) {
         this.finalWidth = Math.round(
-          (this.finalHeight * this.cropWidth) / this.cropHeight
+          (this.finalHeight * this.cropWidth) / this.cropHeight,
         );
       }
       this.checkValidation();
@@ -359,25 +348,17 @@ export default {
       this.cropHeight = height;
       if (this.finalWidthLockedByValidation) {
         this.finalWidth = this.imageValidation.width;
-        this.finalHeight = Math.round(
-          (this.finalWidth * detail.height) / detail.width
-        );
+        this.finalHeight = Math.round((this.finalWidth * detail.height) / detail.width);
       } else if (this.finalHeightLockedByValidation) {
         this.finalHeight = this.imageValidation.height;
-        this.finalWidth = Math.round(
-          (this.finalHeight * detail.width) / detail.height
-        );
+        this.finalWidth = Math.round((this.finalHeight * detail.width) / detail.height);
       } else if (!this.finalWidthLocked && !this.finalHeightLocked) {
         this.finalWidth = width;
         this.finalHeight = height;
       } else if (this.finalWidthLocked) {
-        this.finalHeight = Math.round(
-          (this.finalWidth * detail.height) / detail.width
-        );
+        this.finalHeight = Math.round((this.finalWidth * detail.height) / detail.width);
       } else if (this.finalHeightLocked) {
-        this.finalWidth = Math.round(
-          (this.finalHeight * detail.width) / detail.height
-        );
+        this.finalWidth = Math.round((this.finalHeight * detail.width) / detail.height);
       }
     },
     isReady() {
@@ -503,14 +484,13 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-@import "../css/variables.scss";
-input.form-input {
+<style lang="postcss" scoped>
+input.penta-input-text {
   padding: 3px 5px;
-  border-color: $gray;
+  border-color: var(--gray);
   &:hover,
   &:focus {
-    border-color: $grayDark;
+    border-color: var(--gray-dark);
   }
 }
 .is-image-loading {
@@ -552,7 +532,7 @@ input.form-input {
     }
   }
   @media (max-width: 900px) {
-    .btn {
+    .penta-button {
       padding: 0.25rem;
     }
   }
@@ -605,14 +585,14 @@ input.ratio {
 }
 
 input.is-invalid {
-  background-color: $redLight;
+  background-color: var(--red-light);
 }
 i.fa-right-open {
-  color: $gray;
+  color: var(--gray);
 }
 .lock {
   cursor: pointer;
-  color: $blackLight;
+  color: var(--gray-dark);
   &:hover {
     color: black;
   }

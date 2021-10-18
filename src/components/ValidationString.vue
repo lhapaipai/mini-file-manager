@@ -63,9 +63,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@import "../css/variables.scss";
+<style lang="postcss" scoped>
 i.fa-right-open {
-  color: $gray;
+  color: var(--gray);
 }
 </style>

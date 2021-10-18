@@ -7,8 +7,7 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-@import "../css/variables.scss";
+<style lang="postcss" scoped>
 .spinner {
   display: flex;
   justify-content: center;
@@ -42,7 +41,7 @@
   float: none;
   background-color: currentColor;
   border: 0 solid currentColor;
-  color: $yellow;
+  color: var(--primary-color);
 }
 .la-ball-spin-rotate {
   width: 32px;

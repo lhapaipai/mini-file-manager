@@ -4,7 +4,7 @@ date					:= $(shell date +"%Y-%m-%d")
 local_path		:= $(PWD)
 
 FONT_ASSETS_DIR      ?= ./src/css/fontello
-FONT_PUBLIC_DIR      ?= ./public/file-manager/fontello
+FONT_PUBLIC_DIR      ?= ./public/fonts/fontello
 FONTELLO_HOST ?= https://fontello.com
 
 .PHONY: help
@@ -45,11 +45,11 @@ icon-save:
 	rm -rf ${FONT_PUBLIC_DIR}
 	mv `find ./.fontello.src -maxdepth 1 -name 'fontello-*'` ./.fontello.src/fontello
 	
-	mv ./.fontello.src/fontello/css/fontello.css ${FONT_ASSETS_DIR}/fontello.scss
-	mv ./.fontello.src/fontello/config.json ${FONT_ASSETS_DIR}/config.json
+	mv ./.fontello.src/fontello/css/fontello.css ${FONT_ASSETS_DIR}/
+	mv ./.fontello.src/fontello/config.json ${FONT_ASSETS_DIR}/
 	mv ./.fontello.src/fontello/font ${FONT_PUBLIC_DIR}
-	sed -i 's/\.\.\/font/\/file-manager\/fontello/g' ${FONT_ASSETS_DIR}/fontello.scss
-	sed -i '/speak: never/d' ${FONT_ASSETS_DIR}/fontello.scss
+	sed -i 's/\.\.\/font/\/fonts\/fontello/g' ${FONT_ASSETS_DIR}/fontello.css
+	sed -i '/speak: never/d' ${FONT_ASSETS_DIR}/fontello.css
 
 	rm -rf .fontello.src .fontello.zip
 
