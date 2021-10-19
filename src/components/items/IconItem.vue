@@ -161,7 +161,7 @@ export default {
 
     &:active,
     &.selected {
-      color: var(--gray-dark);
+      color: var(--primary-color-text);
 
       img {
         box-shadow: 0 0 0 4px var(--primary-color), 0 3px 3px 2px rgba(74, 47, 47, 0.15),

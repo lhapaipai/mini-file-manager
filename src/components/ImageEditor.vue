@@ -159,7 +159,10 @@ export default {
     ValidationString,
     Spinner,
   },
-  props: ["file"],
+  props: {
+    // eslint-disable-next-line vue/require-default-prop
+    file: Object,
+  },
   data() {
     return {
       dragMode: cropperConfig.dragMode,

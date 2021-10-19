@@ -19,8 +19,8 @@
       {{ valueLabel }}
     </a>
     <a
-      href="#"
       v-if="splitButton && options.length > 1"
+      href="#"
       tabindex="0"
       class="split-button penta-button outlined"
       @click.stop.prevent="handleClickSplit"
@@ -28,13 +28,13 @@
       <i :class="spinnerClass"></i>
     </a>
 
-    <div class="select-items" v-if="isOpen">
+    <div v-if="isOpen" class="select-items">
       <a
-        href="#"
         v-for="option in options"
-        @click.stop.prevent="handleClickOption(option)"
         :key="option.value"
+        href="#"
         class="select-item"
+        @click.stop.prevent="handleClickOption(option)"
       >
         <span v-if="option.icon">
           <i :class="option.icon"></i>
@@ -47,8 +47,28 @@
 
 <script>
 export default {
-  props: ["options", "placeholder", "modelValue", "splitButton"],
-  emit: ["update:modelValue"],
+  props: {
+    options: {
+      type: Array,
+      default: () => [],
+    },
+    placeholder: {
+      type: String,
+      default: "Directory",
+    },
+    modelValue: {
+      type: Object,
+      default: () => ({
+        icon: "fa-eye",
+        label: "Default",
+      }),
+    },
+    splitButton: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  emits: ["update:modelValue", "click"],
   data: () => {
     return {
       isOpen: false,
@@ -68,17 +88,17 @@ export default {
       this.isOpen = false;
       this.$emit("update:modelValue", option);
     },
-    handleClickSelect(e) {
+    handleClickSelect() {
       if (this.splitButton) {
         this.$emit("click", this.modelValue);
       } else {
         this.isOpen = !this.isOpen;
       }
     },
-    handleClickContainer(e) {
+    handleClickContainer() {
       this.isOpen = false;
     },
-    handleClickSplit(e) {
+    handleClickSplit() {
       this.isOpen = !this.isOpen;
     },
   },
@@ -86,7 +106,6 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-
 .custom-select {
   position: relative;
   display: flex;

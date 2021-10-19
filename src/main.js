@@ -1,18 +1,24 @@
 import { createApp, toRaw } from "vue";
-import { createI18n } from "vue-i18n-lite";
+
+import { prepareContainer } from "mini-notifier";
+import "mini-notifier/dist/style.css";
+
+import { prepareOptions, formStringifier } from "./utils/mainHelper";
+
 import FilePicker from "./components/FilePicker.vue";
 import FileManager from "./components/FileManager.vue";
 import FileManagerModal from "./components/FileManagerModal.vue";
 import { scrollLockDirective } from "scroll-blocker/scroll-lock-directive";
-import createStoreWithOptions from "./store";
-import localesData from "./locales";
 
-import "mini-notifier/dist/style.css";
 import "./css/index.css";
 
-import "./css/theme.css";
-
-export function createFilePicker(elt, fileManagerOptions, selection) {
+export function createFormFilePicker(
+  elt,
+  formFilePickerOptions,
+  fileManagerOptions,
+  selection,
+) {
+  // ici l'élément est un input hidden contenant le nom des fichiers sélectionnés.
   if (typeof elt === "string") {
     elt = document.querySelector(elt);
   }
@@ -22,24 +28,33 @@ export function createFilePicker(elt, fileManagerOptions, selection) {
   if (!fileManagerOptions) {
     fileManagerOptions = JSON.parse(elt.dataset.filemanager);
   }
+  if (!formFilePickerOptions) {
+    formFilePickerOptions = JSON.parse(elt.dataset.formfilepicker);
+  }
+  // assign same theme to mini-notifier
+  prepareContainer(document.body, fileManagerOptions.theme || "mini-file-manager-theme");
+
   if (!selection) {
     selection = JSON.parse(elt.dataset.selection);
   }
-  let locale = fileManagerOptions.locale || "en";
-  if (locale === "custom" && fileManagerOptions.localeData) {
-    localesData["custom"] = locale;
-    locale = "custom";
-  }
+  console.log(selection);
+
   let appElt = document.createElement("div");
   elt.after(appElt);
 
   const app = createApp(FilePicker, {
+    formFilePickerOptions,
     fileManagerOptions,
     originalSelection: selection,
     input: elt,
   });
 
-  app.mount(appElt);
+  const vm = app.mount(appElt);
+  vm.$el.addEventListener("updateSelection", (e) => {
+    let selection = e.detail;
+    elt.value = formStringifier(selection);
+    console.log("selection change !", elt.value);
+  });
   return app;
 }
 
@@ -47,27 +62,14 @@ export function createFileManager(elt, options) {
   if (typeof elt === "string") {
     elt = document.querySelector(elt);
   }
-  if (!options) {
-    options = JSON.parse(elt.dataset.props);
-  }
-  let locale = options.locale || "en";
-  if (locale === "custom" && options.localeData) {
-    localesData["custom"] = locale;
-    locale = "custom";
-  }
+
+  let { i18n, store } = prepareOptions(elt, options);
 
   const app = createApp(FileManager);
 
   app.directive("scroll-lock", scrollLockDirective);
-
-  app.use(createStoreWithOptions(options));
-  app.use(
-    createI18n({
-      locale: locale,
-      fallbackLocale: "en",
-      messages: localesData,
-    }),
-  );
+  app.use(store);
+  app.use(i18n);
 
   app.mount(elt);
 
@@ -78,11 +80,7 @@ export function openFileManager(options, onSuccess, onAbort) {
   let elt = document.createElement("div");
   document.body.appendChild(elt);
 
-  let locale = options.locale || "en";
-  if (locale === "custom" && options.localeData) {
-    localesData["custom"] = locale;
-    locale = "custom";
-  }
+  let { i18n, store } = prepareOptions(elt, options);
 
   function destroyFileManager() {
     vm.$el.removeEventListener("selectFiles", onSelectFiles);
@@ -108,15 +106,10 @@ export function openFileManager(options, onSuccess, onAbort) {
   }
 
   const app = createApp(FileManagerModal);
+
   app.directive("scroll-lock", scrollLockDirective);
-  app.use(createStoreWithOptions(options));
-  app.use(
-    createI18n({
-      locale: locale,
-      fallbackLocale: "en",
-      messages: localesData,
-    }),
-  );
+  app.use(store);
+  app.use(i18n);
 
   const vm = app.mount(elt);
   vm.$el.addEventListener("selectFiles", onSelectFiles);

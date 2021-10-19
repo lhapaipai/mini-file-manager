@@ -1,5 +1,6 @@
 @import "./variables.css";
 @import "./fontello/fontello.css";
+@import "./theme.css";
 @import "./cropper.css";
 
 .file-manager {

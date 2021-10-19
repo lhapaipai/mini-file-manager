@@ -1,11 +1,7 @@
 <template>
-  <div class="file-manager-modal" v-scroll-lock:enabled>
+  <div v-scroll-lock:enabled class="file-manager-modal">
     <div class="box">
-      <FileManager
-        class="main-content"
-        :is-modal="true"
-        @confirm="handleSelect"
-      />
+      <FileManager class="main-content" :is-modal="true" @confirm="handleSelect" />
       <div class="actions">
         <button
           v-if="!editContent"
@@ -37,16 +33,16 @@
             uneditableSelectedFiles.length === 0
           "
           class="penta-button"
-          @click="handleNext"
           :disabled="uneditableSelectedFiles.length > 0"
+          @click="handleNext"
         >
           <span> {{ $t("continue") }}</span>
         </button>
         <button
           v-else-if="!editContent && invalidSelectedFiles.length === 0"
           class="penta-button"
-          @click="handleSelect"
           :disabled="invalidSelectedFiles.length > 0"
+          @click="handleSelect"
         >
           <span>{{ $t("select") }}</span>
         </button>
@@ -59,14 +55,10 @@
 <script>
 import { mapGetters, mapMutations, mapState } from "vuex";
 import FileManager from "./FileManager.vue";
-import ImageEditor from "./ImageEditor.vue";
-import ValidationString from "./ValidationString.vue";
 
 export default {
   components: {
     FileManager,
-    ImageEditor,
-    ValidationString,
   },
   data() {
     return {};
@@ -103,7 +95,6 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-
 .file-manager-modal {
   position: fixed;
   top: 0;
@@ -121,7 +112,7 @@ export default {
     height: 90%;
     background-color: white;
     overflow: auto;
-    box-shadow: 0 0 48px rgba(0, 0, 0, 0.075);
+    box-shadow: var(--box-shadow);
     border: 1px solid var(--gray-light);
 
     display: flex;
@@ -166,7 +157,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--background-color);
     z-index: -1;
   }
 }

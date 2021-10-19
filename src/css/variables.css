@@ -2,19 +2,18 @@
  * Variables *
  *************/
 
-.pentatrion-theme {
+.mini-file-manager-theme {
+
+  --primary-color-light: #fff9d2;
+  --primary-color: #ffe64b;
+  --primary-color-text: #000000;
+  --primary-color-active: #fadf30;
+  --primary-color-dark: #eac800;
+
   --gray-extra-light: #e7e7e7;
   --gray-light: #ccc;
   --gray: #999;
   --gray-dark: #333;
-
-  --primary-color-light: #fff9d2;
-  --primary-color: #ffe64b;
-  --primary-color-active: #fadf30;
-  --primary-color-dark: #eac800;
-  /* --primary-color: red;
-  --primary-color-active: red;
-  --primary-color-dark: red; */
 
   --form-border-radius: 0.25rem;
   --form-border-width: 1px;
@@ -26,19 +25,9 @@
   --transition-color: color 0.3s ease;
   --transition-opacity: opacity 0.3s ease;
 
-  --background-color: #fbfcff;
+  --box-shadow: 0 0 48px rgba(0, 0, 0, 0.075);
 
-  --main-content-padding: 1rem;
-  
-  --aside-icon-width: 3rem;
-  --aside-text-width: 8rem;
-  --aside-item-padding: 0.5rem;
-  
-  --aside-width: calc(var(--aside-icon-width) + 2 * var(--aside-item-padding));
-  --aside-width-expanded: calc(var(--aside-icon-width) + var(--aside-text-width) + 2 * var(--aside-item-padding));
-  
-  --aside-r-width: 300px;
-  
+  --background-color: rgba(255,255,255,.75);
   
   --red: #842029;
   --red-light: #f8d7da;
@@ -53,11 +42,21 @@
   --blue-prestashop: #bbcdd2;
   
   --blue-light: #e6e8ef;
-
-  --bp-sm: 576px;
-  --bp-md: 768px;
-  --bp-lg: 992px;
-  --bp-xl: 1200px;
-  --bp-xxl: 1400px;
 }
 
+/****************************************
+ * mini-file-manager internal variables *
+ ****************************************/
+
+.file-manager {
+  --main-content-padding: 1rem;
+  
+  --aside-icon-width: 3rem;
+  --aside-text-width: 8rem;
+  --aside-item-padding: 0.5rem;
+  
+  --aside-width: calc(var(--aside-icon-width) + 2 * var(--aside-item-padding));
+  --aside-width-expanded: calc(var(--aside-icon-width) + var(--aside-text-width) + 2 * var(--aside-item-padding));
+  
+  --aside-r-width: 300px;
+}

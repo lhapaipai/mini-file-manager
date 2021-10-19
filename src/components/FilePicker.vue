@@ -1,16 +1,34 @@
 <template>
-  <div class="file-picker-app">
+  <div>
     <div v-if="selection.length > 0" class="files">
-      <div v-for="file, id in selection" :key="id" class="preview" :class="{ image: file.thumbnails }">
-          <img :data-type="file.type" :src="file.thumbnails ? file.thumbnails.small : file.icon">
-          <div class="actions">
-              <a href="#" @click="handleRemove" class="remove"><i class="fa-trash"></i></a>
-              <a href="#" @click="handleBrowse" class="browse"><i class="fa-folder"></i></a>    
-          </div>
+      <div
+        v-for="(file, id) in selection"
+        :key="id"
+        class="preview"
+        :class="{ image: file.thumbnails }"
+      >
+        <img :data-type="file.type" :src="fileImg(file)" />
+        <div class="actions">
+          <a href="#" class="remove" @click.prevent="handleRemove(file)"
+            ><i class="fa-trash"></i
+          ></a>
+          <a
+            v-if="!formFilePickerOptions.multiple"
+            href="#"
+            class="browse"
+            @click.prevent="handleBrowse"
+            ><i class="fa-folder"></i
+          ></a>
+        </div>
       </div>
     </div>
-    <div v-else>
-      <button @click.prevent="handleBrowse" class="penta-button">Parcourir</button>
+    <div
+      v-if="selection.length === 0 || formFilePickerOptions.multiple"
+      class="general-actions"
+    >
+      <button class="penta-button outlined" @click.prevent="handleBrowse">
+        <span class="fa-doc-add"></span>
+      </button>
     </div>
   </div>
 </template>
@@ -19,77 +37,113 @@
 import { openFileManager } from "../main";
 
 export default {
-  props: ["fileManagerOptions", "originalSelection", "input"],
+  props: {
+    // eslint-disable-next-line vue/require-default-prop
+    fileManagerOptions: Object,
+    formFilePickerOptions: {
+      type: Object,
+      default: () => ({
+        multiple: false,
+      }),
+    },
+    originalSelection: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
-      selection: []
+      selection: [],
     };
   },
   watch: {
     selection() {
-      console.log("selection change !");
-      this.input.value = this.selection.map(file => file.uploadRelativePath).join(",")
-    }
-  },
-  methods: {
-    handleRemove() {
-      this.selection = [];
+      let event = new CustomEvent("updateSelection", {
+        detail: this.selection,
+      });
+      this.$el.dispatchEvent(event);
     },
-    handleBrowse() {
-      // TODO uploadRelativePath -> id @public_uploads:profile/identite.jpg
-      openFileManager({
-        ...this.fileManagerOptions,
-        originalSelection: this.selection.map(elt => elt.uploadRelativePath)
-      }, this.onSelected)
-    },
-    onSelected(files) {
-      console.log(files);
-      this.selection = files;
-    }
   },
   mounted() {
     this.selection = [...this.originalSelection];
-  }
-}
+  },
+  methods: {
+    fileImg(file) {
+      if (file.thumbnails) {
+        if (this.formFilePickerOptions.previewType === "image") {
+          return file.thumbnails[this.formFilePickerOptions.previewFilter];
+        } else {
+          return file.icon;
+        }
+      } else {
+        return file.icon;
+      }
+    },
+    handleRemove(file) {
+      this.selection = this.selection.filter((f) => f.id !== file.id);
+    },
+    handleBrowse() {
+      let multiSelection = this.formFilePickerOptions.multiple;
+      openFileManager(
+        {
+          ...this.fileManagerOptions,
+          originalSelection: multiSelection ? [] : this.selection.map((elt) => elt.id),
+          multiSelection,
+        },
+        this.onSelected,
+      );
+    },
+    onSelected(files) {
+      let uniqueFiles = files.filter((f) => !this.selection.find((sf) => sf.id === f.id));
+      this.selection = [...this.selection, ...uniqueFiles];
+    },
+  },
+};
 </script>
 
 <style lang="postcss" scoped>
-.file-picker-app {
-  .files {
-    display: flex;
+.files {
+  display: flex;
+}
+.preview {
+  position: relative;
+  align-self: flex-start;
+  min-width: 100px;
+  margin-right: 1rem;
+  &:last-child {
+    margin-right: 0;
   }
-  .preview {
-    position: relative;
-    align-self: flex-start;
-    min-width: 100px;
+  img {
+    vertical-align: middle;
+    display: inline-block;
+  }
+}
+.rounded-corner {
+  box-shadow: 0 0 1px #bbb;
+}
 
-    img {
-      vertical-align: middle;
-      display: inline-block;
-    }
-  }
-  .rounded-corner {
-    box-shadow: 0 0 1px #bbb;
-  }
-
-  .actions {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: flex-end;
+.actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: flex-end;
+  transition: var(--transition-color);
+  a {
     transition: all 0.2s;
-    a {
-      font-size: 1.3rem;
-      padding: 0.5rem;
-      &:hover {
-        color: white;
-      }
+    color: var(--gray);
+    font-size: 1.3rem;
+    padding: 0.5rem;
+    &:hover {
+      color: white;
     }
   }
 }
 
+.general-actions {
+  margin-top: 1rem;
+}
 </style>

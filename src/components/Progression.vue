@@ -11,7 +11,12 @@
 
 <script>
 export default {
-  props: ["value"],
+  props: {
+    value: {
+      type: Number,
+      default: 0,
+    },
+  },
   computed: {
     percentageValue() {
       return Math.round(this.value * 100).toString() + "%";

@@ -1,10 +1,6 @@
 <template>
-  <ImageEditor
-    v-if="editContent"
-    class="pentatrion-theme image-editor"
-    :file="editContent"
-  />
-  <div v-else class="pentatrion-theme file-manager">
+  <ImageEditor v-if="editContent" class="image-editor" :file="editContent" />
+  <div v-else class="file-manager">
     <div class="action">
       <button class="penta-button outlined" @click.prevent="toggleOrder()">
         <i v-if="presentation === 'list'" class="fa-order-list"></i>

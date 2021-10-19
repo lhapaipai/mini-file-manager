@@ -4,13 +4,9 @@ import { downloadFromBlob } from "pentatrion-lib/downloadHelper";
 import { toIsoString } from "pentatrion-lib/dateHelper";
 import { formFetchOrNotify, fetchOrNotify } from "pentatrion-lib/apiHelper";
 
-import {
-  parseOriginalSelection,
-  verifyValidation,
-  isValidFile,
-  isEditableFile,
-  verifyUploadOptions,
-} from "./utils.js";
+import { parseOriginalSelection } from "./utils/filters";
+import { checkAndFixValidation, completeUploadOptions } from "./utils/complete";
+import { isValidFile, isEditableFile } from "./utils/validation";
 
 export default function createStoreWithOptions({
   entryPoints,
@@ -19,6 +15,7 @@ export default function createStoreWithOptions({
   originalSelection,
   fileUpload,
   multiSelection = false,
+  theme = "mini-file-manager-theme",
 }) {
   originalSelection = parseOriginalSelection(originalSelection, entryPoints);
   // console.log(entryPoints);
@@ -38,8 +35,8 @@ export default function createStoreWithOptions({
         cropFile: `${endPoint}/crop${debugStr}`,
       },
       entryPoints,
-      fileValidation: verifyValidation(fileValidation),
-      fileUpload: verifyUploadOptions(fileUpload),
+      fileValidation: checkAndFixValidation(fileValidation),
+      fileUpload: completeUploadOptions(fileUpload),
       // entryPoints :[
       //   {
       //       label: 'Conversation',
@@ -53,6 +50,7 @@ export default function createStoreWithOptions({
       currentEntryPoint: null,
       secondaryDirectories: [],
       multiSelection,
+      theme,
       directory: null,
       files: [],
       selectedFiles: [],

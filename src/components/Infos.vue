@@ -121,7 +121,10 @@ import { mapActions, mapMutations, mapState } from "vuex";
 
 export default {
   props: {
-    files: Array,
+    files: {
+      type: Array,
+      default: () => [],
+    },
   },
   data: () => ({
     filename: "",

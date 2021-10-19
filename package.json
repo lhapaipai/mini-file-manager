@@ -3,6 +3,7 @@
   "description": "A lightweight File Manager for your application",
   "version": "1.0.0",
   "main": "./dist/mini-file-manager.es.js",
+  "type": "module",
   "license": "MIT",
   "author": {
     "name": "Lhapaipai",
@@ -33,7 +34,9 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^7.19.1",
-    "mini-notifier": "^0.4.5",
+    "mini-notifier": "^0.4.6",
+    "pentatrion-lib": "^0.3.4",
+    "pentatrion-theme": "github:lhapaipai/pentatrion-theme#v0.1.2",
     "postcss": "^8.3.9",
     "postcss-import": "^14.0.2",
     "postcss-nested": "^5.0.6",
@@ -50,9 +53,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/lhapaipai/mini-file-manager.git"
-  },
-  "dependencies": {
-    "pentatrion-lib": "file:../pentatrion-lib/dist",
-    "pentatrion-theme": "file:../pentatrion-theme"
   }
 }

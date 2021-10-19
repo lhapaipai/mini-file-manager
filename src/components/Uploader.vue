@@ -25,12 +25,9 @@ import Resumable from "resumablejs";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { notify } from "mini-notifier";
 import { nextTick } from "vue";
-import {
-  createFileInfosFromUpload,
-  filename2dirname,
-  humanFileSize,
-  sanitizeFilename,
-} from "../utils";
+
+import { createFileInfosFromUpload } from "../utils/creation";
+import { filename2dirname, humanFileSize, sanitizeFilename } from "../utils/filters";
 
 let resumable = null;
 
@@ -52,6 +49,9 @@ export default {
       }
       return !this.currentEntryPoint.readOnly;
     },
+  },
+  watch: {
+    currentEntryPoint() {},
   },
   async mounted() {
     resumable = new Resumable({
@@ -114,6 +114,14 @@ export default {
     },
 
     async onFileAdded(fileUploadInfos) {
+      if (!this.canUpload) {
+        resumable.removeFile(fileUploadInfos);
+        notify(this.$t("readonlyDir"), {
+          style: "error",
+        });
+        return;
+      }
+
       // on renomme le fichier afin qu'il n'entre pas en conflit avec les fichiers déjà présents
       // dans le répertoire.
       fileUploadInfos.fileName = sanitizeFilename(fileUploadInfos.fileName, this.files);
@@ -153,7 +161,7 @@ export default {
         oldId: response.oldId,
       });
     },
-    onFileError(uploadedFile, message) {
+    onFileError(fileUploadInfos, message) {
       let response;
       try {
         response = JSON.parse(message);
@@ -163,17 +171,17 @@ export default {
       }
 
       if (response.status !== 415 && this.retries < 2) {
-        uploadedFile.retry();
+        fileUploadInfos.retry();
         this.retries = this.retries + 1;
         return;
       }
 
-      console.log("on file error", uploadedFile, response);
+      console.log("on file error", fileUploadInfos, response);
 
-      resumable.removeFile(uploadedFile);
+      resumable.removeFile(fileUploadInfos);
       this.retries = 0;
 
-      let file = this.files.find((f) => f.id === uploadedFile.id);
+      let file = this.files.find((f) => f.id === fileUploadInfos.id);
       if (file) {
         this.removeFile(file);
       }
@@ -216,6 +224,15 @@ export default {
   &:hover {
     border-color: var(--primary-color-dark);
   }
+  &.readonly {
+    cursor: default;
+    border-color: var(--gray-light);
+
+    .label {
+      cursor: default;
+      color: var(--gray-light);
+    }
+  }
 
   .label {
     width: 100%;
@@ -228,12 +245,6 @@ export default {
   }
   &.highlight {
     background-color: var(--primary-color-light);
-  }
-  &.readonly {
-    .label {
-      cursor: default;
-      border: 2px dashed var(--gray-light);
-    }
   }
 }
 
