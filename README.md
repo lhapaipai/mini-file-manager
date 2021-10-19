@@ -2,11 +2,22 @@
 
 Mini File Manager is a file management interface for your Symfony backend. The connection is made with [pentatrion/upload-bundle](https://github.com/lhapaipai/upload-bundle).
 
+Mini File Manager is very flexible, you can :
+  - upload big files / resume uploads with [resumableJS](https://github.com/23/resumable.js/) integration.
+  - crop / resize / rotate image after their upload.
+  - custom easily the theme with CSS variables.
+  - localize the application.
+
+You can see an example here : [**Live Demo**](https://mini-file-manager.pentatrion.com/)
+
+  - [TinyMCE integration](https://mini-file-manager.pentatrion.com/wysiwyg/tinymce)
+  - [File Picker with form](https://mini-file-manager.pentatrion.com/post/edit)
+
 <img alt="Mini File Manager" src="https://user-images.githubusercontent.com/1088155/128615403-2b41fbb4-dd4e-452e-b2c2-6926642bf146.jpg">
 
 ## Dependances
 
-Mini File Manager is designed with Vue (unless you modify the sources, the dependencies are integrated into the module) and you have to configure a Symfony backend to manage your files.
+Mini File Manager is designed with Vue (unless you modify the sources, the dependencies are integrated into the module) and **you have to configure a Symfony backend to manage your files**.
 
 i18n integration, available in English and French or provide your own Translation file. PRs are welcome.
 
@@ -24,7 +35,6 @@ i18n integration, available in English and French or provide your own Translatio
 
 ### Full integration
 
-You can see an example here : [**Live Demo**](https://mini-file-manager.pentatrion.com/)
 
 Sources of this example are available in a separate repository [mini-file-manager-template](https://github.com/lhapaipai/mini-file-manager-template). This example contain full integration of the manager with form (file picker, wysiwyg), and simple file manager.
 
