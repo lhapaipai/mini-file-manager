@@ -13,6 +13,8 @@ You can see an example here : [**Live Demo**](https://mini-file-manager.pentatri
   - [TinyMCE integration](https://mini-file-manager.pentatrion.com/wysiwyg/tinymce)
   - [File Picker with form](https://mini-file-manager.pentatrion.com/post/edit)
 
+Sources of this examples are available in a separate repository [mini-file-manager-template](https://github.com/lhapaipai/mini-file-manager-template). This example contain full integration of the manager with form (file picker, wysiwyg), and simple file manager.
+
 <img alt="Mini File Manager" src="https://user-images.githubusercontent.com/1088155/128615403-2b41fbb4-dd4e-452e-b2c2-6926642bf146.jpg">
 
 ## Dependances
@@ -31,24 +33,6 @@ i18n integration, available in English and French or provide your own Translatio
   - liip/imagine-bundle
   - symfony/validator
 
-## Examples
-
-### Full integration
-
-
-Sources of this example are available in a separate repository [mini-file-manager-template](https://github.com/lhapaipai/mini-file-manager-template). This example contain full integration of the manager with form (file picker, wysiwyg), and simple file manager.
-
-### Partial integration
-
-If you want to see basic utilisation of the manager you can see examples in the public directory.
-
-After configuring a backend, change the `endPoint` option in the `example-01-umd.html` file and type :
-
-```console
-npm run serve
-```
-
-Your example is available on `http://localhost:5000/example-01-umd.html`
 
 ## Installation
 
