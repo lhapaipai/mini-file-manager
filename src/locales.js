@@ -3,6 +3,7 @@ export default {
     apply: "Appliquer",
     cancel: "Annuler",
     editAndSelect: "Éditer puis sélectionner",
+    exceedMaxSize: "{name} a dépassé la taille maximum autorisée {size}.",
     continue: "Continuer",
     chunkError:
       "Erreur lors de l'upload la totalité du fichier n'a pas été reçue, réessayez s'il vous plait",
@@ -12,6 +13,8 @@ export default {
     directoryName: "Nom du dossier",
     readonly: "Lecture seule",
     editable: "Lecture et modification",
+    fileTypeError:
+      "Ce type de fichier n'est pas accepté : {name}. Vous pouvez importer des textes, images, vidéos, audio, .pdf, .zip, .ods, .odt, .doc, .docx, .xls, .xlsx, .psd, .ai",
     access: "Accès",
     downloadAll: "Télécharger tout le dossier",
     name: "Nom",
@@ -32,12 +35,15 @@ export default {
     continue: "Continue",
     chunkError:
       "Error while uploading the whole file was not received, please try again ",
+    exceedMaxSize: "{name} has exceeded the maximum size {size}.",
     select: "Select",
     return: "Return",
     disableRules: "Disable validation rules to change locks ",
     directoryName: "Directory name",
     readonly: "Read only",
     editable: "Editable",
+    fileTypeError:
+      "This type of file is not allowed : {name}. You can upload texts, images, videos, audio, .pdf, .zip, .ods, .odt, .doc, .docx, .xls, .xlsx, .psd, .ai",
     access: "Access",
     downloadAll: "Download all directory",
     name: "Name",

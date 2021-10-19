@@ -41,7 +41,7 @@ export default {
   emits: ["click", "dblclick"],
   computed: {
     isTemp() {
-      return typeof this.file.inode === "string";
+      return this.file.inode === null;
     },
   },
   methods: {
@@ -141,7 +141,7 @@ export default {
     font-size: 0.8rem;
     text-align: center;
     text-overflow: ellipsis;
-    word-wrap: break-word;
+    overflow-wrap: anywhere;
     padding: 4px 6px;
     overflow: hidden;
     border-radius: 6px;

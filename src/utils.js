@@ -47,6 +47,36 @@ export function verifyValidation(fileValidation) {
   return fileValidation;
 }
 
+export function verifyUploadOptions(fileUpload) {
+  return Object.assign(
+    {
+      maxFileSize: 500 * 1024 * 1024,
+      fileType: [
+        "text/*",
+        "image/*", // image/vnd.adobe.photoshop  image/x-xcf
+        "video/*",
+        "audio/*",
+        "application/rtf",
+        "application/pdf",
+        "application/xml",
+        "application/zip",
+        "font/ttf",
+        "font/woff",
+        "font/woff2",
+        "application/vnd.oasis.opendocument.spreadsheet", // tableur libreoffice ods
+        "application/vnd.oasis.opendocument.text", // traitement de texte odt
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // docx
+        "application/msword", // doc
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // xlsx
+        "application/vnd.ms-excel", // xls
+        "application/json",
+        "application/illustrator", // .ai
+      ],
+    },
+    fileUpload,
+  );
+}
+
 export function urlizer(value, separator = "-") {
   let src = "áàãâéèêëÿíïóôõúüñçÁÀÃÂÉÊÈÍÓÔÕÚÜÑÇ";
   let dst = "aaaaeeeeyiiooouuncAAAAEEEIOOOUUNC";
@@ -133,7 +163,7 @@ export function isValidFile(file, fileValidation) {
     return false;
   }
 
-  if (fileValidation.mimeGroup !== file.mimeGroup) {
+  if (fileValidation.mimeGroup && fileValidation.mimeGroup !== file.mimeGroup) {
     return false;
   }
 
@@ -221,8 +251,8 @@ export async function createFileInfosFromUpload(fileUploadInfos, directory, orig
   let mimeGroup = mimeType.split("/")[0];
 
   let infos = {
-    inode: fileUploadInfos.tempInode,
-    id: `@${origin}:${uploadRelativePath}`,
+    inode: null,
+    id: fileUploadInfos.id,
     filename: fileUploadInfos.fileName,
     directory,
     uploadRelativePath,
@@ -232,7 +262,7 @@ export async function createFileInfosFromUpload(fileUploadInfos, directory, orig
     uploader: "",
     origin,
     size: fileUploadInfos.file.size,
-    humanSize: "4.0 Ko",
+    humanSize: humanFileSize(fileUploadInfos.file.size),
     createdAt: new Date().toISOString(),
     isDir: false,
     url: null,
@@ -278,4 +308,11 @@ export function generateThumbnail(file, boundBox) {
     };
     reader.readAsDataURL(file);
   });
+}
+
+export function humanFileSize(size) {
+  let i = Math.floor(Math.log(size) / Math.log(1024));
+  return (
+    (size / Math.pow(1024, i)).toFixed(2) * 1 + " " + ["B", "Ko", "Mo", "Go", "To"][i]
+  );
 }

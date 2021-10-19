@@ -9,6 +9,7 @@ import {
   verifyValidation,
   isValidFile,
   isEditableFile,
+  verifyUploadOptions,
 } from "./utils.js";
 
 export default function createStoreWithOptions({
@@ -16,10 +17,12 @@ export default function createStoreWithOptions({
   endPoint,
   fileValidation,
   originalSelection,
+  fileUpload,
+  multiSelection = false,
 }) {
   originalSelection = parseOriginalSelection(originalSelection, entryPoints);
   // console.log(entryPoints);
-  let isDebug = false;
+  let isDebug = true;
   let debugStr = isDebug ? "?XDEBUG_TRIGGER" : "";
   return createStore({
     state: {
@@ -30,13 +33,13 @@ export default function createStoreWithOptions({
         editFile: `${endPoint}/edit${debugStr}`,
         getFiles: `${endPoint}/get-files${debugStr}`,
         uploadFile: `${endPoint}/upload${debugStr}`,
-        uploadChunkFile: `${endPoint}/upload-chunk${debugStr}`,
-        testChunk: `${endPoint}/test-chunk${debugStr}`,
+        chunkFile: `${endPoint}/chunk${debugStr}`,
         addDirectory: `${endPoint}/add-directory${debugStr}`,
         cropFile: `${endPoint}/crop${debugStr}`,
       },
       entryPoints,
       fileValidation: verifyValidation(fileValidation),
+      fileUpload: verifyUploadOptions(fileUpload),
       // entryPoints :[
       //   {
       //       label: 'Conversation',
@@ -49,7 +52,7 @@ export default function createStoreWithOptions({
 
       currentEntryPoint: null,
       secondaryDirectories: [],
-      multiple: false,
+      multiSelection,
       directory: null,
       files: [],
       selectedFiles: [],
@@ -61,7 +64,11 @@ export default function createStoreWithOptions({
     getters: {
       sortedFiles(state) {
         return state.files.sort((a, b) => {
-          return a[state.sortBy] > b[state.sortBy];
+          if (a.isDir === b.isDir) {
+            return a[state.sortBy] > b[state.sortBy];
+          } else {
+            return a.isDir ? false : true;
+          }
         });
       },
       completeDirectory(state) {
@@ -100,13 +107,20 @@ export default function createStoreWithOptions({
         }
         state.files.splice(pos, 1, newFile);
       },
-      updateFileUploadProgress(state, { tempInode, progression }) {
-        let pos = state.files.findIndex((f) => f.inode === tempInode);
+      replaceFileById(state, { fileId, newFile }) {
+        let pos = state.files.findIndex((f) => f.id === fileId);
+        if (pos === -1) {
+          console.log("impossible de trouver le fichier", fileId);
+        }
+        state.files.splice(pos, 1, newFile);
+      },
+      updateFileUploadProgress(state, { id, progression }) {
+        let pos = state.files.findIndex((f) => f.id === id);
         if (pos === -1) {
           console.log(
             "impossible de trouver le fichier",
-            state.files.map((f) => f.inode).join(","),
-            tempInode,
+            state.files.map((f) => f.id).join(","),
+            id,
             progression,
           );
           return;
@@ -133,41 +147,33 @@ export default function createStoreWithOptions({
       addFile(state, file) {
         state.files.splice(0, 0, file);
       },
-      addFileByIdToSelection(state, fileId) {
-        let file = state.files.find((f) => f.id === fileId);
-        if (!file) {
-          return;
-        }
-        if (state.multiple) {
-          state.selectedFiles.push(file);
-        } else {
-          state.selectedFiles = [file];
-        }
-      },
-      addFileToSelection(state, file) {
-        if (state.multiple) {
-          state.selectedFiles.push(file);
-        } else {
-          state.selectedFiles = [file];
-        }
-      },
-      removeFileToSelection(state, file) {
-        let index = state.selectedFiles.indexOf(file);
-        state.selectedFiles.splice(index, 1);
-      },
-      clearSelection(state) {
-        state.selectedFiles = [];
-      },
-      selectFileByInode(state, inode) {
-        let file = state.files.find((f) => f.inode === inode);
+      selectFileById(state, id) {
+        let file = state.files.find((f) => f.id === id);
         if (!file) {
           return;
         }
         state.selectedFiles = [file];
       },
-      unselectFiles(state) {
+      addFileByIdToSelection(state, fileId) {
+        let file = state.files.find((f) => f.id === fileId);
+        if (!file) {
+          return;
+        }
+        state.selectedFiles.push(file);
+      },
+      addFileToSelection(state, file) {
+        state.selectedFiles.push(file);
+      },
+      removeFileToSelection(state, file) {
+        let index = state.selectedFiles.indexOf(file);
+        if (index !== -1) {
+          state.selectedFiles.splice(index, 1);
+        }
+      },
+      clearSelection(state) {
         state.selectedFiles = [];
       },
+
       setEditing(state, focus) {
         state.editing = focus;
       },
@@ -218,17 +224,16 @@ export default function createStoreWithOptions({
           return newFile;
         });
       },
-      async updateFile({ commit, state }, { tempInode, newFile }) {
-        let file = state.files.find((f) => f.inode === tempInode);
-        let isSelected = state.selectedFiles.some((f) => f.inode === tempInode);
+      async updateFile({ commit, state }, { oldId, newFile }) {
+        let isSelected = state.selectedFiles.some((f) => f.id === oldId);
 
         if (isSelected) {
-          commit("unselectFiles");
+          commit("clearSelection");
         }
 
-        commit("replaceFile", { file, newFile });
+        commit("replaceFileById", { fileId: oldId, newFile });
         if (isSelected) {
-          commit("selectFileByInode", newFile.inode);
+          commit("selectFileById", newFile.id);
         }
       },
       async updateFilename({ commit, state }, { file, newFilename }) {
@@ -244,9 +249,9 @@ export default function createStoreWithOptions({
             newFilename,
           },
         }).then(({ file: newFile }) => {
-          commit("unselectFiles");
+          commit("clearSelection");
           commit("replaceFile", { file, newFile });
-          commit("selectFileByInode", newFile.inode);
+          commit("selectFileById", newFile.id);
         });
       },
       async download({ state }, { files = [] }) {
@@ -273,7 +278,7 @@ export default function createStoreWithOptions({
             downloadFromBlob(b, archiveName);
           });
       },
-      async deleteSelectedFiles({ commit, dispatch, state }) {
+      async deleteSelectedFiles({ commit, dispatch, state, getters }) {
         formFetchOrNotify(state.endPoints.deleteFile, {
           body: {
             files: state.selectedFiles.map((f) => f.id),
@@ -283,9 +288,23 @@ export default function createStoreWithOptions({
         });
 
         let selection = state.selectedFiles;
+
+        let nextId;
+
         commit("clearSelection");
         for (let file of selection) {
+          let filePos = getters.sortedFiles.findIndex((f) => f.id === file.id);
+          /* prettier-ignore */
+          nextId = getters.sortedFiles[filePos + 1]
+            ? getters.sortedFiles[filePos + 1].id
+            : getters.sortedFiles[filePos - 1]
+              ? getters.sortedFiles[filePos - 1].id
+              : null;
           commit("removeFile", file);
+        }
+
+        if (nextId) {
+          commit("addFileByIdToSelection", nextId);
         }
       },
       async getFiles({ dispatch, state, getters, commit }) {
@@ -310,7 +329,7 @@ export default function createStoreWithOptions({
         });
       },
       async setFiles({ commit }, files) {
-        commit("unselectFiles");
+        commit("clearSelection");
         commit("setFiles", files);
       },
       async setCurrentEntryPoint({ commit, dispatch }, entryPoint) {

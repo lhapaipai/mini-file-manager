@@ -25,7 +25,12 @@ import Resumable from "resumablejs";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { notify } from "mini-notifier";
 import { nextTick } from "vue";
-import { createFileInfosFromUpload, filename2dirname, sanitizeFilename } from "../utils";
+import {
+  createFileInfosFromUpload,
+  filename2dirname,
+  humanFileSize,
+  sanitizeFilename,
+} from "../utils";
 
 let resumable = null;
 
@@ -35,10 +40,11 @@ export default {
       isUploading: false,
       dropActive: false,
       progressFilename: null,
+      retries: 0,
     };
   },
   computed: {
-    ...mapState(["endPoints", "currentEntryPoint", "files"]),
+    ...mapState(["endPoints", "currentEntryPoint", "files", "fileUpload"]),
     ...mapGetters(["completeDirectory"]),
     canUpload() {
       if (!this.currentEntryPoint) {
@@ -49,8 +55,7 @@ export default {
   },
   async mounted() {
     resumable = new Resumable({
-      target: this.endPoints.uploadChunkFile,
-      testTarget: this.endPoints.testChunk,
+      target: this.endPoints.chunkFile,
       chunkSize: 1 * 1024 * 1024,
       simultaneousUploads: 4,
       testChunks: true,
@@ -59,17 +64,28 @@ export default {
         return {
           directory: this.completeDirectory,
           origin: this.currentEntryPoint.origin,
-          inode: fileUploadInfos.tempInode,
+          id: fileUploadInfos.id,
         };
       },
-      // testMethod: "POST",
       uploadMethod: "POST",
-      maxFileSize: 500 * 1024 * 1024,
+      maxFileSize: this.fileUpload.maxFileSize,
       maxFileSizeErrorCallback: (file, errorCount) => {
-        notify(`${file.name} a dépassé la taille maxi de 500Mo.`);
+        notify(
+          this.$t("exceedMaxSize", {
+            name: file.name,
+            size: humanFileSize(resumable.opts.maxFileSize),
+          }),
+          { style: "error" },
+        );
+        console.log(file, errorCount, resumable);
+      },
+      fileType: this.fileUpload.fileType,
+      fileTypeErrorCallback: (file, errorCount) => {
+        notify(this.$t("fileTypeError", { name: file.name }), {
+          style: "error",
+        });
         console.log(file, errorCount);
       },
-      dragOverClass: "paipai",
     });
     await nextTick();
     // console.log(r.support, this.$refs.inputFile, this.$refs.dropArea)
@@ -82,13 +98,13 @@ export default {
     resumable.on("fileProgress", (fileUploadInfos) => {
       // console.log("onprogress", fileUploadInfos);
       this.updateFileUploadProgress({
-        tempInode: fileUploadInfos.tempInode,
+        id: fileUploadInfos.id,
         progression: fileUploadInfos.progress(),
       });
     });
   },
   methods: {
-    ...mapMutations(["addFile", "updateFileUploadProgress"]),
+    ...mapMutations(["addFile", "updateFileUploadProgress", "removeFile"]),
     ...mapActions(["updateFile"]),
     highlight() {
       this.dropActive = true;
@@ -105,7 +121,7 @@ export default {
       fileUploadInfos.uniqueIdentifier = `${fileUploadInfos.size}-${filename2dirname(
         fileUploadInfos.fileName,
       )}`;
-      fileUploadInfos.tempInode = `temp-${Math.floor(Math.random() * 999999)}`;
+      fileUploadInfos.id = `#${this.currentEntryPoint.origin}:${this.completeDirectory}/${fileUploadInfos.fileName}`;
 
       resumable.upload();
 
@@ -116,17 +132,15 @@ export default {
       );
 
       this.addFile(fileInfos);
-      console.log("fileadded", fileUploadInfos, this.files.map((f) => f.inode).join(","));
+      // console.log("fileadded", fileUploadInfos, this.files.map((f) => f.inode).join(","));
 
       // this.isUploading = true;
     },
     onFileSuccess(file, message) {
       let response = JSON.parse(message);
-      console.log("fileSuccess", file, file.relativePath, response.file?.filename);
+      // console.log("fileSuccess", file, file.relativePath, response.file?.filename);
 
-      // chunkSuccess renvoyé quand l'upload d'un chunk a réussi mais normalement avec onFileSuccess
-      // c'est l'upload complet qui doit avoir réussi.
-      if (response.chunkSuccess) {
+      if (!response.file || !response.oldId) {
         console.log(response);
         notify(this.$t("chunkError"), {
           style: "error",
@@ -136,11 +150,34 @@ export default {
 
       this.updateFile({
         newFile: response.file,
-        tempInode: response.tempInode,
+        oldId: response.oldId,
       });
     },
-    onFileError(file, message) {
-      let response = JSON.parse(message);
+    onFileError(uploadedFile, message) {
+      let response;
+      try {
+        response = JSON.parse(message);
+      } catch {
+        response.message = message;
+        response.status = 500;
+      }
+
+      if (response.status !== 415 && this.retries < 2) {
+        uploadedFile.retry();
+        this.retries = this.retries + 1;
+        return;
+      }
+
+      console.log("on file error", uploadedFile, response);
+
+      resumable.removeFile(uploadedFile);
+      this.retries = 0;
+
+      let file = this.files.find((f) => f.id === uploadedFile.id);
+      if (file) {
+        this.removeFile(file);
+      }
+
       notify(response.title || response, {
         style: "error",
       });

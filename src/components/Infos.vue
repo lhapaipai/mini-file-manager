@@ -48,7 +48,7 @@
           </a>
         </div>
       </form>
-      <div v-if="file.url" class="infos-row">
+      <div v-if="file.url" class="infos-row url">
         <label>{{ $t("url") }}</label>
         <div class="penta-input-button">
           <input
@@ -69,11 +69,11 @@
           </a>
         </div>
       </div>
-      <div class="infos-row">
+      <div class="infos-row created-at">
         <label>{{ $t("createdAt") }}</label>
         <div>{{ formatDate(file.createdAt) }}</div>
       </div>
-      <div class="infos-row">
+      <div class="infos-row extra">
         <label>{{ $t("infos") }}</label>
         <template v-if="file.mimeGroup === 'image' && file.details">
           <div>
@@ -120,7 +120,9 @@ import { notify } from "mini-notifier";
 import { mapActions, mapMutations, mapState } from "vuex";
 
 export default {
-  props: ["files"],
+  props: {
+    files: Array,
+  },
   data: () => ({
     filename: "",
     ext: "",
@@ -338,6 +340,10 @@ export default {
 
   .infos .infos-row {
     margin: 0;
+
+    &.extra {
+      grid-row: span 2;
+    }
   }
   .div-filename {
     height: 21px;

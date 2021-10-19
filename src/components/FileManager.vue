@@ -41,7 +41,7 @@
     <div
       class="files-container"
       :class="{ [presentationClass]: true }"
-      @click="unselectFiles"
+      @click="clearSelection"
     >
       <div class="files">
         <component
@@ -107,6 +107,7 @@ export default {
       "currentEntryPoint",
       "selectedFiles",
       "editContent",
+      "multiSelection",
     ]),
     ...mapGetters(["sortedFiles"]),
     canEdit() {
@@ -135,12 +136,7 @@ export default {
     window.removeEventListener("keydown", this.handleKeyPressed);
   },
   methods: {
-    ...mapMutations([
-      "selectFile",
-      "unselectFiles",
-      "addFileToSelection",
-      "removeFileToSelection",
-    ]),
+    ...mapMutations(["clearSelection", "addFileToSelection", "removeFileToSelection"]),
     ...mapActions([
       "init",
       "setCurrentEntryPoint",
@@ -159,8 +155,30 @@ export default {
       return this.selectedFiles.includes(file);
     },
     handleKeyPressed(e) {
-      if (e.keyCode === 46 && this.selectedFiles.length > 0 && !this.editing) {
+      if (this.editing) {
+        return;
+      }
+
+      if (e.key === "Delete" && this.selectedFiles.length > 0) {
         this.deleteSelectedFiles();
+      }
+      if (this.selectedFiles.length > 0) {
+        let filePos = this.sortedFiles.findIndex(
+          (f) => f.id === this.selectedFiles[0].id,
+        );
+
+        if (e.key === "ArrowLeft" && filePos > 0) {
+          let prevFile = this.sortedFiles[filePos - 1];
+
+          this.clearSelection();
+          this.addFileToSelection(prevFile);
+        }
+        if (e.key === "ArrowRight" && filePos < this.sortedFiles.length - 1) {
+          let nextFile = this.sortedFiles[filePos + 1];
+
+          this.clearSelection();
+          this.addFileToSelection(nextFile);
+        }
       }
     },
     handleAddDirectory() {
@@ -178,15 +196,40 @@ export default {
       });
     },
     handleClick(file, event) {
-      // console.log(event, file, 'selectfile');
+      // console.log(event, file, "selectfile");
       // si on a un dbl click ne pas déselectionner l'image.
       if (event && event.detail === 2) {
         return;
       }
 
       let index = this.selectedFiles.indexOf(file);
-      if (index === -1) {
-        this.addFileToSelection(file);
+
+      if (!this.multiSelection) {
+        // s'il n'est pas déja présent, l'ajouter
+        if (index === -1) {
+          this.clearSelection();
+          this.addFileToSelection(file);
+        }
+      } else {
+        if (!event.ctrlKey && !event.shiftKey) {
+          // il n'est pas encore sélectionné on remplace la sélection
+          // par ce fichier
+
+          // il est déjà sélectionné peut-être que la sélection est multiple
+          // dans ce cas il faut retirer les autres fichiers de la sélection
+
+          // c'est donc la même chose
+          this.clearSelection();
+          this.addFileToSelection(file);
+        } else {
+          if (index === -1) {
+            // il n'est pas encore sélectionné on l'ajoute à la sélection
+            this.addFileToSelection(file);
+          } else {
+            // il est déjà sélectionné on le retire de la sélection
+            this.removeFileToSelection(file);
+          }
+        }
       }
     },
     handleDblClick(file) {
@@ -234,10 +277,10 @@ export default {
   gap: 5px;
 
   grid-template-columns: 1fr 200px;
-  grid-template-rows: 39px 39px 1fr 200px;
+  grid-template-rows: 39px 39px 1fr 168px;
   grid-template-areas:
     "action    dropzone"
-    "hierarchy dropzone"
+    "hierarchy hierarchy"
     "files     files"
     "infos     infos";
 }

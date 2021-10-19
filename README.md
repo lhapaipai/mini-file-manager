@@ -145,6 +145,8 @@ const options = {
     },
   ],
 
+  multiSelection: false,
+
   locale: "en", // "en" | "fr" | "custom"
   localeData: {
     // if "custom" write here your translations by referring to the file
@@ -155,7 +157,7 @@ const options = {
     // ...
   }
 
-  // if you want to filter files you can select
+  // if you wants to filter files you can select
   // only for the modal "openFileManager"
   fileValidation: {
     mimeGroup: "image",
@@ -173,6 +175,32 @@ const options = {
       // note : if you give a width and a height, the ratio is calculated
       // and only the width and the ratio are used.
     },
+
+    // if you wants to filter files you can upload
+    fileUpload: {
+      maxFileSize: 500 * 1024 * 1024, // 500Mo
+      fileType: [
+        "text/*",
+        "image/*", // image/vnd.adobe.photoshop  image/x-xcf
+        "video/*",
+        "audio/*",
+        "application/rtf",
+        "application/pdf",
+        "application/xml",
+        "application/zip",
+        "font/ttf",
+        "font/woff",
+        "font/woff2",
+        "application/vnd.oasis.opendocument.spreadsheet", // libreoffice ods
+        "application/vnd.oasis.opendocument.text", // libreoffice odt
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // docx
+        "application/msword", // doc
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // xlsx
+        "application/vnd.ms-excel", // xls
+        "application/json",
+        "application/illustrator", // .ai
+      ]
+    }
   },
 
   originalSelection: ["posts/autre/ign.jpg"],

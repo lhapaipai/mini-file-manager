@@ -8,43 +8,19 @@
           <i class="fa-ratio"></i>
           {{ Math.round(1000 * imageOptions.ratio) / 1000 }}
         </span>
-        <span
-          v-if="
-            imageOptions.width || imageOptions.maxWidth || imageOptions.minWidth
-          "
-        >
+        <span v-if="imageOptions.width || imageOptions.maxWidth || imageOptions.minWidth">
           <i class="fa-right-open"></i>
           <i class="fa-resize-horizontal"></i>
-          {{
-            imageOptions.width ||
-            imageOptions.maxWidth ||
-            imageOptions.minWidth
-          }}px
-          {{
-            imageOptions.maxWidth ? "max." : imageOptions.minWidth ? "min." : ""
-          }}
+          {{ imageOptions.width || imageOptions.maxWidth || imageOptions.minWidth }}px
+          {{ imageOptions.maxWidth ? "max." : imageOptions.minWidth ? "min." : "" }}
         </span>
         <span
-          v-if="
-            imageOptions.height ||
-            imageOptions.maxHeight ||
-            imageOptions.minHeight
-          "
+          v-if="imageOptions.height || imageOptions.maxHeight || imageOptions.minHeight"
         >
           <i class="fa-right-open"></i>
           <i class="fa-resize-vertical"></i>
-          {{
-            imageOptions.height ||
-            imageOptions.maxHeight ||
-            imageOptions.minHeight
-          }}px
-          {{
-            imageOptions.maxHeight
-              ? "max."
-              : imageOptions.minHeight
-              ? "min."
-              : ""
-          }}
+          {{ imageOptions.height || imageOptions.maxHeight || imageOptions.minHeight }}px
+          {{ imageOptions.maxHeight ? "max." : imageOptions.minHeight ? "min." : "" }}
         </span>
       </span>
     </span>
