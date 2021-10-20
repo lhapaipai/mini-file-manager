@@ -8,16 +8,15 @@ Mini File Manager is very flexible, you can :
   - custom easily the theme with CSS variables.
   - localize the application.
 
-You can see an example here : [**Live Demo**](https://mini-file-manager.pentatrion.com/)
-
-  - [TinyMCE integration](https://mini-file-manager.pentatrion.com/wysiwyg/tinymce)
-  - [File Picker with form](https://mini-file-manager.pentatrion.com/post/edit)
-
-if you want a practical minimal example you can follow this [tutorial](https://github.com/lhapaipai/mini-file-manager/blob/main/docs/getting-started.md) which will not take you more than 5 minutes.
-
-if you want a full example you can consult the sources of [mini-file-manager-template](https://github.com/lhapaipai/mini-file-manager-template). This example contain full integration of the manager with form (file picker, wysiwyg), and simple file manager.
+You can see an example here : [**Live Demo**](https://mini-file-manager.pentatrion.com/) (TinyMCE integration / File Picker with form)
 
 <img alt="Mini File Manager" src="https://user-images.githubusercontent.com/1088155/128615403-2b41fbb4-dd4e-452e-b2c2-6926642bf146.jpg">
+
+## Getting started
+
+if you want a practical [**minimal installation recipe**](https://github.com/lhapaipai/mini-file-manager/blob/main/docs/getting-started.md) you can follow this tutorial which will not take you more than 5 minutes.
+
+if you want a full example you can consult the sources of [mini-file-manager-template](https://github.com/lhapaipai/mini-file-manager-template). This example contain full integration of the manager with form (file picker, wysiwyg), and simple file manager.
 
 ## Dependances
 
