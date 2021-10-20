@@ -14,7 +14,7 @@ export default function createStoreWithOptions({
   fileValidation,
   originalSelection,
   fileUpload,
-  multiSelection = false,
+  multiple = false,
   theme = "mini-file-manager-theme",
 }) {
   originalSelection = parseOriginalSelection(originalSelection, entryPoints);
@@ -49,7 +49,7 @@ export default function createStoreWithOptions({
 
       currentEntryPoint: null,
       secondaryDirectories: [],
-      multiSelection,
+      multiple,
       theme,
       directory: null,
       files: [],

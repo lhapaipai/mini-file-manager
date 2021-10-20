@@ -13,7 +13,7 @@
             ><i class="fa-trash"></i
           ></a>
           <a
-            v-if="!formFilePickerOptions.multiple"
+            v-if="!formPreviewOptions.multiple"
             href="#"
             class="browse"
             @click.prevent="handleBrowse"
@@ -23,7 +23,7 @@
       </div>
     </div>
     <div
-      v-if="selection.length === 0 || formFilePickerOptions.multiple"
+      v-if="selection.length === 0 || formPreviewOptions.multiple"
       class="general-actions"
     >
       <button class="penta-button outlined" @click.prevent="handleBrowse">
@@ -40,7 +40,7 @@ export default {
   props: {
     // eslint-disable-next-line vue/require-default-prop
     fileManagerOptions: Object,
-    formFilePickerOptions: {
+    formPreviewOptions: {
       type: Object,
       default: () => ({
         multiple: false,
@@ -56,6 +56,7 @@ export default {
       selection: [],
     };
   },
+
   watch: {
     selection() {
       let event = new CustomEvent("selectionChange", {
@@ -70,8 +71,8 @@ export default {
   methods: {
     fileImg(file) {
       if (file.thumbnails) {
-        if (this.formFilePickerOptions.previewType === "image") {
-          return file.thumbnails[this.formFilePickerOptions.previewFilter];
+        if (this.formPreviewOptions.previewType === "image") {
+          return file.thumbnails[this.formPreviewOptions.previewFilter];
         } else {
           return file.icon;
         }
@@ -83,13 +84,13 @@ export default {
       this.selection = this.selection.filter((f) => f.id !== file.id);
     },
     handleBrowse() {
-      let multiSelection = this.formFilePickerOptions.multiple;
+      let multiple = this.formPreviewOptions.multiple;
 
       new FileManagerModal(
         {
           ...this.fileManagerOptions,
-          originalSelection: multiSelection ? [] : this.selection.map((elt) => elt.id),
-          multiSelection,
+          originalSelection: multiple ? [] : this.selection.map((elt) => elt.id),
+          multiple,
         },
         this.onSelected,
       );

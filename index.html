@@ -23,7 +23,7 @@
   <div id="file-manager"></div>
   <div id="file-manager1"></div>
   <script type="module">
-    import { FileManager, FileManagerModal } from "./src/main.js";
+    import { FileManager, FileManagerModal } from "./src/index.js";
 
     document.addEventListener("keyup", (e) => {
       if (e.code === "Tab") {
@@ -66,7 +66,7 @@
         // maxFileSize: 1024 * 1024
       },
       locale: "fr",
-      multiSelection: true,
+      multiple: true,
       // originalSelection: ["posts/image0.jpeg", "posts/image1.jpeg"]
     };
 

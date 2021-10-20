@@ -16,7 +16,7 @@ npm install mini-file-manager
 # copy assets : file-manager and fonts directory
 cp -r node_modules/mini-file-manager/dist/{file-manager,fonts} public/
 # copy script and style
-cp -r node_modules/mini-file-manager/dist/{mini-file-manager.umd.js,style.css} public/
+cp -r node_modules/mini-file-manager/dist/{mini-file-manager.es.js,style.css} public/
 ```
 
 ```
@@ -25,7 +25,7 @@ cp -r node_modules/mini-file-manager/dist/{mini-file-manager.umd.js,style.css} p
 | | ├─...
 │ ├──fonts
 | | ├─...
-| ├──mini-file-manager.umd.js
+| ├──mini-file-manager.es.js
 | ├──style.css
 │ ├...
 ├──composer.json
@@ -128,7 +128,7 @@ class WelcomeController extends AbstractController
 {% block body %}
 <main>
     <h1>Hello Mini File Manager</h1>
-    <div id="file-manager" data-props="{{ fileManagerConfig | json_encode | e('html_attr') }}"></div>
+    <div id="file-manager" data-minifilemanager="{{ fileManagerConfig | json_encode | e('html_attr') }}"></div>
 </main>
 {% endblock %}
 
@@ -142,11 +142,9 @@ class WelcomeController extends AbstractController
 {% endblock %}
 
 {% block javascripts %}
-    <script src="/mini-file-manager.umd.js"></script>
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            new miniFileManager.FileManager("#file-manager");
-        });
+    <script type="module">
+        import { FileManager } from "/mini-file-manager.es.js";
+        new FileManager("#file-manager");
     </script>
 {% endblock %}
 ```

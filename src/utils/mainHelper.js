@@ -6,7 +6,7 @@ import { prepareContainer } from "mini-notifier";
 export function prepareOptions(elt, options) {
   if (!options) {
     if (elt instanceof HTMLElement) {
-      options = JSON.parse(elt.dataset.props);
+      options = JSON.parse(elt.dataset.minifilemanager);
     } else {
       options = {};
     }

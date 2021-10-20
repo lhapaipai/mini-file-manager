@@ -177,7 +177,7 @@ const options: FileManagerOptions = {
     // ...
   }
 
-  multiSelection: false,
+  multiple: false,
   originalSelection: ["posts/autre/ign.jpg"],
   theme: "pentatrion-theme"
 };

@@ -3,7 +3,7 @@ import VFormFilePicker from "./components/FormFilePicker.vue";
 import { formStringifier } from "./utils/mainHelper";
 
 export default class FormFilePicker {
-  constructor(inputElt, formFilePickerOptions, fileManagerOptions, selection) {
+  constructor(inputElt, formPreviewOptions, fileManagerOptions, files) {
     // ici l'élément est un input hidden contenant le nom des fichiers sélectionnés.
     if (typeof inputElt === "string") {
       inputElt = document.querySelector(inputElt);
@@ -12,23 +12,23 @@ export default class FormFilePicker {
       return;
     }
     if (!fileManagerOptions) {
-      fileManagerOptions = JSON.parse(inputElt.dataset.filemanager);
+      fileManagerOptions = JSON.parse(inputElt.dataset.minifilemanager);
     }
-    if (!formFilePickerOptions) {
-      formFilePickerOptions = JSON.parse(inputElt.dataset.formfilepicker);
+    if (!formPreviewOptions) {
+      formPreviewOptions = JSON.parse(inputElt.dataset.formpreview);
     }
-    if (!selection) {
-      selection = JSON.parse(inputElt.dataset.selection);
+    if (!files) {
+      files = JSON.parse(inputElt.dataset.files);
     }
-    // console.log(selection);
+    // console.log(files);
 
     let appElt = document.createElement("div");
     inputElt.after(appElt);
 
     this.app = createApp(VFormFilePicker, {
-      formFilePickerOptions,
+      formPreviewOptions,
       fileManagerOptions,
-      originalSelection: selection,
+      originalSelection: files,
       input: inputElt,
     });
     this.inputElt = inputElt;
@@ -40,9 +40,9 @@ export default class FormFilePicker {
   }
 
   onSelectionChange(e) {
-    let selection = e.detail;
-    this.inputElt.value = formStringifier(selection);
-    console.log("selection change !", this.inputElt.value);
+    let files = e.detail;
+    this.inputElt.value = formStringifier(files);
+    console.log("files change !", this.inputElt.value);
   }
 
   destroy() {

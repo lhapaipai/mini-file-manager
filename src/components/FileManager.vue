@@ -105,7 +105,7 @@ export default {
       "currentEntryPoint",
       "selectedFiles",
       "editContent",
-      "multiSelection",
+      "multiple",
     ]),
     ...mapGetters(["sortedFiles"]),
     canEdit() {
@@ -202,7 +202,7 @@ export default {
 
       let index = this.selectedFiles.indexOf(file);
 
-      if (!this.multiSelection) {
+      if (!this.multiple) {
         // s'il n'est pas déja présent, l'ajouter
         if (index === -1) {
           this.clearSelection();
