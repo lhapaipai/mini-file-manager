@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { openFileManager } from "../main";
+import FileManagerModal from "../FileManagerModal";
 
 export default {
   props: {
@@ -58,7 +58,7 @@ export default {
   },
   watch: {
     selection() {
-      let event = new CustomEvent("updateSelection", {
+      let event = new CustomEvent("selectionChange", {
         detail: this.selection,
       });
       this.$el.dispatchEvent(event);
@@ -84,7 +84,8 @@ export default {
     },
     handleBrowse() {
       let multiSelection = this.formFilePickerOptions.multiple;
-      openFileManager(
+
+      new FileManagerModal(
         {
           ...this.fileManagerOptions,
           originalSelection: multiSelection ? [] : this.selection.map((elt) => elt.id),

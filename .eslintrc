@@ -16,5 +16,15 @@
         "eslint:recommended",
         "plugin:vue/vue3-recommended",
         "plugin:prettier/recommended"
+    ],
+    "overrides": [
+        {
+            "files": [
+                "./scripts/*.js"
+            ],
+            "env": {
+                "node": true
+            }
+        }
     ]
 }

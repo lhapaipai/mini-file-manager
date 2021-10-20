@@ -3,32 +3,18 @@
 const path = require("path");
 const fs = require("fs");
 
-const now = toIsoString(new Date());
-// const now = "2021-06-09T07-57";
-// const configTmpFile = path.resolve(fontelloAssetsDir, "config-tmp.json");
+const now = toIsoString(new Date()); // "2021-06-09T07-57"
 
-const backupDir = path.resolve(__dirname, "../.local/backup");
-fs.mkdirSync(backupDir, { recursive: true });
-
-const configFile = path.resolve(
-  __dirname,
-  "../src/css/fontello/config.json"
-);
-const backupFile = path.resolve(backupDir, `config-${now}.json`);
+const configFile = path.resolve(__dirname, "../src/css/fontello/config.json");
+makeBackup(configFile, `config-fontello-${now}.json`);
 
 // pour éviter un conflit on réécris tous les codes.
+// (les codes de mini-file-manager sont entre 0x e800 = 59392 et 0x e900)
 let from = 59392;
 
-const fileManagerConfigFile =
-  "/home/lhapaipai/projets/modules/mini-file-manager/src/css/fontello/config.json";
+let { glyphs } = JSON.parse(fs.readFileSync(configFile, { encoding: "utf8" }));
 
-fs.copyFileSync(configFile, backupFile);
-
-let { glyphs: fmGlyphs } = JSON.parse(
-  fs.readFileSync(configFile, { encoding: "utf8" })
-);
-
-fmGlyphs.forEach((g) => {
+glyphs.forEach((g) => {
   g.code = from++;
 });
 
@@ -39,11 +25,10 @@ let output = {
   hinting: true,
   units_per_em: 1000,
   ascent: 850,
-  glyphs: fmGlyphs,
+  glyphs,
 };
 
 fs.writeFileSync(configFile, JSON.stringify(output), { encoding: "utf8" });
-// console.log(appGlyphs.length, fmGlyphs.length);
 
 /* FIN */
 
@@ -65,4 +50,10 @@ function toIsoString(datetime) {
     "-" +
     pad(datetime.getUTCMinutes())
   );
+}
+function makeBackup(filePath, backupFileName) {
+  const backupDir = path.resolve(__dirname, "../.local/backup");
+  fs.mkdirSync(backupDir, { recursive: true });
+  const backupFile = path.resolve(backupDir, backupFileName);
+  fs.copyFileSync(filePath, backupFile);
 }

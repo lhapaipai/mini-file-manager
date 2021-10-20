@@ -5,7 +5,8 @@ local_path		:= $(PWD)
 
 FONT_ASSETS_DIR      ?= ./src/css/fontello
 FONT_PUBLIC_DIR      ?= ./public/fonts/fontello
-FONTELLO_HOST ?= https://fontello.com
+# FONTELLO_HOST ?= https://fontello.com
+FONTELLO_HOST ?= http://localhost:3000
 
 .PHONY: help
 help: ## Affiche cette aide
@@ -54,3 +55,7 @@ icon-save:
 	rm -rf .fontello.src .fontello.zip
 
 # le fichier ~/.fontello peut être supprimé manuellement lorsqu'on sait qu'on va plus avoir besoin de fontello dans la journée.
+
+.PHONY: icon-order
+icon-order: ## organise le code des glyphs pour qu'ils soient regroupés dans une plage.
+	node ${PWD}/scripts/order-fontello-codes.js

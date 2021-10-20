@@ -24,14 +24,16 @@
         placeholder="Répertoire"
         @click="handleChangeSecondaryDirectory(0)"
       />
-      <button
-        v-for="(secondaryDirectory, key) in secondaryDirectories"
-        :key="key"
-        class="penta-button outlined"
-        @click="handleChangeSecondaryDirectory(key + 1)"
-      >
-        {{ secondaryDirectory }}
-      </button>
+      <div class="sub-directories">
+        <button
+          v-for="(secondaryDirectory, key) in secondaryDirectories"
+          :key="key"
+          class="penta-button outlined"
+          @click="handleChangeSecondaryDirectory(key + 1)"
+        >
+          {{ secondaryDirectory }}
+        </button>
+      </div>
     </div>
 
     <div
@@ -270,10 +272,10 @@ export default {
   overflow: hidden;
   padding: 10px;
   display: grid;
-  gap: 5px;
+  gap: 10px;
 
-  grid-template-columns: 1fr 200px;
-  grid-template-rows: 39px 39px 1fr 168px;
+  grid-template-columns: 92px 1fr;
+  grid-template-rows: 40px 40px 1fr 158px;
   grid-template-areas:
     "action    dropzone"
     "hierarchy hierarchy"
@@ -283,7 +285,7 @@ export default {
 @media (min-width: 800px) {
   .file-manager {
     grid-template-columns: 92px 1fr 200px;
-    grid-template-rows: 39px 100px 1fr;
+    grid-template-rows: 42px 100px 1fr;
     grid-template-areas:
       "action hierarchy dropzone"
       "files  files     dropzone"
@@ -296,16 +298,24 @@ export default {
   grid-area: hierarchy;
   display: flex;
 
-  > * {
-    margin-right: 10px;
-    height: 38px;
-    flex-shrink: 0;
-    &:last-child {
-      margin-right: 0;
-    }
-  }
   .directory-selector {
     width: 250px;
+    height: 38px;
+    margin-right: 10px;
+  }
+  .sub-directories {
+    overflow-x: auto;
+    width: 0;
+    flex: 1;
+    display: flex;
+    & > * {
+      margin-right: 10px;
+      height: 38px;
+      flex-shrink: 0;
+      &:last-child {
+        margin-right: 0px;
+      }
+    }
   }
 }
 .dropzone {
@@ -350,9 +360,13 @@ export default {
   @media (max-width: 799.9px) {
     border-bottom: 1px solid var(--gray-light);
     border-top: 1px solid var(--gray-light);
-    margin: 10px 0;
   }
   user-select: none;
+
+  scrollbar-color: transparent transparent;
+  &:hover {
+    scrollbar-color: var(--gray-light) transparent;
+  }
 }
 
 .infos {
@@ -367,11 +381,11 @@ export default {
   .files {
     margin: 0.5rem;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
     gap: 15px;
   }
 
-  @media (min-width: 400px) {
+  @media (min-width: 600px) {
     .files {
       grid-template-columns: repeat(auto-fill, minmax(154px, 1fr));
     }

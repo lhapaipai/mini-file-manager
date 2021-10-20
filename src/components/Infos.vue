@@ -258,6 +258,10 @@ export default {
 <style lang="postcss" scoped>
 .infos {
   overflow: auto;
+  scrollbar-color: transparent transparent;
+  &:hover {
+    scrollbar-color: var(--gray-light) transparent;
+  }
 }
 .infos-row {
   /* 3px pour afficher les ombres de box-shadow malgré un overflow: auto */

@@ -27,7 +27,7 @@
     "serve": "spassr dist --entrypoint dist/index-examples.html"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^1.4.0",
+    "@vitejs/plugin-vue": "^1.9.3",
     "autoprefixer": "^10.3.7",
     "cropperjs": "^1.5.11",
     "eslint": "^8.0.1",
@@ -35,7 +35,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^7.19.1",
     "mini-notifier": "^0.4.6",
-    "pentatrion-lib": "^0.3.4",
+    "pentatrion-lib": "file:../pentatrion-lib/dist",
     "pentatrion-theme": "github:lhapaipai/pentatrion-theme#v0.1.2",
     "postcss": "^8.3.9",
     "postcss-import": "^14.0.2",
@@ -46,9 +46,9 @@
     "scroll-blocker": "^1.0.1",
     "spassr": "^2.6.0",
     "vite": "^2.4.4",
-    "vue": "^3.0.11",
+    "vue": "^3.2.20",
     "vue-i18n-lite": "^1.0.2",
-    "vuex": "^4.0.0"
+    "vuex": "^4.0.2"
   },
   "repository": {
     "type": "git",
