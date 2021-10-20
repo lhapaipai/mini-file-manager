@@ -13,7 +13,9 @@ You can see an example here : [**Live Demo**](https://mini-file-manager.pentatri
   - [TinyMCE integration](https://mini-file-manager.pentatrion.com/wysiwyg/tinymce)
   - [File Picker with form](https://mini-file-manager.pentatrion.com/post/edit)
 
-Sources of this examples are available in a separate repository [mini-file-manager-template](https://github.com/lhapaipai/mini-file-manager-template). This example contain full integration of the manager with form (file picker, wysiwyg), and simple file manager.
+if you want a practical minimal example you can follow this [tutorial](https://github.com/lhapaipai/mini-file-manager/blob/main/docs/getting-started.md) which will not take you more than 5 minutes.
+
+if you want a full example you can consult the sources of [mini-file-manager-template](https://github.com/lhapaipai/mini-file-manager-template). This example contain full integration of the manager with form (file picker, wysiwyg), and simple file manager.
 
 <img alt="Mini File Manager" src="https://user-images.githubusercontent.com/1088155/128615403-2b41fbb4-dd4e-452e-b2c2-6926642bf146.jpg">
 
@@ -85,23 +87,23 @@ import "mini-file-manager/dist/style.css";
 
 Mini File Manager export 3 classes
 
-```ts
+```js
 new FileManager(
-  "#selector": string | HTMLElement,
-  fileManagerOptions: FileManagerOptions
+  "#selector",        // string | HTMLElement
+  fileManagerOptions  // FileManagerOptions
 );
 
 new FileManagerModal(
-  fileManagerOptions: FileManagerOptions,
-  onSuccess: (selectedFiles: Files[]) => void,
-  onAbort: () => void
+  fileManagerOptions, // FileManagerOptions
+  onSuccess,          // (selectedFiles: Files[]) => void
+  onAbort             // () => void
 );
 
 new FormFilePicker(
-  inputElt: string | HTMLElement,
-  formFilePickerOptions: FormFilePickerOptions,
-  fileManagerOptions: FileManagerOptions,
-  selection: Files[]
+  inputElt,             // string | HTMLElement
+  formFilePickerOptions,// FormFilePickerOptions
+  fileManagerOptions,   // FileManagerOptions
+  selection             // Files[]
 )
 ```
 
