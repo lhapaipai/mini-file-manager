@@ -60,23 +60,12 @@ Copy `dist/fonts` directory from `node_modules/mini-file-manager` to your webroo
 <div id="file-manager"></div>
 <script src="/dist/mini-file-manager.umd.js"></script>
 <script>
-  let { createFileManager, openFileManager } = miniFileManager;
-  // etc...
-</script>
-```
-
-or
-
-```html
-<!-- with ES modules -->
-<link rel="stylesheet" href="/dist/style.css" />
-<div id="file-manager"></div>
-<script type="module">
-  import {
-    createFileManager,
-    openFileManager,
-  } from "/dist/mini-file-manager.es.js";
-  // etc...
+  let {
+    FileManager,
+    FileManagerModal,
+    FormFilePicker
+  } = miniFileManager;
+    // etc...
 </script>
 ```
 
@@ -84,48 +73,40 @@ or
 
 ```js
 // with bundler
-import { createFileManager, openFileManager } from "mini-file-manager";
-import "mini-file-manager/dist/style.css";
-```
-
-#### Custom installation
-
-if you want to customize styles, you need to use mini-file-manager with a bundler (Rollup/Vite/Webpack)
-you probably need to install custom loader to compile Vue 3 template files and mini-notifier (if you want to import style files)
-
-```console
-npm i mini-notifier cropperjs mini-notifier pentatrion-lib scroll-blocker vue-i18n-lite vuex@next
-```
-
-```js
 import {
-  createFileManager,
-  openFileManager,
-} from "mini-file-manager/src/main-without-theme";
-
-import "mini-file-manager/src/css/index.scss";
-import "mini-notifier/dist/style.css";
+  FileManager,
+  FileManagerModal,
+  FormFilePicker
+} from "mini-file-manager";
+import "mini-file-manager/dist/style.css";
 ```
 
 ## Configuration
 
-Mini File Manager export 2 functions
+Mini File Manager export 3 classes
 
-```js
-createFileManager("#selector", options);
+```ts
+new FileManager(
+  "#selector": string | HTMLElement,
+  fileManagerOptions: FileManagerOptions
+);
 
-openFileManager(options, onSuccess, onAbort);
+new FileManagerModal(
+  fileManagerOptions: FileManagerOptions,
+  onSuccess: (selectedFiles: Files[]) => void,
+  onAbort: () => void
+);
 
-function onSuccess(files) {
-  console.log("selected files", files);
-}
-function onAbort() {
-  console.log("abort");
-}
+new FormFilePicker(
+  inputElt: string | HTMLElement,
+  formFilePickerOptions: FormFilePickerOptions,
+  fileManagerOptions: FileManagerOptions,
+  selection: Files[]
+)
 ```
 
-```js
-const options = {
+```ts
+const options: FileManagerOptions = {
   endPoint: "http://url-to-backend.com/media-manager",
   entryPoints: [
     {
@@ -198,6 +179,12 @@ const options = {
   multiSelection: false,
   originalSelection: ["posts/autre/ign.jpg"],
   theme: "pentatrion-theme"
+};
+
+const formFilePickerOptions: FormFilePickerOptions = {
+  previewType: "image",   // "image" | "file"
+  previewFilter: "small", // any filter defined in LiipImagineBundle
+  multiple: true,
 };
 ```
 
