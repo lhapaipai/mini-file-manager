@@ -57,7 +57,7 @@ Copy `dist/fonts` directory from `node_modules/mini-file-manager` to your webroo
 
 ```html
 <!-- with UMD -->
-<link rel="stylesheet" href="/dist/style.css" />
+<link rel="stylesheet" href="/dist/mini-file-manager.css" />
 <div id="file-manager"></div>
 <script src="/dist/mini-file-manager.umd.js"></script>
 <script>
@@ -79,7 +79,7 @@ import {
   FileManagerModal,
   FormFilePicker
 } from "mini-file-manager";
-import "mini-file-manager/dist/style.css";
+import "mini-file-manager/dist/mini-file-manager.css";
 ```
 
 ## Configuration
