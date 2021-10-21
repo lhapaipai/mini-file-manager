@@ -12,5 +12,15 @@ export default defineConfig({
       entry: "src/index.js",
       name: "miniFileManager",
     },
+    rollupOptions: {
+      output: {
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name == "style.css") {
+            return "mini-file-manager.css";
+          }
+          return assetInfo.name;
+        },
+      },
+    },
   },
 });
