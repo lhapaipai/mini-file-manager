@@ -70,12 +70,12 @@
       // originalSelection: ["posts/image0.jpeg", "posts/image1.jpeg"]
     };
 
-    let fileManager = new FileManager(appElt, options);
+    let fileManager = FileManager(appElt, options);
 
     let filePicker = document.getElementById("pick-file");
 
     filePicker.addEventListener("click", e => {
-      new FileManagerModal(
+      FileManagerModal(
         options,
         (files) => { console.log("onSuccess", files); },
         () => { console.log("onAbort"); }

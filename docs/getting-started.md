@@ -144,7 +144,7 @@ class WelcomeController extends AbstractController
 {% block javascripts %}
     <script type="module">
         import { FileManager } from "/mini-file-manager.es.js";
-        new FileManager("#file-manager");
+        FileManager("#file-manager");
     </script>
 {% endblock %}
 ```

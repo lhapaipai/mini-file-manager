@@ -3,50 +3,48 @@ import VFileManagerModal from "./components/FileManagerModal.vue";
 import { scrollLockDirective } from "scroll-blocker/scroll-lock-directive";
 import { prepareOptions } from "./utils/mainHelper";
 
-export default class FileManagerModal {
-  constructor(options, onSuccess = () => {}, onAbort = () => {}) {
-    this.elt = document.createElement("div");
-    document.body.appendChild(this.elt);
+export default function FileManagerModal(
+  options,
+  onSuccess = () => {},
+  onAbort = () => {},
+) {
+  let elt = document.createElement("div");
+  document.body.appendChild(elt);
 
-    let { store, i18n } = prepareOptions(this.elt, options);
+  let { store, i18n } = prepareOptions(elt, options);
 
-    this.onSelectFiles = this.onSelectFiles.bind(this);
-    this.onAbortSelect = this.onAbortSelect.bind(this);
+  const app = createApp(VFileManagerModal);
 
-    this.app = createApp(VFileManagerModal);
+  app.directive("scroll-lock", scrollLockDirective);
+  app.use(store);
+  app.use(i18n);
 
-    this.app.directive("scroll-lock", scrollLockDirective);
-    this.app.use(store);
-    this.app.use(i18n);
+  const vm = app.mount(elt);
+  vm.$el.addEventListener("selectFiles", onSelectFiles);
+  vm.$el.addEventListener("abortSelect", onAbortSelect);
 
-    this.vm = this.app.mount(this.elt);
-    this.vm.$el.addEventListener("selectFiles", this.onSelectFiles);
-    this.vm.$el.addEventListener("abortSelect", this.onAbortSelect);
-
-    this.onSuccess = onSuccess;
-    this.onAbort = onAbort;
-  }
-
-  onSelectFiles(e) {
+  function onSelectFiles(e) {
     let files = [];
     for (let index = 0; index < e.detail.length; index++) {
       files.push(toRaw(e.detail[index]));
     }
-    this.onSuccess(toRaw(files));
+    onSuccess(toRaw(files));
 
-    this.destroy();
+    destroy();
   }
 
-  onAbortSelect() {
-    this.onAbort();
-    this.destroy();
+  function onAbortSelect() {
+    onAbort();
+    destroy();
   }
 
-  destroy() {
-    this.vm.$el.removeEventListener("selectFiles", this.onSelectFiles);
-    this.vm.$el.removeEventListener("abortSelect", this.onAbortSelect);
-    this.app.unmount();
-    this.vm.$el.remove();
-    this.elt.remove();
+  function destroy() {
+    vm.$el.removeEventListener("selectFiles", onSelectFiles);
+    vm.$el.removeEventListener("abortSelect", onAbortSelect);
+    app.unmount();
+    vm.$el.remove();
+    elt.remove();
   }
+
+  return { destroy };
 }

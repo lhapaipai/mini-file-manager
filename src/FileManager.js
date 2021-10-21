@@ -3,28 +3,25 @@ import VFileManager from "./components/FileManager.vue";
 import { scrollLockDirective } from "scroll-blocker/scroll-lock-directive";
 import { prepareOptions } from "./utils/mainHelper";
 
-export default class FileManager {
-  constructor(elt, options) {
-    if (typeof elt === "string") {
-      elt = document.querySelector(elt);
-    }
-
-    let { i18n, store } = prepareOptions(elt, options);
-
-    this.app = createApp(VFileManager);
-
-    this.app.directive("scroll-lock", scrollLockDirective);
-    this.app.use(store);
-    this.app.use(i18n);
-
-    this.vm = this.app.mount(elt);
+export default function FileManager(elt, options) {
+  if (typeof elt === "string") {
+    elt = document.querySelector(elt);
   }
 
-  destroy() {
-    this.app.unmount();
-    this.vm.$el.remove();
+  let { i18n, store } = prepareOptions(elt, options);
 
-    this.app = null;
-    this.vm = null;
+  const app = createApp(VFileManager);
+
+  app.directive("scroll-lock", scrollLockDirective);
+  app.use(store);
+  app.use(i18n);
+
+  const vm = app.mount(elt);
+
+  function destroy() {
+    app.unmount();
+    vm.$el.remove();
   }
+
+  return { destroy };
 }

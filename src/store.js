@@ -16,11 +16,11 @@ export default function createStoreWithOptions({
   fileUpload,
   multiple = false,
   theme = "mini-file-manager-theme",
+  debug = false,
 }) {
   originalSelection = parseOriginalSelection(originalSelection, entryPoints);
   // console.log(entryPoints);
-  let isDebug = true;
-  let debugStr = isDebug ? "?XDEBUG_TRIGGER" : "";
+  let debugStr = debug ? "?XDEBUG_TRIGGER" : "";
   return createStore({
     state: {
       endPoints: {

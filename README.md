@@ -84,21 +84,21 @@ import "mini-file-manager/dist/style.css";
 
 ## Configuration
 
-Mini File Manager export 3 classes
+Mini File Manager export 3 functions
 
 ```js
-new FileManager(
+FileManager(
   "#selector",        // string | HTMLElement
   fileManagerOptions  // FileManagerOptions
 );
 
-new FileManagerModal(
+FileManagerModal(
   fileManagerOptions, // FileManagerOptions
   onSuccess,          // (selectedFiles: Files[]) => void
   onAbort             // () => void
 );
 
-new FormFilePicker(
+FormFilePicker(
   inputElt,             // string | HTMLElement
   formFilePickerOptions,// FormFilePickerOptions
   fileManagerOptions,   // FileManagerOptions
