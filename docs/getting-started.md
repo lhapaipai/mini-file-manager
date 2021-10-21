@@ -120,7 +120,6 @@ class WelcomeController extends AbstractController
 ## Create associate template
 
 ```twig
-{# templates/welcome/index.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello Mini File Manager !{% endblock %}
@@ -128,15 +127,37 @@ class WelcomeController extends AbstractController
 {% block body %}
 <main>
     <h1>Hello Mini File Manager</h1>
-    <div id="file-manager" data-minifilemanager="{{ fileManagerConfig | json_encode | e('html_attr') }}"></div>
+    <div id="file-manager" data-props="{{ fileManagerConfig | json_encode | e('html_attr') }}"></div>
 </main>
 {% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/mini-file-manager.css" />
+    <link rel="stylesheet" href="/style.css" />
     <style>
+        body {
+            font-family: Arial;
+        }
+        main {
+            margin: 0 auto;
+            max-width: 1024px;
+        }
+        h1 {
+            text-align: center;
+        }
+
         #file-manager {
+            box-shadow: 0 0 3px #ddd;
+            border: 1px solid #bbb;
             min-height: 600px;
+        }
+
+        /* some customization :-) */
+        .mini-file-manager-theme {
+            --primary-color-light: #cece93;
+            --primary-color: #a0a023;
+            --primary-color-text: #ffffff;
+            --primary-color-active: #8c8c00;
+            --primary-color-dark: #525200;
         }
     </style>
 {% endblock %}
@@ -144,7 +165,7 @@ class WelcomeController extends AbstractController
 {% block javascripts %}
     <script type="module">
         import { FileManager } from "/mini-file-manager.es.js";
-        FileManager("#file-manager");
+        new FileManager("#file-manager");
     </script>
 {% endblock %}
 ```
@@ -159,3 +180,5 @@ symfony serve
 
 Go `https://127.0.0.1:8000`
 Enjoy !
+
+<img alt="Mini file manager in action !" src="https://raw.githubusercontent.com/lhapaipai/mini-file-manager/main/docs/screenshot.png">
