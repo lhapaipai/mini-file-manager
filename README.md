@@ -183,8 +183,8 @@ const options: FileManagerOptions = {
 };
 
 const formFilePickerOptions: FormFilePickerOptions = {
-  previewType: "image",   // "image" | "file"
-  previewFilter: "small", // any filter defined in LiipImagineBundle
+  type: "image",   // "image" | "file"
+  filter: "small", // any filter defined in LiipImagineBundle
   multiple: true,
 };
 ```

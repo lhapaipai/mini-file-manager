@@ -16,7 +16,7 @@ npm install mini-file-manager
 # copy assets : file-manager and fonts directory
 cp -r node_modules/mini-file-manager/dist/{file-manager,fonts} public/
 # copy script and style
-cp -r node_modules/mini-file-manager/dist/{mini-file-manager.es.js,style.css} public/
+cp -r node_modules/mini-file-manager/dist/{mini-file-manager.es.js,mini-file-manager.css} public/
 ```
 
 ```
@@ -26,7 +26,7 @@ cp -r node_modules/mini-file-manager/dist/{mini-file-manager.es.js,style.css} pu
 │ ├──fonts
 | | ├─...
 | ├──mini-file-manager.es.js
-| ├──style.css
+| ├──mini-file-manager.css
 │ ├...
 ├──composer.json
 ├──package.json
@@ -133,7 +133,7 @@ class WelcomeController extends AbstractController
 {% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/mini-file-manager.css" />
     <style>
         #file-manager {
             min-height: 600px;

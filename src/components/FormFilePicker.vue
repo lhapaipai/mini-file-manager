@@ -71,8 +71,8 @@ export default {
   methods: {
     fileImg(file) {
       if (file.thumbnails) {
-        if (this.formPreviewOptions.previewType === "image") {
-          return file.thumbnails[this.formPreviewOptions.previewFilter];
+        if (this.formPreviewOptions.type === "image") {
+          return file.thumbnails[this.formPreviewOptions.filter];
         } else {
           return file.icon;
         }
