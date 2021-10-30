@@ -387,7 +387,7 @@ export default {
 
   @media (min-width: 600px) {
     .files {
-      grid-template-columns: repeat(auto-fill, minmax(154px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
     }
   }
 }
