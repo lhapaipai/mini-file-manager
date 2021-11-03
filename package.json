@@ -25,6 +25,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "watch": "vite build --watch",
     "serve": "spassr dist --entrypoint dist/index-examples.html"
   },
   "devDependencies": {

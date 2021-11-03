@@ -10,7 +10,7 @@ export function isValidFile(file, fileValidation) {
     return false;
   }
 
-  if (fileValidation.mimeGroup === "image") {
+  if (fileValidation.mimeGroup === "image" || fileValidation.imageOptions) {
     if (!fileValidation.imageOptions) {
       return true;
     }

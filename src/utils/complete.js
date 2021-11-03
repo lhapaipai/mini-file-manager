@@ -4,6 +4,7 @@
 export function checkAndFixValidation(fileValidation) {
   if (!fileValidation) return null;
   if (fileValidation.imageOptions) {
+    fileValidation.mimeGroup = "image";
     if (fileValidation.imageOptions.width && fileValidation.imageOptions.height) {
       fileValidation.imageOptions.ratio =
         fileValidation.imageOptions.width / fileValidation.imageOptions.height;
