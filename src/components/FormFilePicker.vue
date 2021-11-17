@@ -96,16 +96,16 @@ export default {
       );
     },
     onSelected(files) {
-      console.log("onSelected", this.formPreviewOptions.multiple);
-      let uniqueFiles = files.filter((f) => !this.selection.find((sf) => sf.id === f.id));
+      console.log("onSelected", files);
+
       if (this.formPreviewOptions.multiple) {
+        let uniqueFiles = files.filter(
+          (f) => !this.selection.find((sf) => sf.id === f.id),
+        );
+
         this.selection = [...this.selection, ...uniqueFiles];
       } else {
-        if (uniqueFiles.length > 0) {
-          this.selection = [uniqueFiles[0]];
-        } else {
-          this.selection = [];
-        }
+        this.selection = files;
       }
     },
   },

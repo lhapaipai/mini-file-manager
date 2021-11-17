@@ -21,7 +21,6 @@
   <button id="pick-file">Pick File</button>
   <button id="destroy-fm">destroy file manager</button>
   <div id="file-manager"></div>
-  <div id="file-manager1"></div>
   <script type="module">
     import { FileManager, FileManagerModal } from "./src/index.js";
 
@@ -32,7 +31,6 @@
     });
 
     let appElt = document.getElementById("file-manager");
-    let appElt1 = document.getElementById("file-manager1");
 
     let options = {
       endPoint: "http://mini-file-manager.local/media-manager",

@@ -81,7 +81,7 @@ export default function createStoreWithOptions({
         if (state.currentEntryPoint.directory !== "") {
           prefix = state.currentEntryPoint.directory;
         }
-        return prefix + (suffixe !== "" ? "/" + suffixe : "");
+        return prefix + (suffixe !== "" ? (prefix !== "" ? "/" : "") + suffixe : "");
       },
       invalidSelectedFiles(state) {
         return state.selectedFiles.filter((file) => {

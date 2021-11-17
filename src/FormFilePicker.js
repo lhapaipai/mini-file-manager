@@ -33,7 +33,6 @@ export default function FormFilePicker(
     formPreviewOptions,
     fileManagerOptions,
     originalSelection: files,
-    input: inputElt,
   });
 
   const vm = app.mount(appElt);

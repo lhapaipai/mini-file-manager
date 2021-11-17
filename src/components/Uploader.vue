@@ -129,7 +129,11 @@ export default {
       fileUploadInfos.uniqueIdentifier = `${fileUploadInfos.size}-${filename2dirname(
         fileUploadInfos.fileName,
       )}`;
-      fileUploadInfos.id = `#${this.currentEntryPoint.origin}:${this.completeDirectory}/${fileUploadInfos.fileName}`;
+      if (this.completeDirectory) {
+        fileUploadInfos.id = `#${this.currentEntryPoint.origin}:${this.completeDirectory}/${fileUploadInfos.fileName}`;
+      } else {
+        fileUploadInfos.id = `#${this.currentEntryPoint.origin}:${fileUploadInfos.fileName}`;
+      }
 
       resumable.upload();
 

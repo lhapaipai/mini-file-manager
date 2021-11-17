@@ -178,7 +178,11 @@ const options: FileManagerOptions = {
   }
 
   multiple: false,
+
+  // not needed with FormFilePicker
+  // selection is retrieved from input value
   originalSelection: ["posts/autre/ign.jpg"],
+
   theme: "pentatrion-theme"
 };
 
