@@ -7,6 +7,7 @@ export default function FormFilePicker(
   formPreviewOptions,
   fileManagerOptions,
   files,
+  selectionChangeCallback = undefined,
 ) {
   // ici l'élément est un input hidden contenant le nom des fichiers sélectionnés.
   if (typeof inputElt === "string") {
@@ -42,6 +43,9 @@ export default function FormFilePicker(
     let files = e.detail;
     inputElt.value = formStringifier(files);
     // console.log("files change !", inputElt.value);
+    if (selectionChangeCallback) {
+      selectionChangeCallback(files);
+    }
   }
 
   function destroy() {

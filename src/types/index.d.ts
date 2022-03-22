@@ -103,6 +103,7 @@ declare function FormFilePicker(
   formPreviewOptions: FormPreviewOptions,
   fileManagerOptions: FileManagerOptions,
   files: FileManagerFile[],
+  selectionChangeCallback: () => void | undefined
 ): FormFilePickerType;
 
 export {FileManager, FileManagerModal, FormFilePicker};
