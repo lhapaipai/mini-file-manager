@@ -16,9 +16,12 @@
       </div>
       <div class="infos-row">
         <label>{{ $t("downloadAll") }}</label>
-        <div class="penta-button-group">
-          <button class="penta-button outlined" @click.prevent="handleDownload">
-            <i class="fa-download"></i>
+        <div :class="`${themePrefix}-button-group mfm-button-group`">
+          <button
+            :class="`${themePrefix}-button outlined`"
+            @click.prevent="handleDownload"
+          >
+            <i class="famfm-download"></i>
           </button>
         </div>
       </div>
@@ -29,44 +32,42 @@
         <div v-if="!canEdit(file)">
           <div>{{ file.filename }}</div>
         </div>
-        <div v-else class="penta-input-button">
+        <div v-else :class="`${themePrefix}-input-button mfm-input-button`">
           <input
             ref="inputFilename"
             v-model="filename"
             size="1"
-            class="penta-input-text"
+            :class="`${themePrefix}-input-text mfm-input-text`"
             type="text"
             :disabled="!editing"
           />
-          <a
-            href="#"
-            class="penta-button outlined penta-icon"
+          <button
+            :class="`${themePrefix}-button outlined ${themePrefix}-icon`"
             @click.prevent="editFilename"
           >
-            <i v-if="editing" class="fa-ok"></i>
-            <i v-else class="fa-pencil"></i>
-          </a>
+            <i v-if="editing" class="famfm-ok"></i>
+            <i v-else class="famfm-pencil"></i>
+          </button>
         </div>
       </form>
       <div v-if="file.url" class="infos-row url">
         <label>{{ $t("url") }}</label>
-        <div class="penta-input-button">
+        <div :class="`${themePrefix}-input-button mfm-input-button`">
           <input
             ref="inputUrl"
             size="1"
-            class="penta-input-text"
+            :class="`${themePrefix}-input-text mfm-input-text`"
             type="text"
             readOnly
             :value="file.url"
             @focus="$event.target.select()"
           />
-          <a
-            href="#"
-            class="penta-button outlined penta-icon"
+          <button
+            :class="`${themePrefix}-button outlined ${themePrefix}-icon`"
             @click.prevent="copyToClipboard"
           >
-            <i class="fa-clipboard"></i>
-          </a>
+            <i class="famfm-clipboard"></i>
+          </button>
         </div>
       </div>
       <div class="infos-row created-at">
@@ -77,37 +78,37 @@
         <label>{{ $t("infos") }}</label>
         <template v-if="file.mimeGroup === 'image' && file.details">
           <div>
-            <i class="fa-picture"></i> {{ file.details.width }},
+            <i class="famfm-picture"></i> {{ file.details.width }},
             {{ file.details.height }} {{ $t("px") }}
           </div>
-          <div><i class="fa-ratio"></i> {{ formatRatio(file.details.ratio) }}</div>
+          <div><i class="famfm-ratio"></i> {{ formatRatio(file.details.ratio) }}</div>
         </template>
-        <div><i class="fa-gauge"></i> {{ file.humanSize }}</div>
+        <div><i class="famfm-gauge"></i> {{ file.humanSize }}</div>
       </div>
-      <div class="infos-row penta-button-group">
+      <div :class="`infos-row ${themePrefix}-button-group mfm-button-group`">
         <button
           v-if="file && !file.isDir"
-          class="penta-button outlined"
+          :class="`${themePrefix}-button outlined`"
           @click.prevent="handleOpen"
         >
-          <i class="fa-eye"></i>
+          <i class="famfm-eye"></i>
         </button>
         <button
           v-if="canEditContent(file)"
-          class="penta-button outlined"
+          :class="`${themePrefix}-button outlined`"
           @click.prevent="editContent"
         >
-          <i class="fa-edit-image"></i>
+          <i class="famfm-edit-image"></i>
         </button>
-        <button class="penta-button outlined" @click.prevent="handleDownload">
-          <i class="fa-download"></i>
+        <button :class="`${themePrefix}-button outlined`" @click.prevent="handleDownload">
+          <i class="famfm-download"></i>
         </button>
         <button
           v-if="canEdit(file)"
-          class="penta-button outlined"
+          :class="`${themePrefix}-button outlined`"
           @click.prevent="deleteSelectedFiles"
         >
-          <i class="fa-trash"></i>
+          <i class="famfm-trash"></i>
         </button>
       </div>
     </div>
@@ -137,6 +138,7 @@ export default {
       "currentEntryPoint",
       "endPoints",
       "secondaryDirectories",
+      "themePrefix",
     ]),
     currentDirectoryName() {
       if (this.secondaryDirectories.length > 0) {
@@ -260,7 +262,7 @@ export default {
   overflow: auto;
   scrollbar-color: transparent transparent;
   &:hover {
-    scrollbar-color: var(--gray-light) transparent;
+    scrollbar-color: var(--grey200) transparent;
   }
 }
 .infos-row {
@@ -272,8 +274,8 @@ export default {
   & > label {
     display: block;
     margin: 4px 0;
-    font-size: 0.9rem;
-    font-weight: bold;
+    font-size: 1rem;
+    font-weight: 500;
   }
   & > input {
     display: block;
@@ -284,33 +286,33 @@ export default {
   }
 }
 
-.penta-input-button {
+.mfm-input-button {
   display: flex;
 
-  input {
+  .mfm-input-text {
     width: 0;
     flex: 1 1 0px;
     border-radius: var(--form-border-radius) 0 0 var(--form-border-radius);
   }
 
-  .penta-button {
+  button {
     width: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 0 var(--form-border-radius) var(--form-border-radius) 0;
-    border-left-width: 0;
     box-shadow: none;
+    height: auto;
   }
 }
 
-.penta-button-group {
+.mfm-button-group {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-
   button {
     font-size: 1.2rem;
     padding: 0.25rem;
+    justify-content: center;
   }
 }
 .infos-row.filename {
@@ -335,7 +337,7 @@ export default {
   font-size: 0.8rem;
   color: var(--gray);
   &:hover {
-    color: var(--gray-dark);
+    color: var(--grey700);
   }
 }
 @media (max-width: 799.99px) {

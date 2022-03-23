@@ -4,3 +4,6 @@ README.local.md
 
 /.local
 /dist
+
+/css/other-theme.css
+/other-theme.html

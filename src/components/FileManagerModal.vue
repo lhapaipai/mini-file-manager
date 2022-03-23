@@ -5,7 +5,7 @@
       <div class="actions">
         <button
           v-if="!editContent"
-          class="penta-button outlined abort"
+          :class="`${themePrefix}-button outlined abort`"
           @click="handleAbort"
         >
           {{ $t("cancel") }}
@@ -19,7 +19,7 @@
             !editContent &&
             uneditableSelectedFiles.length === 0
           "
-          class="penta-button"
+          :class="`${themePrefix}-button`"
           @click="goEditor"
         >
           {{ $t("editAndSelect") }}
@@ -32,7 +32,7 @@
             invalidSelectedFiles[0] !== editContent &&
             uneditableSelectedFiles.length === 0
           "
-          class="penta-button"
+          :class="`${themePrefix}-button`"
           :disabled="uneditableSelectedFiles.length > 0"
           @click="handleNext"
         >
@@ -40,7 +40,7 @@
         </button>
         <button
           v-else-if="!editContent && invalidSelectedFiles.length === 0"
-          class="penta-button"
+          :class="`${themePrefix}-button primary-color`"
           :disabled="invalidSelectedFiles.length > 0"
           @click="handleSelect"
         >
@@ -64,7 +64,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapState(["selectedFiles", "fileValidation", "editContent"]),
+    ...mapState(["selectedFiles", "fileValidation", "editContent", "themePrefix"]),
     ...mapGetters(["invalidSelectedFiles", "uneditableSelectedFiles"]),
   },
   methods: {
@@ -101,7 +101,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 10;
+  z-index: 2000;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -113,7 +113,7 @@ export default {
     background-color: white;
     overflow: auto;
     box-shadow: var(--box-shadow);
-    border: 1px solid var(--gray-light);
+    border: 1px solid var(--grey200);
 
     display: flex;
     flex-direction: column;

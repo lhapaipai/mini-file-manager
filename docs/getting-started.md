@@ -157,7 +157,7 @@ class WelcomeController extends AbstractController
             --primary-color: #a0a023;
             --primary-color-text: #ffffff;
             --primary-color-active: #8c8c00;
-            --primary-color-dark: #525200;
+            --primary-color700: #525200;
         }
     </style>
 {% endblock %}

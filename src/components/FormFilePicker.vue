@@ -10,14 +10,14 @@
         <img :data-type="file.type" :src="fileImg(file)" />
         <div class="actions">
           <a href="#" class="remove" @click.prevent="handleRemove(file)"
-            ><i class="fa-trash"></i
+            ><i class="famfm-trash"></i
           ></a>
           <a
             v-if="!formPreviewOptions.multiple"
             href="#"
             class="browse"
             @click.prevent="handleBrowse"
-            ><i class="fa-folder"></i
+            ><i class="famfm-folder"></i
           ></a>
         </div>
       </div>
@@ -26,14 +26,15 @@
       v-if="selection.length === 0 || formPreviewOptions.multiple"
       class="general-actions"
     >
-      <button class="penta-button outlined" @click.prevent="handleBrowse">
-        <span class="fa-doc-add"></span>
+      <button :class="`${themePrefix}-button outlined`" @click.prevent="handleBrowse">
+        <span class="famfm-doc-add"></span>
       </button>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import FileManagerModal from "../FileManagerModal";
 
 export default {
@@ -56,7 +57,9 @@ export default {
       selection: [],
     };
   },
-
+  computed: {
+    ...mapState(["themePrefix"]),
+  },
   watch: {
     selection() {
       let event = new CustomEvent("selectionChange", {

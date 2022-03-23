@@ -16,6 +16,7 @@ export default function createStoreWithOptions({
   fileUpload,
   multiple = false,
   theme = "mini-file-manager-theme",
+  themePrefix = "penta",
   debug = false,
 }) {
   originalSelection = parseOriginalSelection(originalSelection, entryPoints);
@@ -43,7 +44,7 @@ export default function createStoreWithOptions({
       //       directory: 'projet/puplinge-classique/todo',
       //       origin: 'private',
       //       readOnly: false,
-      //       icon: 'fa-lock'
+      //       icon: 'famfm-lock'
       //   },
       // ]
 
@@ -51,6 +52,7 @@ export default function createStoreWithOptions({
       secondaryDirectories: [],
       multiple,
       theme,
+      themePrefix,
       directory: null,
       files: [],
       selectedFiles: [],

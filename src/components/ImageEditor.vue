@@ -1,52 +1,66 @@
 <template>
   <div v-if="file" class="image-editor">
     <div class="header">
-      <button class="penta-button outlined back" @click="handleReturn">
+      <button
+        :class="`${themePrefix}-button mfm-button outlined back`"
+        @click="handleReturn"
+      >
         {{ $t("return") }}
       </button>
       <div v-if="isCropping" class="toolbar loader"><Spinner /></div>
       <label
         v-if="fileValidation && fileValidation.imageOptions"
-        class="penta-button outlined validation-string"
+        :class="`${themePrefix}-button  mfm-button outlined validation-string`"
       >
         <input
           v-model="isValidationActive"
           type="checkbox"
-          class="penta-input-checkbox"
+          :class="`${themePrefix}-input-checkbox`"
         />
         <ValidationString />
       </label>
       <div class="toolbar">
-        <div class="penta-button-group">
+        <div :class="`${themePrefix}-button-group`">
           <button
-            class="penta-button outlined"
-            :class="{ active: dragMode === 'move' }"
+            :class="`${
+              dragMode === 'move' ? 'active' : ''
+            } ${themePrefix}-button  mfm-button outlined`"
             @click="changeMode('move')"
           >
-            <i class="fa-move"></i>
+            <i class="famfm-move"></i>
           </button>
           <button
-            class="penta-button outlined"
-            :class="{ active: dragMode === 'crop' }"
+            :class="`${
+              dragMode === 'crop' ? 'active' : ''
+            } ${themePrefix}-button  mfm-button outlined`"
             @click="changeMode('crop')"
           >
-            <i class="fa-crop"></i>
+            <i class="famfm-crop"></i>
           </button>
         </div>
-        <div class="penta-button-group">
-          <button class="penta-button outlined" @click="rotate(-90)">
-            <i class="fa-ccw"></i>
+        <div :class="`${themePrefix}-button-group`">
+          <button
+            :class="`${themePrefix}-button  mfm-button outlined`"
+            @click="rotate(-90)"
+          >
+            <i class="famfm-ccw"></i>
           </button>
-          <button class="penta-button outlined" @click="rotate(90)">
-            <i class="fa-cw"></i>
+          <button
+            :class="`${themePrefix}-button  mfm-button outlined`"
+            @click="rotate(90)"
+          >
+            <i class="famfm-cw"></i>
           </button>
         </div>
 
-        <button class="penta-button outlined" @click="handleClear">
-          <i class="fa-cancel"></i>
+        <button
+          :class="`${themePrefix}-button  mfm-button outlined`"
+          @click="handleClear"
+        >
+          <i class="famfm-cancel"></i>
         </button>
-        <button class="penta-button" @click="handleSave">
-          <i class="fa-ok"></i>{{ $t("apply") }}
+        <button :class="`${themePrefix}-button  mfm-button`" @click="handleSave">
+          <i class="famfm-ok"></i>{{ $t("apply") }}
         </button>
       </div>
     </div>
@@ -63,14 +77,17 @@
     </div>
     <div class="footer">
       <span>
-        <i class="fa-picture"></i>
+        <i class="famfm-picture"></i>
         <span>{{ naturalWidth }}, {{ naturalHeight }} px</span>
-        <i class="fa-right-open"></i>
-        <i class="fa-ratio"></i>
+        <i class="famfm-right-open"></i>
+        <i class="famfm-ratio"></i>
         <input
           type="text"
-          class="ratio penta-input-text"
-          :class="{ 'is-invalid': !isValidRatio }"
+          :class="[
+            'ratio',
+            `${themePrefix}-input-text mfm-input-text`,
+            !isValidRatio ? 'is-invalid' : '',
+          ]"
           :value="ratio"
           :disabled="ratioLockedByValidation"
           placeholder="ex: 16:9"
@@ -78,18 +95,22 @@
         />
       </span>
       <span>
-        <i class="fa-right-open"></i>
-        <i class="fa-crop"></i>
+        <i class="famfm-right-open"></i>
+        <i class="famfm-crop"></i>
         <span>{{ cropWidth }}, {{ cropHeight }} px</span>
       </span>
       <span>
-        <i class="fa-right-open"></i>
-        <i class="fa-resize-horizontal"></i>
+        <i class="famfm-right-open"></i>
+        <i class="famfm-resize-horizontal"></i>
         <input
           v-model.number="finalWidth"
           type="text"
-          class="nb penta-input-text"
-          :class="{ 'is-invalid': !isFinalWidthValid }"
+          :class="[
+            'nb',
+            `${themePrefix}-input-text`,
+            'mfm-input-text',
+            !isFinalWidthValid ? 'is-invalid' : '',
+          ]"
           :disabled="
             finalWidthLockedByValidation ||
             finalHeightLockedByValidation ||
@@ -101,21 +122,25 @@
         <span class="lock" @click="handleLock('width')">
           <i
             :class="{
-              'fa-lock': finalWidthLockedByValidation || finalWidthLocked,
-              'fa-lock-open': !(finalWidthLockedByValidation || finalWidthLocked),
+              'famfm-lock': finalWidthLockedByValidation || finalWidthLocked,
+              'famfm-lock-open': !(finalWidthLockedByValidation || finalWidthLocked),
             }"
           ></i>
         </span>
       </span>
       <span>
-        <i class="fa-right-open"></i>
-        <i class="fa-resize-vertical"></i>
+        <i class="famfm-right-open"></i>
+        <i class="famfm-resize-vertical"></i>
 
         <input
           v-model.number="finalHeight"
           type="text"
-          class="nb penta-input-text"
-          :class="{ 'is-invalid': !isFinalHeightValid }"
+          :class="[
+            'nb',
+            `${themePrefix}-input-text`,
+            'mfm-input-text',
+            !isFinalHeightValid ? 'is-invalid' : '',
+          ]"
           :disabled="
             finalWidthLockedByValidation ||
             finalHeightLockedByValidation ||
@@ -126,8 +151,8 @@
         <span class="lock" @click="handleLock('height')">
           <i
             :class="{
-              'fa-lock': finalHeightLockedByValidation || finalHeightLocked,
-              'fa-lock-open': !(finalHeightLockedByValidation || finalHeightLocked),
+              'famfm-lock': finalHeightLockedByValidation || finalHeightLocked,
+              'famfm-lock-open': !(finalHeightLockedByValidation || finalHeightLocked),
             }"
           ></i>
         </span>
@@ -185,7 +210,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["fileValidation"]),
+    ...mapState(["fileValidation", "themePrefix"]),
     imageValidation() {
       return this.fileValidation?.imageOptions;
     },
@@ -488,12 +513,12 @@ export default {
 };
 </script>
 <style lang="postcss" scoped>
-input.penta-input-text {
+input.mfm-input-text {
   padding: 3px 5px;
   border-color: var(--gray);
   &:hover,
   &:focus {
-    border-color: var(--gray-dark);
+    border-color: var(--grey700);
   }
 }
 .is-image-loading {
@@ -535,7 +560,7 @@ input.penta-input-text {
     }
   }
   @media (max-width: 900px) {
-    .penta-button {
+    .mfm-button {
       padding: 0.25rem;
     }
   }
@@ -573,7 +598,7 @@ input.penta-input-text {
     input {
       font-size: 0.9rem;
     }
-    i.fa-right-open {
+    i.famfm-right-open {
       font-size: 0.8rem;
     }
   }
@@ -588,14 +613,14 @@ input.ratio {
 }
 
 input.is-invalid {
-  background-color: var(--red-light);
+  background-color: var(--red50);
 }
-i.fa-right-open {
+i.famfm-right-open {
   color: var(--gray);
 }
 .lock {
   cursor: pointer;
-  color: var(--gray-dark);
+  color: var(--grey700);
   &:hover {
     color: black;
   }

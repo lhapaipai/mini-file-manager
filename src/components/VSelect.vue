@@ -9,7 +9,7 @@
   >
     <a
       href="#"
-      class="select-selected penta-button outlined"
+      :class="`select-selected ${themePrefix}-button outlined`"
       tabindex="0"
       @click.stop.prevent="handleClickSelect"
     >
@@ -22,7 +22,7 @@
       v-if="splitButton && options.length > 1"
       href="#"
       tabindex="0"
-      class="split-button penta-button outlined"
+      :class="`split-button ${themePrefix}-button outlined`"
       @click.stop.prevent="handleClickSplit"
     >
       <i :class="spinnerClass"></i>
@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   props: {
     options: {
@@ -59,7 +60,7 @@ export default {
     modelValue: {
       type: Object,
       default: () => ({
-        icon: "fa-eye",
+        icon: "famfm-eye",
         label: "Default",
       }),
     },
@@ -76,8 +77,9 @@ export default {
     };
   },
   computed: {
+    ...mapState(["themePrefix"]),
     spinnerClass() {
-      return this.isOpen ? "fa-up-open" : "fa-down-open";
+      return this.isOpen ? "famfm-up-open" : "famfm-down-open";
     },
     valueLabel() {
       return this.modelValue ? this.modelValue.label : this.placeholder;
@@ -128,7 +130,7 @@ export default {
   padding: 0.5rem 1rem;
   flex: 1;
   .is-open & {
-    /* border-color: var(--primary-color-dark); */
+    /* border-color: var(--primary-color700); */
   }
   .with-split-button & {
     border-radius: var(--form-border-radius) 0 0 var(--form-border-radius);
@@ -155,7 +157,7 @@ export default {
   right: 0;
   z-index: 20;
   background-color: white;
-  border: 1px solid var(--gray-extra-light);
+  border: 1px solid var(--grey50);
   border-radius: var(--form-border-radius);
 
   .select-item {
@@ -164,8 +166,8 @@ export default {
     cursor: pointer;
     color: var(--gray);
     &:hover {
-      background-color: var(--gray-extra-light);
-      color: var(--gray-dark);
+      background-color: var(--grey50);
+      color: var(--grey700);
     }
   }
 }

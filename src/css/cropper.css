@@ -49,8 +49,8 @@
   &-view-box {
     display: block;
     height: 100%;
-    outline: 1px solid var(--primary-color-dark);
-    outline-color: var(--primary-color-dark);
+    outline: 1px solid var(--primary-color700);
+    outline-color: var(--primary-color700);
     overflow: hidden;
     width: 100%;
   }
@@ -129,7 +129,7 @@
   }
 
   &-line {
-    background-color: var(--primary-color-dark);
+    background-color: var(--primary-color700);
 
     &.line-e {
       cursor: ew-resize;
@@ -255,7 +255,7 @@
   }
 
   &-bg {
-    background-image: url("/file-manager/bg.png");
+    background-image: url("file-manager/bg.png");
   }
 
   &-hide {

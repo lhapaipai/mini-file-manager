@@ -4,16 +4,15 @@
 
 .mini-file-manager-theme {
 
-  --primary-color-light: #fff9d2;
+  --primary-color100: #fff9d2;
   --primary-color: #ffe64b;
   --primary-color-text: #000000;
-  --primary-color-active: #fadf30;
-  --primary-color-dark: #eac800;
+  --primary-color700: #eac800;
 
-  --gray-extra-light: #e7e7e7;
-  --gray-light: #ccc;
+  --grey50: #e7e7e7;
+  --grey200: #ccc;
   --gray: #999;
-  --gray-dark: #333;
+  --grey700: #333;
 
   --form-border-radius: 0.25rem;
   --form-border-width: 1px;
@@ -30,18 +29,13 @@
   --background-color: rgba(255,255,255,.75);
   
   --red: #842029;
-  --red-light: #f8d7da;
+  --red50: #f8d7da;
   --red-text: #dc3545;
   
   --green-light: #d1eacf;
   --green: #2b5229;
   
   --orange: rgb(217, 142, 1);
-  
-  --blue-light: #e6e8ef;
-  --blue-prestashop: #bbcdd2;
-  
-  --blue-light: #e6e8ef;
 }
 
 /****************************************

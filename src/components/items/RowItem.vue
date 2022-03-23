@@ -40,7 +40,7 @@ export default {
   align-items: center;
   padding: 0.5rem 0.5rem;
   flex-wrap: wrap;
-  border-bottom: 1px solid var(--gray-extra-light);
+  border-bottom: 1px solid var(--grey50);
   color: var(--gray);
 
   .icon-container {
@@ -79,12 +79,12 @@ export default {
 
   &:hover {
     background-color: #f7f7f7;
-    color: var(--gray-dark);
+    color: var(--grey700);
   }
   &.selected,
   &:active {
     background-color: var(--primary-color);
-    color: var(--gray-dark);
+    color: var(--primary-color-text);
   }
 }
 </style>

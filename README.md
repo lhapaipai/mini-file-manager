@@ -183,7 +183,8 @@ const options: FileManagerOptions = {
   // selection is retrieved from input value
   originalSelection: ["posts/autre/ign.jpg"],
 
-  theme: "pentatrion-theme"
+  theme: "pentatrion-theme",
+  themePrefix: 'penta'
 };
 
 const formFilePickerOptions: FormFilePickerOptions = {
@@ -209,7 +210,7 @@ const options = {
   --primary-color-light: #fff9d2;
   --primary-color: #ffe64b;
   --primary-color-active: #fadf30;
-  --primary-color-dark: #eac800;
+  --primary-color700: #eac800;
 
   /* etc... */
 }

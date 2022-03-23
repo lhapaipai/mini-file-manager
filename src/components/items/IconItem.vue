@@ -153,7 +153,7 @@ export default {
   &.is-selectable {
     &:hover,
     &:active {
-      color: var(--gray-dark);
+      color: var(--grey700);
       img {
         opacity: 0.8;
       }

@@ -14,7 +14,7 @@
       @drop="unhighlight"
     >
       <span class="label"
-        ><i class="fa-doc-add"></i>{{ $t(canUpload ? "add" : "readonlyDir") }}</span
+        ><i class="famfm-doc-add"></i>{{ $t(canUpload ? "add" : "readonlyDir") }}</span
       >
     </div>
   </div>
@@ -213,7 +213,7 @@ export default {
   flex-direction: column;
 
   /* &.is-uploading {
-    border: 1px solid var(--gray-light);
+    border: 1px solid var(--grey200);
   } */
 }
 
@@ -221,20 +221,20 @@ export default {
   /* overflow: hidden; */
   flex: 1;
   position: relative;
-  border: 2px dashed var(--primary-color);
+  border: 2px dashed var(--primary-color100);
   /* border-radius: var(--form-border-radius); */
   border-radius: 20px;
   transition: var(--transition-border), var(--transition-background);
   &:hover {
-    border-color: var(--primary-color-dark);
+    border-color: var(--primary-color700);
   }
   &.readonly {
     cursor: default;
-    border-color: var(--gray-light);
+    border-color: var(--grey200);
 
     .label {
       cursor: default;
-      color: var(--gray-light);
+      color: var(--grey200);
     }
   }
 
@@ -248,7 +248,7 @@ export default {
     cursor: pointer;
   }
   &.highlight {
-    background-color: var(--primary-color-light);
+    background-color: var(--primary-color100);
   }
 }
 

@@ -5,8 +5,7 @@ local_path		:= $(PWD)
 
 FONT_ASSETS_DIR      ?= ./src/css/fontello
 FONT_PUBLIC_DIR      ?= ./public/fonts/fontello
-# FONTELLO_HOST ?= https://fontello.com
-FONTELLO_HOST ?= http://localhost:3000
+FONTELLO_HOST ?= https://fontello.com
 
 .PHONY: help
 help: ## Affiche cette aide
@@ -49,9 +48,10 @@ icon-save:
 	mv ./.fontello.src/fontello/css/fontello.css ${FONT_ASSETS_DIR}/
 	mv ./.fontello.src/fontello/config.json ${FONT_ASSETS_DIR}/
 	mv ./.fontello.src/fontello/font ${FONT_PUBLIC_DIR}
-	sed -i 's/\.\.\/font/\/fonts\/fontello/g' ${FONT_ASSETS_DIR}/fontello.css
+	sed -i 's/\.\.\/font/fonts\/fontello/g' ${FONT_ASSETS_DIR}/fontello.css
 	sed -i '/speak: never/d' ${FONT_ASSETS_DIR}/fontello.css
-
+	sed -i "s/font-family: 'fontello'/font-family: 'fontello-mfm'/g" ${FONT_ASSETS_DIR}/fontello.css
+	sed -i 's/font-family: "fontello"/font-family: "fontello-mfm"/g' ${FONT_ASSETS_DIR}/fontello.css
 	rm -rf .fontello.src .fontello.zip
 
 # le fichier ~/.fontello peut être supprimé manuellement lorsqu'on sait qu'on va plus avoir besoin de fontello dans la journée.

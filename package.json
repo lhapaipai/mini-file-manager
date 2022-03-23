@@ -44,6 +44,7 @@
     "postcss-nested": "^5.0.6",
     "prettier": "^2.6.0",
     "resumablejs": "github:23/resumable.js#b7580789f4d19bb180c08389538e0733f0f811d8",
+    "sass": "^1.49.9",
     "scroll-blocker": "^1.0.1",
     "spassr": "^2.6.0",
     "vite": "^2.8.6",

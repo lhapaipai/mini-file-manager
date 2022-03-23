@@ -2,16 +2,16 @@
   <ImageEditor v-if="editContent" class="image-editor" :file="editContent" />
   <div v-else class="file-manager">
     <div class="action">
-      <button class="penta-button outlined" @click.prevent="toggleOrder()">
-        <i v-if="presentation === 'list'" class="fa-order-list"></i>
-        <i v-if="presentation === 'icons'" class="fa-order-icons"></i>
+      <button :class="`${themePrefix}-button outlined`" @click.prevent="toggleOrder()">
+        <i v-if="presentation === 'list'" class="famfm-order-list"></i>
+        <i v-if="presentation === 'icons'" class="famfm-order-icons"></i>
       </button>
       <button
-        class="penta-button outlined"
+        :class="`${themePrefix}-button outlined`"
         :disabled="!canEdit"
         @click="handleAddDirectory"
       >
-        <i class="fa-folder-add"></i>
+        <i class="famfm-folder-add"></i>
       </button>
     </div>
     <Uploader class="dropzone" />
@@ -28,7 +28,7 @@
         <button
           v-for="(secondaryDirectory, key) in secondaryDirectories"
           :key="key"
-          class="penta-button outlined"
+          :class="`${themePrefix}-button outlined`"
           @click="handleChangeSecondaryDirectory(key + 1)"
         >
           {{ secondaryDirectory }}
@@ -106,6 +106,7 @@ export default {
       "selectedFiles",
       "editContent",
       "multiple",
+      "themePrefix",
     ]),
     ...mapGetters(["sortedFiles"]),
     canEdit() {
@@ -274,7 +275,7 @@ export default {
   display: grid;
   gap: 10px;
 
-  grid-template-columns: 92px 1fr;
+  grid-template-columns: 96px 1fr;
   grid-template-rows: 40px 40px 1fr 158px;
   grid-template-areas:
     "action    dropzone"
@@ -284,7 +285,7 @@ export default {
 }
 @media (min-width: 800px) {
   .file-manager {
-    grid-template-columns: 92px 1fr 200px;
+    grid-template-columns: 96px 1fr 200px;
     grid-template-rows: 42px 100px 1fr;
     grid-template-areas:
       "action hierarchy dropzone"
@@ -347,7 +348,7 @@ export default {
     }
   }
 
-  .penta-button {
+  button {
     padding: 0.5rem;
   }
 }
@@ -358,14 +359,14 @@ export default {
   overflow-y: visible;
 
   @media (max-width: 799.9px) {
-    border-bottom: 1px solid var(--gray-light);
-    border-top: 1px solid var(--gray-light);
+    border-bottom: 1px solid var(--grey200);
+    border-top: 1px solid var(--grey200);
   }
   user-select: none;
 
   scrollbar-color: transparent transparent;
   &:hover {
-    scrollbar-color: var(--gray-light) transparent;
+    scrollbar-color: var(--grey200) transparent;
   }
 }
 
