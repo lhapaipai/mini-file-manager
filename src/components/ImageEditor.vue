@@ -1,12 +1,6 @@
 <template>
   <div v-if="file" class="image-editor">
     <div class="header">
-      <button
-        :class="`${themePrefix}-button mfm-button outlined back`"
-        @click="handleReturn"
-      >
-        {{ $t("return") }}
-      </button>
       <div v-if="isCropping" class="toolbar loader"><Spinner /></div>
       <label
         v-if="fileValidation && fileValidation.imageOptions"
@@ -59,8 +53,14 @@
         >
           <i class="famfm-cancel"></i>
         </button>
-        <button :class="`${themePrefix}-button  mfm-button`" @click="handleSave">
+        <button :class="`${themePrefix}-button  mfm-button outlined`" @click="handleSave">
           <i class="famfm-ok"></i>{{ $t("apply") }}
+        </button>
+        <button
+          :class="`${themePrefix}-button mfm-button outlined`"
+          @click="handleReturn"
+        >
+          {{ $t("return") }}
         </button>
       </div>
     </div>
@@ -534,24 +534,25 @@ input.mfm-input-text {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-
-  .back {
-    margin-right: auto;
-    margin-left: 0;
-    margin-bottom: 10px;
-  }
-
-  .validation-string {
+  & > * {
     margin-bottom: 10px;
     margin-right: 10px;
+
+    &:first-child {
+      margin-left: auto;
+    }
+
+    &:last-child {
+      margin-right: 0px;
+    }
   }
+
   .toolbar.loader {
     margin-right: 10px;
   }
   .toolbar {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
     & > * {
       margin-left: 10px;
       &:first-child {

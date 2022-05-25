@@ -8,7 +8,7 @@ export default {
     chunkError:
       "Erreur lors de l'upload la totalité du fichier n'a pas été reçue, réessayez s'il vous plait",
     select: "Sélectionner",
-    return: "Retour",
+    return: "Revenir",
     disableRules: "Désactivez les règles de validation pour changer les verrous",
     directoryName: "Nom du dossier",
     readonly: "Lecture seule",
@@ -27,6 +27,7 @@ export default {
     max: "max.",
     min: "min.",
     px: "px",
+    filesManager: "Gestionnaire de fichiers",
   },
   en: {
     apply: "Apply",
@@ -37,7 +38,7 @@ export default {
       "Error while uploading the whole file was not received, please try again ",
     exceedMaxSize: "{name} has exceeded the maximum size {size}.",
     select: "Select",
-    return: "Return",
+    return: "Go back",
     disableRules: "Disable validation rules to change locks ",
     directoryName: "Directory name",
     readonly: "Read only",
@@ -56,5 +57,6 @@ export default {
     max: "max.",
     min: "min.",
     px: "px",
+    filesManager: "Files manager",
   },
 };

@@ -24,17 +24,17 @@
     </div>
     <div
       v-if="selection.length === 0 || formPreviewOptions.multiple"
-      class="general-actions"
+      class="no-preview-area"
     >
+      <i class="famfm-pictures no-image"></i>
       <button :class="`${themePrefix}-button outlined`" @click.prevent="handleBrowse">
-        <span class="famfm-doc-add"></span>
+        {{ $t("filesManager") }}
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
 import FileManagerModal from "../FileManagerModal";
 
 export default {
@@ -51,14 +51,12 @@ export default {
       type: Array,
       default: () => [],
     },
+    themePrefix: String,
   },
   data() {
     return {
       selection: [],
     };
-  },
-  computed: {
-    ...mapState(["themePrefix"]),
   },
   watch: {
     selection() {
@@ -157,7 +155,16 @@ export default {
   }
 }
 
-.general-actions {
+.no-preview-area {
   margin-top: 1rem;
+  min-height: 14rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .no-image {
+    color: var(--primary-color100);
+    font-size: 5rem;
+  }
 }
 </style>

@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import VFormFilePicker from "./components/FormFilePicker.vue";
-import { formStringifier } from "./utils/mainHelper";
+import { formStringifier, prepareFormFilePickerOptions } from "./utils/mainHelper";
 
 export default function FormFilePicker(
   inputElt,
@@ -30,11 +30,15 @@ export default function FormFilePicker(
   let appElt = document.createElement("div");
   inputElt.after(appElt);
 
+  const { i18n, themePrefix } = prepareFormFilePickerOptions(fileManagerOptions);
+
   const app = createApp(VFormFilePicker, {
     formPreviewOptions,
     fileManagerOptions,
     originalSelection: files,
+    themePrefix,
   });
+  app.use(i18n);
 
   const vm = app.mount(appElt);
   vm.$el.addEventListener("selectionChange", onSelectionChange);

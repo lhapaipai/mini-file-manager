@@ -351,6 +351,12 @@
       "css": "folder",
       "code": 59446,
       "src": "typicons"
+    },
+    {
+      "uid": "3def559c3c39b8500882e02892b7daa8",
+      "css": "pictures",
+      "code": 59447,
+      "src": "entypo"
     }
   ]
 }

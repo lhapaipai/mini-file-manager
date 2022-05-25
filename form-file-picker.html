@@ -35,7 +35,8 @@
   </div>
 
   <script type="module">
-    import { FormFilePicker } from "../src/index.js";
+    import "./src/css/other-theme.scss";
+    import { FormFilePicker } from "./src/index.js";
 
     document.addEventListener("keyup", (e) => {
       if (e.code === "Tab") {
@@ -53,7 +54,7 @@
 
     let fileManagerOptions = {
       debug: true,
-      endPoint: "http://mini-file-manager.local/media-manager",
+      endPoint: "http://mini-file-manager-template.localhost/media-manager",
       isAdmin: false,
       entryPoints: [
         {
@@ -85,6 +86,7 @@
         // maxFileSize: 1024 * 1024
       },
       locale: "fr",
+      theme: 'mini-file-manager-custom-theme',
     };
 
     FormFilePicker(".file-picker", formPreviewOptions, fileManagerOptions, files);

@@ -3,6 +3,24 @@ import createStoreWithOptions from "../store";
 import localesData from "../locales";
 import { prepareContainer } from "mini-notifier";
 
+export function prepareFormFilePickerOptions(options) {
+  let locale = options.locale || "en";
+  if (locale === "custom" && options.localeData) {
+    localesData["custom"] = locale;
+    locale = "custom";
+  }
+
+  return {
+    i18n: createI18n({
+      locale: locale,
+      fallbackLocale: "en",
+      messages: localesData,
+    }),
+    themePrefix: options.themePrefix || "penta",
+    // options
+  };
+}
+
 export function prepareOptions(elt, options) {
   if (!options) {
     if (elt instanceof HTMLElement) {

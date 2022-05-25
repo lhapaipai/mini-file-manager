@@ -13,7 +13,7 @@
       tabindex="0"
       @click.stop.prevent="handleClickSelect"
     >
-      <span v-if="modelValue && modelValue.icon">
+      <span v-if="modelValue && modelValue.icon" class="icon">
         <i :class="modelValue.icon"></i>
       </span>
       {{ valueLabel }}
@@ -126,14 +126,21 @@ export default {
   }
 }
 .select-selected {
+  align-items: center;
   border-radius: var(--form-border-radius);
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.5rem;
   flex: 1;
   .is-open & {
     /* border-color: var(--primary-color700); */
   }
   .with-split-button & {
     border-radius: var(--form-border-radius) 0 0 var(--form-border-radius);
+  }
+  .icon {
+    margin-right: 0.25rem;
+    i {
+      display: inline;
+    }
   }
 }
 .split-button.outlined {
