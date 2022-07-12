@@ -71,12 +71,13 @@ export default {
   },
   methods: {
     fileImg(file) {
+      if (this.formPreviewOptions.type !== "image") {
+        return file.icon;
+      }
       if (file.thumbnails) {
-        if (this.formPreviewOptions.type === "image") {
-          return file.thumbnails[this.formPreviewOptions.filter];
-        } else {
-          return file.icon;
-        }
+        return file.thumbnails[this.formPreviewOptions.filter];
+      } else if (file.mimeGroup === "image") {
+        return file.url;
       } else {
         return file.icon;
       }
@@ -120,7 +121,7 @@ export default {
 .preview {
   position: relative;
   align-self: flex-start;
-  min-width: 100px;
+  min-width: 200px;
   margin-right: 1rem;
   &:last-child {
     margin-right: 0;
@@ -128,6 +129,8 @@ export default {
   img {
     vertical-align: middle;
     display: inline-block;
+    min-width: 200px;
+    height: auto;
   }
 }
 .rounded-corner {
