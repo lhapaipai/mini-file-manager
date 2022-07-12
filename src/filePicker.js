@@ -3,6 +3,7 @@ import VFilePicker from "./components/FilePicker.vue";
 import { scrollLockDirective } from "scroll-blocker/scroll-lock-directive";
 import { collectFormData, prepareOptions } from "./utils/mainHelper";
 import vueLiipPlugin from "./utils/vueLiipPlugin";
+import lazyloadDirective from "./utils/lazyloadDirective";
 
 export default function filePicker(elt, options) {
   if (typeof elt === "string") {
@@ -22,6 +23,7 @@ export default function filePicker(elt, options) {
   });
 
   app.directive("scroll-lock", scrollLockDirective);
+  app.directive("lazy-load", lazyloadDirective);
   app.use(store);
   app.use(i18n);
   app.use(vueLiipPlugin);

@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import FileManagerModal from "../FileManagerModal";
+import fileManagerModal from "../fileManagerModal";
 
 export default {
   props: {
@@ -88,7 +88,7 @@ export default {
     handleBrowse() {
       let multiple = this.formPreviewOptions.multiple;
 
-      new FileManagerModal(
+      new fileManagerModal(
         {
           ...this.fileManagerOptions,
           originalSelection: multiple ? [] : this.selection.map((elt) => elt.id),

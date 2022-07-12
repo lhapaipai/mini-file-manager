@@ -1,8 +1,8 @@
 import { createApp } from "vue";
-import VFormFilePicker from "./components/FormFilePicker.vue";
+import VSimpleFilePicker from "./components/SimpleFilePicker.vue";
 import { formStringifier, prepareFormFilePickerOptions } from "./utils/mainHelper";
 
-export default function FormFilePicker(
+export default function simpleFilePicker(
   inputElt,
   formPreviewOptions,
   fileManagerOptions,
@@ -32,7 +32,7 @@ export default function FormFilePicker(
 
   const { i18n, themePrefix } = prepareFormFilePickerOptions(fileManagerOptions);
 
-  const app = createApp(VFormFilePicker, {
+  const app = createApp(VSimpleFilePicker, {
     formPreviewOptions,
     fileManagerOptions,
     originalSelection: files,

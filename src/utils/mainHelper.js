@@ -35,7 +35,11 @@ function collectItem(prefix) {
 export function collectFormData(elt, multiple) {
   let prefix = elt.id;
   if (multiple) {
-    return Array.from(elt.children).map((child, i) => collectItem(`${prefix}_${i}`));
+    let data = [];
+    for (let i = 0; document.getElementById(`${prefix}_${i}`); i++) {
+      data.push(collectItem(`${prefix}_${i}`));
+    }
+    return data;
   } else {
     return [collectItem(prefix)];
   }

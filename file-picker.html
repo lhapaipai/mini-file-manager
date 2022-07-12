@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini File Manager</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #file-manager {
+      height: 600px;
+    }
+
+    .file-picker {
+      display: block;
+      margin: 1rem 0;
+
+    }
+  </style>
+</head>
+
+<body>
+  <div id="Station_photos" data-ea-align="left" data-name="Station[photos]"
+    data-minifilemanager="{&quot;endPoint&quot;:&quot;\/media-manager&quot;,&quot;fileValidation&quot;:null,&quot;entryPoints&quot;:[{&quot;directory&quot;:&quot;&quot;,&quot;origin&quot;:&quot;public_uploads&quot;,&quot;readOnly&quot;:false,&quot;icon&quot;:&quot;fa-lock&quot;,&quot;label&quot;:&quot;Uploads&quot;}],&quot;fileUpload&quot;:{&quot;maxFileSize&quot;:10485760,&quot;fileType&quot;:[&quot;text\/*&quot;,&quot;image\/*&quot;,&quot;video\/*&quot;,&quot;audio\/*&quot;]},&quot;locale&quot;:&quot;fr&quot;,&quot;multiple&quot;:true}"
+    data-file-picker="{&quot;multiple&quot;:true,&quot;filter&quot;:&quot;small&quot;,&quot;type&quot;:&quot;image&quot;}"
+    data-empty-collection="    <div class=&quot;empty collection-empty&quot;>
+    <span class=&quot;badge badge-secondary&quot;>Vide</span>
+
+</div>
+" class="mini-file-manager-theme">
+    <div class="">
+      <div class=" form-group">
+        <legend class="col-form-label">0</legend>
+        <div class="form-widget">
+
+
+
+          <div class="field-collection-item field-collection-item-complex">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button " type="button" data-bs-toggle="collapse"
+                  data-bs-target="#Station_photos_0-contents">
+                  <i class="fas fw fa-chevron-right form-collection-item-collapse-marker"></i>
+                  station/plvg-fr-hyd-0001/plvg-fr-hyd-0001.png
+                </button>
+
+                <button type="button" class="btn btn-link btn-link-danger field-collection-delete-button"
+                  title="Supprimer l'élément">
+                  <i class="far fa-trash-alt"></i>
+                </button>
+
+              </h2>
+              <div id="Station_photos_0-contents" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                  <div class="form-widget-compound">
+
+                    <div id="Station_photos_0">
+                      <div class="">
+                        <div class=" form-group"><label for="Station_photos_0_mimeType" class="form-control-label">Mime
+                            type</label>
+                          <div class="form-widget">
+
+
+                            <input type="text" id="Station_photos_0_mimeType" name="Station[photos][0][mimeType]"
+                              maxlength="64" class="form-control" value="image/png">
+
+
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="flex-fill"></div>
+
+                      <div class="">
+                        <div class=" form-group"><label for="Station_photos_0_width"
+                            class="form-control-label">Width</label>
+                          <div class="form-widget">
+
+
+                            <input type="number" id="Station_photos_0_width" name="Station[photos][0][width]"
+                              class="form-control" value="404">
+
+
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="flex-fill"></div>
+
+                      <div class="">
+                        <div class=" form-group"><label for="Station_photos_0_height"
+                            class="form-control-label">Height</label>
+                          <div class="form-widget">
+
+
+                            <input type="number" id="Station_photos_0_height" name="Station[photos][0][height]"
+                              class="form-control" value="543">
+
+
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="flex-fill"></div>
+
+                      <div class="">
+                        <div class=" form-group"><label for="Station_photos_0_filename"
+                            class="form-control-label">Filename</label>
+                          <div class="form-widget">
+
+
+                            <input type="text" id="Station_photos_0_filename" name="Station[photos][0][filename]"
+                              maxlength="255" class="form-control" value="plvg-fr-hyd-0001.png">
+
+
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="flex-fill"></div>
+
+                      <div class="">
+                        <div class=" form-group"><label for="Station_photos_0_directory"
+                            class="form-control-label">Directory</label>
+                          <div class="form-widget">
+
+
+                            <input type="text" id="Station_photos_0_directory" name="Station[photos][0][directory]"
+                              maxlength="255" class="form-control" value="station/plvg-fr-hyd-0001">
+
+
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="flex-fill"></div>
+
+                      <div class="">
+                        <div class=" form-group"><label for="Station_photos_0_origin"
+                            class="form-control-label">Origin</label>
+                          <div class="form-widget">
+
+
+                            <input type="text" id="Station_photos_0_origin" name="Station[photos][0][origin]"
+                              maxlength="64" class="form-control" value="public_uploads">
+
+
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="flex-fill"></div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-fill"></div>
+  </div>
+  <script type="module">
+    import "./src/css/other-theme.scss";
+    import { filePicker } from "./src/index.js";
+
+    document.addEventListener("keyup", (e) => {
+      if (e.code === "Tab") {
+        document.body.classList.add("with-a11y");
+      }
+    });
+
+    let formPreviewOptions = {
+      multiple: false,
+      filter: "small",
+      type: "image"
+    };
+
+    let files = []
+
+    let fileManagerOptions = {
+      debug: true,
+      endPoint: "http://mini-file-manager-template.localhost/media-manager",
+      isAdmin: false,
+      entryPoints: [
+        {
+          directory: "",
+          origin: "public_uploads",
+          readOnly: false,
+          icon: "fa-lock",
+          label: "Posts",
+        },
+        {
+          directory: "posts/abc",
+          origin: "public_uploads",
+          readOnly: false,
+          icon: "fa-lock",
+          label: "Posts abc",
+        },
+      ],
+      // fileValidation: {
+      //   mimeGroup: 'image',
+      //   allowDir: false,
+      //   imageOptions: {
+      //     allowSvg: false,
+      //     ratio: 1,
+      //     // width: 1200,
+      //     // height: 900,
+      //   }
+      // },
+      fileUpload: {
+        // maxFileSize: 1024 * 1024
+      },
+      locale: "fr",
+      theme: 'mini-file-manager-custom-theme',
+    };
+
+
+    document.querySelectorAll('[data-file-picker]').forEach(($filePicker) => {
+      filePicker($filePicker)
+    })
+
+  </script>
+</body>
+
+</html>

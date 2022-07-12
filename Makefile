@@ -48,7 +48,7 @@ icon-save:
 	mv ./.fontello.src/fontello/css/fontello.css ${FONT_ASSETS_DIR}/
 	mv ./.fontello.src/fontello/config.json ${FONT_ASSETS_DIR}/
 	mv ./.fontello.src/fontello/font ${FONT_PUBLIC_DIR}
-	sed -i 's/\.\.\/font/fonts\/fontello/g' ${FONT_ASSETS_DIR}/fontello.css
+	sed -i 's/\.\.\/font/fonts\/\/fontello/g' ${FONT_ASSETS_DIR}/fontello.css
 	sed -i '/speak: never/d' ${FONT_ASSETS_DIR}/fontello.css
 	sed -i "s/font-family: 'fontello'/font-family: 'fontello-mfm'/g" ${FONT_ASSETS_DIR}/fontello.css
 	sed -i 's/font-family: "fontello"/font-family: "fontello-mfm"/g' ${FONT_ASSETS_DIR}/fontello.css
