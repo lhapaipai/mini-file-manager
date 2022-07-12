@@ -46,14 +46,14 @@ export default {
   },
   methods: {
     iconPath(file) {
-      if (file.thumbnails?.small) {
-        return file.thumbnails.small;
+      if (file.filters?.small) {
+        return file.filters.small.webPath;
       } else {
         return file.icon;
       }
     },
     isIcon(file) {
-      if (file.thumbnails?.small) {
+      if (file.filters?.small) {
         return false;
       } else {
         return true;

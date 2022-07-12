@@ -70,6 +70,7 @@ export default {
   methods: {
     ...mapMutations(["setEditContent"]),
     handleAbort() {
+      this.$emit("abortSelect");
       let event = new CustomEvent("abortSelect");
       this.$el.dispatchEvent(event);
     },
@@ -82,6 +83,7 @@ export default {
     },
     handleSelect() {
       if (this.invalidSelectedFiles.length === 0) {
+        this.$emit("selectFiles", this.selectedFiles);
         let event = new CustomEvent("selectFiles", {
           detail: this.selectedFiles,
         });
@@ -94,7 +96,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style lang="postcss">
 .file-manager-modal {
   position: fixed;
   top: 0;
@@ -117,6 +119,7 @@ export default {
 
     display: flex;
     flex-direction: column;
+    position: relative;
 
     .main-content {
       flex: 1;

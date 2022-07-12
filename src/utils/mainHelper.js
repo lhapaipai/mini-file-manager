@@ -21,6 +21,26 @@ export function prepareFormFilePickerOptions(options) {
   };
 }
 
+function collectItem(prefix) {
+  return {
+    mimeType: document.getElementById(`${prefix}_mimeType`).value,
+    width: document.getElementById(`${prefix}_width`).value,
+    height: document.getElementById(`${prefix}_height`).value,
+    filename: document.getElementById(`${prefix}_filename`).value,
+    directory: document.getElementById(`${prefix}_directory`).value,
+    origin: document.getElementById(`${prefix}_origin`).value,
+  };
+}
+
+export function collectFormData(elt, multiple) {
+  let prefix = elt.id;
+  if (multiple) {
+    return Array.from(elt.children).map((child, i) => collectItem(`${prefix}_${i}`));
+  } else {
+    return [collectItem(prefix)];
+  }
+}
+
 export function prepareOptions(elt, options) {
   if (!options) {
     if (elt instanceof HTMLElement) {
@@ -49,6 +69,7 @@ export function prepareOptions(elt, options) {
     }),
     store: createStoreWithOptions(options),
     // options
+    minifilemanagerOptions: options,
   };
 }
 
