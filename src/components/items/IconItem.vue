@@ -82,7 +82,7 @@ export default {
   align-items: center;
   outline: 0;
 
-  color: var(--gray);
+  color: var(--grey);
   transition: var(--transition-color);
 
   .square {

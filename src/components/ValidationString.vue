@@ -41,6 +41,6 @@ export default {
 
 <style lang="postcss" scoped>
 i.famfm-right-open {
-  color: var(--gray);
+  color: var(--grey);
 }
 </style>

@@ -1,9 +1,9 @@
 @import "./variables.css";
 @import "./fontello/fontello.css";
-@import "./theme.css";
+@import "./pentatrion-theme.css";
 @import "./cropper.css";
 
-.file-manager {
+.mini-file-manager {
   * {
     box-sizing: border-box;
   }

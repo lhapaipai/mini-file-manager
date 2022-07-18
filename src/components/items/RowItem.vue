@@ -41,7 +41,7 @@ export default {
   padding: 0.5rem 0.5rem;
   flex-wrap: wrap;
   border-bottom: 1px solid var(--grey50);
-  color: var(--gray);
+  color: var(--grey);
 
   .icon-container {
     display: flex;

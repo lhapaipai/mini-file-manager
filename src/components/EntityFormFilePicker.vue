@@ -9,75 +9,78 @@
       ></FileManagerModal>
     </Teleport>
     <div>
-      <div v-if="selection.length > 0" class="files">
+      <div v-if="uploadedFiles.length > 0" class="files">
         <div
-          v-for="(file, key) in selection"
+          v-for="(file, key) in uploadedFiles"
           :key="file.directory + file.filename"
           class="preview"
-          :class="{ image: file.thumbnails }"
         >
           <ImageItem
             :file="file"
-            :filter="filter"
+            :filter="form.filter"
             @remove="() => handleRemove(key)"
-            @browse="handleBrowse"
+            @browse="() => handleBrowse(file)"
           />
-          <!-- <img
-            :data-type="file.type"
-            :src="$uploadSrc(file, filter)"
-            :height="$uploadHeight(file, filter)"
-            :width="$uploadWidth(file, filter)"
-          /> -->
         </div>
       </div>
-      <div v-if="selection.length === 0 || multiple" class="no-preview-area">
+      <div v-if="uploadedFiles.length === 0 || multiple" class="no-preview-area">
         <i class="famfm-pictures no-image"></i>
-        <button :class="`${themePrefix}-button outlined`" @click.prevent="handleBrowse">
+        <button
+          :class="`${themePrefix}-button outlined`"
+          @click.prevent="() => handleBrowse(null)"
+        >
           {{ $t("filesManager") }}
         </button>
       </div>
     </div>
 
     <div>
-      <div v-for="(file, key) in selection" :key="file.directory + file.filename">
+      <div v-for="(file, key) in uploadedFiles" :key="file.directory + file.filename">
+        <input
+          v-model="file.type"
+          type="text"
+          :name="generateName('type', key)"
+          maxlength="64"
+          class="ogoxe-input-text"
+        />
         <input
           v-model="file.mimeType"
-          type="hidden"
+          type="text"
           :name="generateName('mimeType', key)"
           maxlength="64"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.filename"
-          type="hidden"
+          type="text"
           :name="generateName('filename', key)"
           maxlength="255"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.directory"
-          type="hidden"
+          type="text"
           :name="generateName('directory', key)"
           maxlength="255"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.origin"
-          type="hidden"
+          type="text"
           :name="generateName('origin', key)"
           maxlength="64"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.width"
-          type="hidden"
+          type="text"
           :name="generateName('width', key)"
           maxlength="64"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.height"
-          type="hidden"
+          type="text"
           :name="generateName('height', key)"
           maxlength="64"
           class="ogoxe-input-text"
@@ -88,8 +91,9 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 import FileManagerModal from "./FileManagerModal.vue";
-import ImageItem from "./ImageItem.vue";
+import ImageItem from "./items/ImageItem.vue";
 
 export default {
   components: {
@@ -97,33 +101,30 @@ export default {
     ImageItem,
   },
   props: {
-    multiple: Boolean,
-    name: String,
-    files: {
+    name: {
+      type: String,
+      default: "",
+    },
+    initialUploadedFiles: {
       type: Array,
       default: () => [],
     },
-    filter: {
-      type: String,
-      default: "small",
-    },
-    type: {
-      type: String,
-      default: "image",
-    },
-    themePrefix: String,
   },
   data() {
     return {
-      selection: [],
+      uploadedFiles: [],
       showModal: false,
     };
   },
+  computed: {
+    ...mapState(["themePrefix", "form", "multiple"]),
+  },
   mounted() {
-    console.log("selection", this.selection);
-    this.selection = this.files.slice();
+    console.log("initialUploadedFiles", this.initialUploadedFiles);
+    this.uploadedFiles = [...this.initialUploadedFiles];
   },
   methods: {
+    ...mapActions(["setSelectionPaths"]),
     generateName(suffix, key) {
       if (this.multiple) {
         return `${this.name}[${key}][${suffix}]`;
@@ -131,10 +132,16 @@ export default {
       return `${this.name}[${suffix}]`;
     },
     handleRemove(key) {
-      console.log("remove", key, this.selection);
-      this.selection.splice(key, 1);
+      console.log("remove", key, this.uploadedFiles);
+      this.uploadedFiles.splice(key, 1);
     },
-    handleBrowse() {
+    async handleBrowse(uploadedFile) {
+      let id = null;
+      if (uploadedFile) {
+        let dir = uploadedFile.directory ? uploadedFile.directory + "/" : "";
+        id = `@${uploadedFile.origin}:${dir}${uploadedFile.filename}`;
+      }
+      this.setSelectionPaths(id ? [id] : null);
       this.showModal = true;
     },
     handleNewSelection(selectedFiles) {
@@ -142,15 +149,16 @@ export default {
       // console.log("selectedFiles", selectedFiles);
       if (this.multiple) {
         selectedFiles.forEach((selectedFile) => {
-          this.selection.push(this.parseUploadedFile(selectedFile));
+          this.uploadedFiles.push(this.parseUploadedFile(selectedFile));
         });
       } else {
-        this.selection = [this.parseUploadedFile(selectedFiles[0])];
+        this.uploadedFiles = [this.parseUploadedFile(selectedFiles[0])];
       }
-      console.log(this.selection);
+      console.log(this.uploadedFiles);
     },
-    parseUploadedFile({ mimeType, details, filename, directory, origin }) {
+    parseUploadedFile({ mimeGroup, mimeType, details, filename, directory, origin }) {
       return {
+        type: mimeGroup,
         mimeType,
         width: details ? details.width : null,
         height: details ? details.height : null,

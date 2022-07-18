@@ -28,6 +28,7 @@ export default {
     min: "min.",
     px: "px",
     filesManager: "Gestionnaire de fichiers",
+    errorFilePath: "Impossible de charger l'image, la retirer ?",
   },
   en: {
     apply: "Apply",
@@ -58,5 +59,6 @@ export default {
     min: "min.",
     px: "px",
     filesManager: "Files manager",
+    errorFilePath: "Unable to load the image, remove it?",
   },
 };

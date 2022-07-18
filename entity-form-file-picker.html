@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini File Manager</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #file-manager {
+      height: 600px;
+    }
+
+    .file-picker {
+      display: block;
+      margin: 1rem 0;
+
+    }
+  </style>
+</head>
+
+<body>
+  <div id="Station_photos" class="entity-form-file-picker" data-name="Station[photos]" data-file-picker>
+    <div class="">
+      <div class=" form-group">
+        <input type="text" id="Station_photos_0_type" name="Station[photos][0][type]" maxlength="64" value="image">
+        <input type="text" id="Station_photos_0_mimeType" name="Station[photos][0][mimeType]" maxlength="64"
+          value="image/png">
+        <input type="number" id="Station_photos_0_width" name="Station[photos][0][width]" value="404">
+        <input type="number" id="Station_photos_0_height" name="Station[photos][0][height]" value="543">
+        <input type="text" id="Station_photos_0_filename" name="Station[photos][0][filename]" maxlength="255"
+          value="plvg-fr-hyd-0001.png">
+        <input type="text" id="Station_photos_0_directory" name="Station[photos][0][directory]" maxlength="255"
+          value="station/plvg-fr-hyd-0001">
+        <input type="text" id="Station_photos_0_origin" name="Station[photos][0][origin]" maxlength="64"
+          value="public_uploads">
+      </div>
+    </div>
+  </div>
+  <script type="module">
+    import "./src/css/other-theme.scss";
+    import { entityFormFilePicker } from "./src/index.js";
+
+    document.addEventListener("keyup", (e) => {
+      if (e.code === "Tab") {
+        document.body.classList.add("with-a11y");
+      }
+    });
+
+    let fileManagerOptions = {
+      debug: true,
+      endPoint: "http://mini-file-manager-template.localhost/media-manager",
+      isAdmin: false,
+      entryPoints: [
+        {
+          directory: "",
+          origin: "public_uploads",
+          readOnly: false,
+          icon: "fa-lock",
+          label: "Posts",
+        },
+        {
+          directory: "posts/abc",
+          origin: "public_uploads",
+          readOnly: false,
+          icon: "fa-lock",
+          label: "Posts abc",
+        },
+      ],
+      locale: "fr",
+      multiple: true,
+
+      form: {
+        filter: "small",
+        type: "image"
+      }
+    };
+
+    document.querySelectorAll('.entity-form-file-picker').forEach(($filePicker) => {
+      entityFormFilePicker($filePicker, fileManagerOptions)
+    })
+
+  </script>
+</body>
+
+</html>

@@ -49,7 +49,7 @@ npm install mini-file-manager
 
 Copy `dist/file-manager` directory from `node_modules/mini-file-manager` to your webroot directory. it contains icons for each file type.
 
-Copy `dist/fonts` directory from `node_modules/mini-file-manager` to your webroot directory. it contains icons for buttons.
+Copy `dist/style.css` directory from `node_modules/mini-file-manager` to your webroot `file-manager` directory. it contains your styles for buttons.
 
 #### with UMD / ES Modules
 

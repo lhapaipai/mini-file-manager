@@ -171,7 +171,7 @@ export default {
     margin: 2px;
     padding: 0.5rem 1rem;
     cursor: pointer;
-    color: var(--gray);
+    color: var(--grey);
     &:hover {
       background-color: var(--grey50);
       color: var(--grey700);
@@ -184,7 +184,7 @@ export default {
   align-items: center;
   svg {
     margin-right: 0.5rem;
-    color: var(--gray);
+    color: var(--grey);
   }
 }
 </style>

@@ -83,11 +83,10 @@ export function filename2dirname(filename) {
   }
 }
 
-export function parseOriginalSelection(originalSelection, entryPoints) {
-  if (!originalSelection || originalSelection.length === 0) {
+export function parseSelection(selection, entryPoints) {
+  if (!selection || selection.length === 0) {
     return null;
   }
-
   let newList = [],
     temp,
     origin,
@@ -96,7 +95,7 @@ export function parseOriginalSelection(originalSelection, entryPoints) {
     dirPos,
     dir,
     id;
-  for (let fileId of originalSelection) {
+  for (let fileId of selection) {
     if (fileId[0] !== "@") {
       origin = entryPoints[0].origin;
       path = fileId;
@@ -115,7 +114,12 @@ export function parseOriginalSelection(originalSelection, entryPoints) {
       dir = path.substr(0, dirPos);
       path = path.substr(dirPos + 1);
     }
-    newList.push([origin, dir, path, id]);
+    newList.push({
+      origin,
+      dir,
+      path,
+      id,
+    });
   }
   return newList;
 }

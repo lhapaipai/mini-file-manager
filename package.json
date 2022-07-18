@@ -36,7 +36,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.5.0",
-    "mini-notifier": "^0.4.6",
+    "mini-notifier": "^0.5.0",
     "pentatrion-lib": "^0.3.6",
     "pentatrion-theme": "github:lhapaipai/pentatrion-theme#v0.1.2",
     "postcss": "^8.4.12",

@@ -2,8 +2,13 @@ import { createApp, toRaw } from "vue";
 import VFileManagerModal from "./components/FileManagerModal.vue";
 import { scrollLockDirective } from "scroll-blocker/scroll-lock-directive";
 import { prepareOptions } from "./utils/mainHelper";
+import { createI18n } from "vue-i18n-lite";
+import createStoreWithOptions from "./store";
+import localesData from "./locales";
 
-export default function FileManagerModal(
+import "mini-notifier/dist/style.css";
+
+export default function fileManagerModal(
   options,
   onSuccess = () => {},
   onAbort = () => {},
@@ -11,13 +16,18 @@ export default function FileManagerModal(
   let elt = document.createElement("div");
   document.body.appendChild(elt);
 
-  let { store, i18n } = prepareOptions(elt, options);
+  options = prepareOptions(elt, options);
 
   const app = createApp(VFileManagerModal);
-
   app.directive("scroll-lock", scrollLockDirective);
-  app.use(store);
-  app.use(i18n);
+  app.use(createStoreWithOptions(options, true));
+  app.use(
+    createI18n({
+      locale: options.locale,
+      fallbackLocale: "en",
+      messages: localesData,
+    }),
+  );
 
   const vm = app.mount(elt);
   vm.$el.addEventListener("selectFiles", onSelectFiles);

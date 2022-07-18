@@ -8,19 +8,10 @@ export default defineConfig({
     postcss: postcssConfig,
   },
   build: {
+    assetsInlineLimit: 1024,
     lib: {
       entry: "src/index.js",
       name: "miniFileManager",
-    },
-    rollupOptions: {
-      output: {
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name == "style.css") {
-            return "mini-file-manager.css";
-          }
-          return assetInfo.name;
-        },
-      },
     },
   },
 });

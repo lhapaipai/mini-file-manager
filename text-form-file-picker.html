@@ -31,26 +31,20 @@
 <body>
   <div class="form-group">
     <label for="post_poster" class="required">Poster</label>
-    <input type="text" id="post_poster" name="post[poster]" required="required" class="file-picker" value="">
+    <input type="text" id="post_poster" name="post[poster]" required="required" class="file-picker"
+      value="posts/autre/fermecharousse.jpg"
+      data-uploaded-files="[{&quot;mimeType&quot;:&quot;image/jpeg&quot;,&quot;width&quot;:1000,&quot;height&quot;:750,&quot;filename&quot;:&quot;fermecharousse.jpg&quot;,&quot;directory&quot;:&quot;posts/autre&quot;,&quot;origin&quot;:&quot;public_uploads&quot;}]">
   </div>
 
   <script type="module">
     import "./src/css/other-theme.scss";
-    import { FormFilePicker } from "./src/index.js";
+    import { textFormFilePicker } from "./src/index.js";
 
     document.addEventListener("keyup", (e) => {
       if (e.code === "Tab") {
         document.body.classList.add("with-a11y");
       }
     });
-
-    let formPreviewOptions = {
-      multiple: false,
-      filter: "small",
-      type: "image"
-    };
-
-    let files = []
 
     let fileManagerOptions = {
       debug: true,
@@ -72,24 +66,16 @@
           label: "Posts abc",
         },
       ],
-      // fileValidation: {
-      //   mimeGroup: 'image',
-      //   allowDir: false,
-      //   imageOptions: {
-      //     allowSvg: false,
-      //     ratio: 1,
-      //     // width: 1200,
-      //     // height: 900,
-      //   }
-      // },
-      fileUpload: {
-        // maxFileSize: 1024 * 1024
-      },
       locale: "fr",
-      theme: 'mini-file-manager-custom-theme',
+      multiple: false,
+      injectCssVars: false,
+      form: {
+        filter: "small",
+        type: "image"
+      }
     };
 
-    FormFilePicker(".file-picker", formPreviewOptions, fileManagerOptions, files);
+    textFormFilePicker(".file-picker", fileManagerOptions);
   </script>
 </body>
 

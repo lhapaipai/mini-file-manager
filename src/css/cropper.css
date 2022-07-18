@@ -255,7 +255,7 @@
   }
 
   &-bg {
-    background-image: url("../../public/file-manager/bg.png");
+    background-image: url("/file-manager/images/bg.png");
   }
 
   &-hide {

@@ -281,7 +281,7 @@ export default {
     display: block;
   }
   .help-text {
-    color: $gray;
+    color: $grey;
     font-size: 0.9rem;
   }
 }
@@ -335,7 +335,7 @@ export default {
 }
 .rename {
   font-size: 0.8rem;
-  color: var(--gray);
+  color: var(--grey);
   &:hover {
     color: var(--grey700);
   }

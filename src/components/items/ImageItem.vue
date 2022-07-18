@@ -3,10 +3,11 @@
     <img
       class="image__item"
       :data-type="file.type"
-      :data-src="$uploadSrc(file, filter)"
+      :data-src="$uploadSrc(file, filter, backendOrigin)"
       :height="$uploadHeight(file, filter)"
       :width="$uploadWidth(file, filter)"
       alt="random image"
+      @error="handleError"
     />
     <div class="image__actions">
       <a href="#" class="remove" @click.prevent="$emit('remove')"
@@ -20,13 +21,11 @@
 </template>
 
 <script>
-import ImageSpinner from "./ImageSpinner.vue";
+import { confirm } from "mini-notifier";
+import { mapState } from "vuex";
 
 export default {
   name: "ImageItem",
-  components: {
-    ImageSpinner,
-  },
   props: {
     file: Object,
     filter: {
@@ -35,6 +34,19 @@ export default {
     },
   },
   emits: ["browse", "remove"],
+  computed: {
+    ...mapState(["backendOrigin", "multiple"]),
+  },
+  methods: {
+    handleError() {
+      console.log("erreur chargement image");
+      confirm(this.$t("errorFilePath"), {
+        okHandler: () => {
+          this.$emit("remove");
+        },
+      });
+    },
+  },
 };
 </script>
 
@@ -71,7 +83,7 @@ export default {
     transition: var(--transition-color);
     a {
       transition: all 0.2s;
-      color: var(--gray);
+      color: var(--grey);
       font-size: 1.3rem;
       padding: 0.5rem;
       &:hover {

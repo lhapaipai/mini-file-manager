@@ -1,6 +1,5 @@
 export default {
   mounted: (el) => {
-    console.log("lazyloadDirective");
     function loadImage() {
       const imageElement = Array.from(el.children).find((el) => el.nodeName === "IMG");
       if (imageElement) {

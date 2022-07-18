@@ -1,6 +1,15 @@
 <template>
-  <ImageEditor v-if="editContent" class="image-editor" :file="editContent" />
-  <div v-else class="file-manager">
+  <ImageEditor
+    v-if="editContent"
+    class="image-editor"
+    :file="editContent"
+    :class="{ 'with-css-vars': !isModal && injectCssVars }"
+  />
+  <div
+    v-else
+    class="mini-file-manager"
+    :class="{ 'with-css-vars': !isModal && injectCssVars }"
+  >
     <div class="action">
       <button :class="`${themePrefix}-button outlined`" @click.prevent="toggleOrder()">
         <i v-if="presentation === 'list'" class="famfm-order-list"></i>
@@ -107,6 +116,8 @@ export default {
       "editContent",
       "multiple",
       "themePrefix",
+      "isModal",
+      "injectCssVars",
     ]),
     ...mapGetters(["sortedFiles"]),
     canEdit() {
@@ -269,7 +280,7 @@ export default {
 .image-editor {
   padding: 10px;
 }
-.file-manager {
+.mini-file-manager {
   overflow: hidden;
   padding: 10px;
   display: grid;
@@ -284,7 +295,7 @@ export default {
     "infos     infos";
 }
 @media (min-width: 800px) {
-  .file-manager {
+  .mini-file-manager {
     grid-template-columns: 96px 1fr 200px;
     grid-template-rows: 42px 100px 1fr;
     grid-template-areas:

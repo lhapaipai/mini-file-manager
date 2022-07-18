@@ -1,5 +1,9 @@
 <template>
-  <div v-scroll-lock:enabled class="file-manager-modal">
+  <div
+    v-scroll-lock:enabled
+    class="mini-file-manager-modal"
+    :class="{ 'with-css-vars': injectCssVars }"
+  >
     <div class="box">
       <FileManager class="main-content" :is-modal="true" @confirm="handleSelect" />
       <div class="actions">
@@ -64,7 +68,13 @@ export default {
     return {};
   },
   computed: {
-    ...mapState(["selectedFiles", "fileValidation", "editContent", "themePrefix"]),
+    ...mapState([
+      "selectedFiles",
+      "fileValidation",
+      "editContent",
+      "themePrefix",
+      "injectCssVars",
+    ]),
     ...mapGetters(["invalidSelectedFiles", "uneditableSelectedFiles"]),
   },
   methods: {
@@ -97,7 +107,7 @@ export default {
 </script>
 
 <style lang="postcss">
-.file-manager-modal {
+.mini-file-manager-modal {
   position: fixed;
   top: 0;
   left: 0;

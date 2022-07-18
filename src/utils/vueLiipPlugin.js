@@ -16,14 +16,17 @@ const filters = {
 };
 
 export default {
-  uploadSrc(file, filterName) {
+  uploadSrc(file, filterName, backendOrigin = "") {
     let uploadRelativePath = file.directory
       ? `${file.directory}/${file.filename}`
       : file.filename;
+
+    let host = backendOrigin ? backendOrigin : "";
+
     if (getExtension(uploadRelativePath) === "svg") {
-      return `/uploads/${uploadRelativePath}`;
+      return `${host}/uploads/${uploadRelativePath}`;
     } else {
-      return `/media/cache/resolve/${filterName}/uploads/${uploadRelativePath}`;
+      return `${host}/media/cache/resolve/${filterName}/uploads/${uploadRelativePath}`;
     }
   },
   uploadHeight(image, filterName) {

@@ -515,7 +515,7 @@ export default {
 <style lang="postcss" scoped>
 input.mfm-input-text {
   padding: 3px 5px;
-  border-color: var(--gray);
+  border-color: var(--grey);
   &:hover,
   &:focus {
     border-color: var(--grey700);
@@ -617,7 +617,7 @@ input.is-invalid {
   background-color: var(--red50);
 }
 i.famfm-right-open {
-  color: var(--gray);
+  color: var(--grey);
 }
 .lock {
   cursor: pointer;

@@ -18,11 +18,11 @@
 </head>
 
 <body>
-  <button id="pick-file">Pick File</button>
+  <button id="open-fmm">Open file manager</button>
   <button id="destroy-fm">destroy file manager</button>
   <div id="file-manager"></div>
   <script type="module">
-    import { FileManager, FileManagerModal } from "./src/index.js";
+    import { fileManager, fileManagerModal } from "./src/index.js";
 
     document.addEventListener("keyup", (e) => {
       if (e.code === "Tab") {
@@ -51,42 +51,29 @@
           label: "Posts abc",
         },
       ],
-      fileValidation: {
-        mimeGroup: 'image',
-        allowDir: false,
-        imageOptions: {
-          allowSvg: false,
-          ratio: 1,
-          // width: 1200,
-          // height: 900,
-        }
-      },
-      fileUpload: {
-        // maxFileSize: 1024 * 1024
-      },
       locale: "fr",
       multiple: true,
-      // originalSelection: ["posts/image0.jpeg", "posts/image1.jpeg"]
+      selection: ["@public_uploads:posts/autre/fermecharousse.jpg"]
     };
 
-    let fileManager = FileManager(appElt, options);
+    let fm = fileManager(appElt, options);
+    document.getElementById('destroy-fm').addEventListener('click', () => {
+      if (fm) {
+        fm.destroy();
+        fm = null;
+      }
+    })
 
-    let filePicker = document.getElementById("pick-file");
-
-    filePicker.addEventListener("click", e => {
-      FileManagerModal(
+    let $openFmm = document.getElementById("open-fmm");
+    $openFmm.addEventListener("click", e => {
+      fileManagerModal(
         options,
         (files) => { console.log("onSuccess", files); },
         () => { console.log("onAbort"); }
       );
     });
 
-    document.getElementById('destroy-fm').addEventListener('click', () => {
-      if (fileManager) {
-        fileManager.destroy();
-        fileManager = null;
-      }
-    })
+
   </script>
 </body>
 

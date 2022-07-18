@@ -4,26 +4,37 @@ import { downloadFromBlob } from "pentatrion-lib/downloadHelper";
 import { toIsoString } from "pentatrion-lib/dateHelper";
 import { formFetchOrNotify, fetchOrNotify } from "pentatrion-lib/apiHelper";
 
-import { parseOriginalSelection } from "./utils/filters";
+import { parseSelection } from "./utils/filters";
 import { checkAndFixValidation, completeUploadOptions } from "./utils/complete";
 import { isValidFile, isEditableFile } from "./utils/validation";
 
-export default function createStoreWithOptions({
-  entryPoints,
-  endPoint,
-  fileValidation,
-  originalSelection,
-  fileUpload,
-  multiple = false,
-  theme = "mini-file-manager-theme",
-  themePrefix = "penta",
-  debug = false,
-}) {
-  originalSelection = parseOriginalSelection(originalSelection, entryPoints);
+export default function createStoreWithOptions(
+  {
+    entryPoints,
+    endPoint,
+    fileValidation,
+    selection,
+    fileUpload,
+    multiple = false,
+    injectCssVars = true,
+    themePrefix = "penta",
+    debug = false,
+    form = {},
+  },
+  isModal,
+) {
   // console.log(entryPoints);
   let debugStr = debug ? "?XDEBUG_TRIGGER" : "";
+
+  let backendOrigin = null;
+  try {
+    let url = new URL(endPoint);
+    backendOrigin = url.origin;
+  } catch (e) {}
+
   return createStore({
     state: {
+      backendOrigin,
       endPoints: {
         deleteFile: `${endPoint}/delete${debugStr}`,
         downloadArchive: `${endPoint}/download-archive${debugStr}`,
@@ -38,20 +49,10 @@ export default function createStoreWithOptions({
       entryPoints,
       fileValidation: checkAndFixValidation(fileValidation),
       fileUpload: completeUploadOptions(fileUpload),
-      // entryPoints :[
-      //   {
-      //       label: 'Conversation',
-      //       directory: 'projet/puplinge-classique/todo',
-      //       origin: 'private',
-      //       readOnly: false,
-      //       icon: 'famfm-lock'
-      //   },
-      // ]
-
       currentEntryPoint: null,
       secondaryDirectories: [],
       multiple,
-      theme,
+      injectCssVars,
       themePrefix,
       directory: null,
       files: [],
@@ -60,6 +61,9 @@ export default function createStoreWithOptions({
       editing: false,
       editContent: null,
       sortBy: "filename",
+      isModal,
+      form,
+      initialSelectionPaths: parseSelection(selection, entryPoints),
     },
     getters: {
       sortedFiles(state) {
@@ -185,6 +189,9 @@ export default function createStoreWithOptions({
       },
       setSecondaryDirectory(state, arr) {
         state.secondaryDirectories = arr;
+      },
+      setInitialSelectionPaths(state, selectionPaths) {
+        state.initialSelectionPaths = selectionPaths;
       },
     },
     actions: {
@@ -317,14 +324,14 @@ export default function createStoreWithOptions({
           dispatch("setFiles", files);
           commit("setDirectory", directory);
 
-          if (originalSelection) {
-            for (let fileSelected of originalSelection) {
-              let file = files.find((f) => f.id === fileSelected[3]);
+          if (state.initialSelectionPaths) {
+            for (let initialSelectionPath of state.initialSelectionPaths) {
+              let file = files.find((f) => f.id === initialSelectionPath.id);
               if (file) {
                 commit("addFileToSelection", file);
               }
             }
-            originalSelection = null;
+            commit("setInitialSelectionPaths", null);
           }
         });
       },
@@ -332,11 +339,11 @@ export default function createStoreWithOptions({
         commit("clearSelection");
         commit("setFiles", files);
       },
-      async setCurrentEntryPoint({ commit, dispatch }, entryPoint) {
+      async setCurrentEntryPoint({ commit, dispatch, state }, entryPoint) {
         commit("setCurrentEntryPoint", entryPoint);
         let directory = entryPoint.directory;
-        if (originalSelection) {
-          directory = originalSelection[0][1];
+        if (state.initialSelectionPaths) {
+          directory = state.initialSelectionPaths[0].dir;
         }
         dispatch("setSecondaryDirectoryFromFullDirectory", directory);
       },
@@ -364,9 +371,9 @@ export default function createStoreWithOptions({
       async init({ dispatch, state }) {
         let entryPoint;
 
-        if (originalSelection) {
+        if (state.initialSelectionPaths) {
           entryPoint = state.entryPoints.find(
-            (e) => e.origin === originalSelection[0][0],
+            (e) => e.origin === state.initialSelectionPaths[0].origin,
           );
         }
         if (entryPoint) {
@@ -374,6 +381,11 @@ export default function createStoreWithOptions({
         } else {
           dispatch("setCurrentEntryPoint", state.entryPoints[0]);
         }
+      },
+      setSelectionPaths({ commit, state }, selection) {
+        let initialSelectionPaths = parseSelection(selection, state.entryPoints);
+        commit("setFiles", []);
+        commit("setInitialSelectionPaths", initialSelectionPaths);
       },
     },
   });

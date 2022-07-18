@@ -82,6 +82,8 @@ export default {
       fileType: this.fileUpload.fileType,
       fileTypeErrorCallback: (file, errorCount) => {
         notify(this.$t("fileTypeError", { name: file.name }), {
+          time: 500000,
+
           style: "error",
         });
         console.log(file, errorCount);
