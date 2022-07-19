@@ -16,6 +16,8 @@
       >
         <img
           :alt="file.filename"
+          :width="$uploadWidth(file, 'small')"
+          :height="$uploadHeight(file, 'small')"
           :src="$uploadSrc(file, 'small')"
           @dragstart="handleDragStart($event, file)"
         />
@@ -97,22 +99,23 @@ export default {
       align-items: flex-end;
       img {
         transition: var(--transition-opacity);
+        display: block;
+        max-width: 100%;
+        height: auto;
+        max-height: 100%;
+        width: auto;
       }
 
       &.is-not-icon {
         padding: 8%;
         img {
           border-radius: 8px;
-          max-height: 100%;
-          max-width: 100%;
         }
       }
       &.is-icon {
         padding: 8%;
         img {
           border-radius: 20px;
-          height: 100%;
-          width: auto;
         }
       }
 

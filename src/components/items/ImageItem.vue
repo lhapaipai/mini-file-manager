@@ -1,21 +1,24 @@
 <template>
-  <div v-lazy-load class="image__wrapper">
-    <img
-      class="image__item"
-      :data-type="file.type"
-      :data-src="$uploadSrc(file, filter, backendOrigin)"
-      :height="$uploadHeight(file, filter)"
-      :width="$uploadWidth(file, filter)"
-      alt="random image"
-      @error="handleError"
-    />
-    <div class="image__actions">
-      <a href="#" class="remove" @click.prevent="$emit('remove')"
-        ><i class="famfm-trash"></i
-      ></a>
-      <a v-if="!multiple" href="#" class="browse" @click.prevent="$emit('browse')"
-        ><i class="famfm-folder"></i
-      ></a>
+  <div class="square">
+    <div v-lazy-load class="image-wrapper">
+      <div class="actions-container">
+        <img
+          :data-type="file.type"
+          :data-src="$uploadSrc(file, filter, backendOrigin)"
+          :height="$uploadHeight(file, filter)"
+          :width="$uploadWidth(file, filter)"
+          alt="random image"
+          @error="handleError"
+        />
+        <div class="actions">
+          <a href="#" class="remove" @click.prevent="$emit('remove')"
+            ><i class="famfm-trash"></i
+          ></a>
+          <a v-if="!multiple" href="#" class="browse" @click.prevent="$emit('browse')"
+            ><i class="famfm-folder"></i
+          ></a>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -51,52 +54,72 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-.image {
-  &__wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 4px;
+.square {
+  position: relative;
+  padding-top: 100%;
+  width: 100%;
+}
+.actions-container {
+  position: relative;
+}
 
-    &.loaded {
-      .image {
-        &__item {
-          visibility: visible;
-          opacity: 1;
-          border: 0;
-        }
-        &__actions {
-          display: flex;
-        }
-      }
+.image-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  &.loaded {
+    img {
+      visibility: visible;
+      opacity: 1;
+      border: 0;
+
+      display: block;
+      max-width: 100%;
+      height: auto;
+      max-height: 100%;
+      width: auto;
+    }
+    .actions {
+      display: flex;
     }
   }
-  &__actions {
-    display: none;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: flex-end;
-    transition: var(--transition-color);
-    a {
-      transition: all 0.2s;
-      color: var(--grey);
-      font-size: 1.3rem;
-      padding: 0.5rem;
-      &:hover {
-        color: white;
-      }
+}
+
+.actions {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: flex-end;
+  transition: var(--transition-color);
+  border-radius: 0 0 4px 4px;
+
+  a {
+    transition: all 0.2s;
+    color: var(--grey);
+    font-size: 1.3rem;
+    padding: 0.5rem;
+    &:hover {
+      color: white;
     }
   }
-  &__item {
-    width: 100%;
-    border-radius: 4px;
-    transition: all 0.4s ease-in-out;
-    opacity: 0;
-    visibility: hidden;
-  }
+}
+img {
+  width: 100%;
+  border-radius: 4px;
+  transition: all 0.4s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
 }
 </style>

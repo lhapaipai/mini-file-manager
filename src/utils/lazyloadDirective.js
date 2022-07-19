@@ -1,7 +1,8 @@
 export default {
   mounted: (el) => {
     function loadImage() {
-      const imageElement = Array.from(el.children).find((el) => el.nodeName === "IMG");
+      // const imageElement = Array.from(el.children).find((el) => el.nodeName === "IMG");
+      const imageElement = el.querySelector("img");
       if (imageElement) {
         imageElement.addEventListener("load", () => {
           setTimeout(() => el.classList.add("loaded"), 100);

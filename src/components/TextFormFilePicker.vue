@@ -11,7 +11,7 @@
     <div v-if="uploadedFiles.length > 0" class="files">
       <div
         v-for="(file, key) in uploadedFiles"
-        :key="file.directory + file.filename"
+        :key="file.directory + file.filename + file.createdAt"
         class="preview"
       >
         <ImageItem
@@ -115,71 +115,15 @@ export default {
       }
       console.log(this.uploadedFiles);
     },
-    parseUploadedFile({
-      mimeGroup,
-      mimeType,
-      imageWidth,
-      imageHeight,
-      filename,
-      directory,
-      origin,
-    }) {
-      return {
-        mimeGroup,
-        mimeType,
-        imageWidth,
-        imageHeight,
-        filename,
-        directory,
-        origin,
-      };
-    },
   },
 };
 </script>
 
 <style lang="postcss" scoped>
 .files {
-  display: flex;
-}
-.preview {
-  position: relative;
-  align-self: flex-start;
-  min-width: 200px;
-  margin-right: 1rem;
-  &:last-child {
-    margin-right: 0;
-  }
-  img {
-    vertical-align: middle;
-    display: inline-block;
-    min-width: 200px;
-    height: auto;
-  }
-}
-.rounded-corner {
-  box-shadow: 0 0 1px #bbb;
-}
-
-.actions {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  justify-content: flex-end;
-  transition: var(--transition-color);
-  a {
-    transition: all 0.2s;
-    color: var(--grey);
-    font-size: 1.3rem;
-    padding: 0.5rem;
-    &:hover {
-      color: white;
-    }
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 15px;
 }
 
 .no-preview-area {

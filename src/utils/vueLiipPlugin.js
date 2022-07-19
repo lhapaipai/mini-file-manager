@@ -29,17 +29,19 @@ export default function (state) {
         return `/file-manager/icons/${file.icon}`;
       }
 
+      let suffix = `?${new Date(file.createdAt).getTime()}`;
+
       let host = backendOrigin ? backendOrigin : "";
       if (file.public) {
         if (!filterName || getExtension(file.uploadRelativePath) === "svg") {
-          return `${host}${entryPoint.webPrefix}/${file.uploadRelativePath}`;
+          return `${host}${entryPoint.webPrefix}/${file.uploadRelativePath}${suffix}`;
         }
-        return `${host}/media/cache/resolve/${filterName}${entryPoint.webPrefix}/${file.uploadRelativePath}`;
+        return `${host}/media/cache/resolve/${filterName}${entryPoint.webPrefix}/${file.uploadRelativePath}${suffix}`;
       } else {
         if (!filterName || getExtension(file.uploadRelativePath) === "svg") {
-          return `${endPoints.getFileContent}/download/${file.origin}/${file.uploadRelativePath}`;
+          return `${endPoints.getFileContent}/download/${file.origin}/${file.uploadRelativePath}${suffix}`;
         }
-        return `${host}/media/cache/resolve/${filterName}${entryPoint.webPrefix}/${file.uploadRelativePath}`;
+        return `${host}/media/cache/resolve/${filterName}${entryPoint.webPrefix}/${file.uploadRelativePath}${suffix}`;
       }
     },
     uploadHeight(image, filterName) {

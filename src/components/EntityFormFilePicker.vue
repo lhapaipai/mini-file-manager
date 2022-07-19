@@ -185,25 +185,6 @@ export default {
       }
       console.log(this.uploadedFiles);
     },
-    parseUploadedFile({
-      mimeGroup,
-      mimeType,
-      imageWidth,
-      imageHeight,
-      filename,
-      directory,
-      origin,
-    }) {
-      return {
-        mimeGroup,
-        mimeType,
-        imageWidth,
-        imageHeight,
-        filename,
-        directory,
-        origin,
-      };
-    },
   },
 };
 </script>
@@ -223,25 +204,9 @@ export default {
 }
 
 .files {
-  display: flex;
-}
-.preview {
-  position: relative;
-  align-self: flex-start;
-  min-width: 100px;
-  margin-right: 1rem;
-  &:last-child {
-    margin-right: 0;
-  }
-  img {
-    display: block;
-    /* height: 200px;
-    max-width: auto;
-    width: auto; */
-  }
-}
-.rounded-corner {
-  box-shadow: 0 0 1px #bbb;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 15px;
 }
 
 .no-preview-area {

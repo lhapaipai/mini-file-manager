@@ -6,7 +6,7 @@
     @dblclick="$emit('dblclick', $event)"
   >
     <div class="icon-container">
-      <img :src="file.icon" :alt="file.filename" />
+      <img :src="`/file-manager/icons/${file.icon}`" :alt="file.filename" />
     </div>
     <div class="filename">{{ file.filename }}</div>
     <div class="size ref">{{ file.type === "file" ? humanFileSize(file.size) : "" }}</div>

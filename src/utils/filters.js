@@ -94,14 +94,14 @@ export function parseSelection(selection, entryPoints) {
     originPos,
     dirPos,
     dir,
-    id;
+    liipId;
   for (let fileId of selection) {
     if (fileId[0] !== "@") {
       origin = entryPoints[0].origin;
       path = fileId;
-      id = `@${origin}:${path}`;
+      liipId = `@${origin}:${path}`;
     } else {
-      id = fileId;
+      liipId = fileId;
       temp = fileId.substr(1);
       originPos = temp.indexOf(":");
       origin = temp.substr(0, originPos);
@@ -118,7 +118,7 @@ export function parseSelection(selection, entryPoints) {
       origin,
       dir,
       path,
-      id,
+      liipId,
     });
   }
   return newList;
