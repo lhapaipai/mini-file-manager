@@ -8,8 +8,6 @@ import vueLiipPlugin from "./utils/vueLiipPlugin";
 import localesData from "./locales";
 import { createI18n } from "vue-i18n-lite";
 
-import "mini-notifier/dist/style.css";
-
 export default function textFormFilePicker(
   inputElt,
   options,
@@ -33,7 +31,7 @@ export default function textFormFilePicker(
 
   let appElt = document.createElement("div");
   inputElt.after(appElt);
-
+  console.log("uploadedFiles", uploadedFiles);
   const app = createApp(VTextFormFilePicker, {
     initialUploadedFiles: uploadedFiles,
     // name: elt.dataset.name,
@@ -49,7 +47,7 @@ export default function textFormFilePicker(
       messages: localesData,
     }),
   );
-  app.use(vueLiipPlugin);
+  app.use(vueLiipPlugin(app.config.globalProperties.$store.state));
 
   const vm = app.mount(appElt);
   vm.$el.addEventListener("selectionChange", onSelectionChange);

@@ -9,12 +9,13 @@
       <img :src="file.icon" :alt="file.filename" />
     </div>
     <div class="filename">{{ file.filename }}</div>
-    <div class="size ref">{{ file.type === "file" ? file.humanSize : "" }}</div>
+    <div class="size ref">{{ file.type === "file" ? humanFileSize(file.size) : "" }}</div>
     <div class="date ref">{{ formatDate(file.createdAt) }}</div>
   </a>
 </template>
 
 <script>
+import { humanFileSize } from "../../utils/filters";
 export default {
   props: {
     file: Object,
@@ -27,6 +28,9 @@ export default {
         return "";
       }
       return new Intl.DateTimeFormat("fr-FR").format(date);
+    },
+    humanFileSize(size) {
+      return humanFileSize(size);
     },
   },
 };

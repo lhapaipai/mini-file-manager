@@ -4,66 +4,80 @@ function getExtension(filename) {
 
 const filters = {
   station_small: {
-    width: 250,
-    height: 300,
+    imageWidth: 250,
+    imageHeight: 300,
     ratio: 250 / 300,
   },
   small: {
-    width: 250,
-    height: 250,
+    imageWidth: 250,
+    imageHeight: 250,
     ratio: 1,
   },
 };
 
-export default {
-  uploadSrc(file, filterName, backendOrigin = "") {
-    let uploadRelativePath = file.directory
-      ? `${file.directory}/${file.filename}`
-      : file.filename;
+export default function (state) {
+  let { backendOrigin, endPoints, entryPoints } = state;
 
-    let host = backendOrigin ? backendOrigin : "";
+  return {
+    uploadSrc(file, filterName) {
+      let entryPoint = entryPoints.find((e) => file.origin === e.origin);
+      if (file.type === "temp-file" && file.thumbnail) {
+        return file.thumbnail;
+      }
 
-    if (getExtension(uploadRelativePath) === "svg") {
-      return `${host}/uploads/${uploadRelativePath}`;
-    } else {
-      return `${host}/media/cache/resolve/${filterName}/uploads/${uploadRelativePath}`;
-    }
-  },
-  uploadHeight(image, filterName) {
-    if (!image.width || !image.height) {
-      return;
-    }
-    let filter = filters[filterName];
-    if (!filter) {
-      image.width;
-    }
-    let filterRatio = filter.width / filter.height;
-    let imageRatio = image.width / image.height;
-    if (filterRatio > imageRatio) {
-      return filter.height;
-    } else {
-      return Math.round(filter.width * imageRatio);
-    }
-  },
-  uploadWidth(image, filterName) {
-    if (!image.width || !image.height) {
-      return;
-    }
-    let filter = filters[filterName];
-    if (!filter) {
-      image.width;
-    }
-    let filterRatio = filter.width / filter.height;
-    let imageRatio = image.width / image.height;
-    if (filterRatio < imageRatio) {
-      return filter.width;
-    } else {
-      return Math.round(filter.height * imageRatio);
-    }
-  },
-  install(app) {
-    app.config.globalProperties.$uploadSrc = this.uploadSrc;
-    app.config.globalProperties.$uploadWidth = this.uploadWidth;
-    app.config.globalProperties.$uploadHeight = this.uploadHeight;
-  },
-};
+      if (!entryPoint || file.type === "dir" || file.mimeGroup !== "image") {
+        return `/file-manager/icons/${file.icon}`;
+      }
+
+      let host = backendOrigin ? backendOrigin : "";
+      if (file.public) {
+        if (!filterName || getExtension(file.uploadRelativePath) === "svg") {
+          return `${host}${entryPoint.webPrefix}/${file.uploadRelativePath}`;
+        }
+        return `${host}/media/cache/resolve/${filterName}${entryPoint.webPrefix}/${file.uploadRelativePath}`;
+      } else {
+        if (!filterName || getExtension(file.uploadRelativePath) === "svg") {
+          return `${endPoints.getFileContent}/download/${file.origin}/${file.uploadRelativePath}`;
+        }
+        return `${host}/media/cache/resolve/${filterName}${entryPoint.webPrefix}/${file.uploadRelativePath}`;
+      }
+    },
+    uploadHeight(image, filterName) {
+      if (!image.imageWidth || !image.imageHeight) {
+        return;
+      }
+      let filter = filters[filterName];
+      if (!filter) {
+        image.imageWidth;
+      }
+      let filterRatio = filter.imageWidth / filter.imageHeight;
+      let imageRatio = image.imageWidth / image.imageHeight;
+      if (filterRatio > imageRatio) {
+        return filter.imageHeight;
+      } else {
+        return Math.round(filter.imageWidth * imageRatio);
+      }
+    },
+    uploadWidth(image, filterName) {
+      if (!image.imageWidth || !image.imageHeight) {
+        return;
+      }
+      let filter = filters[filterName];
+      if (!filter) {
+        image.imageWidth;
+      }
+      let filterRatio = filter.imageWidth / filter.imageHeight;
+      let imageRatio = image.imageWidth / image.imageHeight;
+      if (filterRatio < imageRatio) {
+        return filter.imageWidth;
+      } else {
+        return Math.round(filter.imageHeight * imageRatio);
+      }
+    },
+    install(app) {
+      app.config.globalProperties.$uploadSrc = this.uploadSrc;
+      app.config.globalProperties.$uploadWidth = this.uploadWidth;
+      app.config.globalProperties.$uploadHeight = this.uploadHeight;
+    },
+  };
+}

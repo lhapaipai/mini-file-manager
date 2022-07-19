@@ -82,18 +82,6 @@ export default {
   },
   methods: {
     ...mapActions(["setSelectionPaths"]),
-    fileImg(file) {
-      if (this.form.type !== "image") {
-        return file.icon;
-      }
-      if (file.thumbnails) {
-        return file.thumbnails[this.form.filter];
-      } else if (file.mimeGroup === "image") {
-        return file.url;
-      } else {
-        return file.icon;
-      }
-    },
 
     handleRemove(key) {
       console.log("remove", key, this.uploadedFiles);
@@ -121,19 +109,27 @@ export default {
               ),
           )
           .forEach((selectedFile) => {
-            this.uploadedFiles.push(this.parseUploadedFile(selectedFile));
+            this.uploadedFiles.push(selectedFile);
           });
       } else {
-        this.uploadedFiles = [this.parseUploadedFile(selectedFiles[0])];
+        this.uploadedFiles = [selectedFiles[0]];
       }
       console.log(this.uploadedFiles);
     },
-    parseUploadedFile({ mimeGroup, mimeType, details, filename, directory, origin }) {
+    parseUploadedFile({
+      mimeGroup,
+      mimeType,
+      imageWidth,
+      imageHeight,
+      filename,
+      directory,
+      origin,
+    }) {
       return {
-        type: mimeGroup,
+        mimeGroup,
         mimeType,
-        width: details ? details.width : null,
-        height: details ? details.height : null,
+        imageWidth,
+        imageHeight,
         filename,
         directory,
         origin,

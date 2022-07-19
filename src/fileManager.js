@@ -5,8 +5,7 @@ import { prepareOptions } from "./utils/mainHelper";
 import { createI18n } from "vue-i18n-lite";
 import localesData from "./locales";
 import createStoreWithOptions from "./store";
-
-import "mini-notifier/dist/style.css";
+import vueLiipPlugin from "./utils/vueLiipPlugin";
 
 export default function fileManager(elt, options) {
   if (typeof elt === "string") {
@@ -25,6 +24,7 @@ export default function fileManager(elt, options) {
       messages: localesData,
     }),
   );
+  app.use(vueLiipPlugin(app.config.globalProperties.$store.state));
 
   const vm = app.mount(elt);
 

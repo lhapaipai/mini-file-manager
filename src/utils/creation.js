@@ -1,40 +1,33 @@
-import { humanFileSize } from "./filters";
-
-export async function createFileInfosFromUpload(fileUploadInfos, directory, origin) {
+export async function createUploadedFileFromUpload(fileUploadInfos, directory, origin) {
   let uploadRelativePath = `${directory}/${fileUploadInfos.fileName}`;
   let mimeType = fileUploadInfos.file.type;
   let mimeGroup = mimeType.split("/")[0];
-
   let infos = {
-    inode: null,
-    id: fileUploadInfos.id,
+    liipId: fileUploadInfos.liipId,
+    mimeGroup,
+    mimeType,
     filename: fileUploadInfos.fileName,
     directory,
-    uploadRelativePath,
-    mimeType,
-    mimeGroup,
-    type: "file",
-    uploader: "",
     origin,
+    imageWidth: null,
+    imageHeight: null,
+    type: "temp-file",
     size: fileUploadInfos.file.size,
-    humanSize: humanFileSize(fileUploadInfos.file.size),
     createdAt: new Date().toISOString(),
-    isDir: false,
-    url: null,
-    urlTimestamped: null,
-    icon: "/file-manager/icons/other.svg",
+    icon: "other.svg",
+    public: true,
     uploadInfos: {
       progression: 0,
       retry: 0,
     },
+    uploadRelativePath,
   };
 
   if (mimeGroup === "image") {
-    infos.thumbnails = {
-      small: await generateThumbnail(fileUploadInfos.file, [250, 250]),
-    };
+    infos.thumbnail = await generateThumbnail(fileUploadInfos.file, [250, 250]);
+    infos.imageWidth = 250;
+    infos.imageHeight = 250;
   }
-
   return infos;
 }
 

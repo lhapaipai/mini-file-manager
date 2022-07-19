@@ -73,15 +73,36 @@ function collectItem(prefix) {
   if (filename === "") {
     return null;
   }
-  return {
-    type: document.getElementById(`${prefix}_type`).value,
+
+  let uploadedFile = {
+    liipId: document.getElementById(`${prefix}_liipId`).value,
+    mimeGroup: document.getElementById(`${prefix}_mimeGroup`).value,
     mimeType: document.getElementById(`${prefix}_mimeType`).value,
-    width: document.getElementById(`${prefix}_width`).value,
-    height: document.getElementById(`${prefix}_height`).value,
     filename: document.getElementById(`${prefix}_filename`).value,
     directory: document.getElementById(`${prefix}_directory`).value,
     origin: document.getElementById(`${prefix}_origin`).value,
+    imageWidth: document.getElementById(`${prefix}_imageWidth`).value,
+    imageHeight: document.getElementById(`${prefix}_imageHeight`).value,
+    type: document.getElementById(`${prefix}_type`).value,
+    size: document.getElementById(`${prefix}_size`).value,
+    createdAt: document.getElementById(`${prefix}_createdAt`).value,
+    icon: document.getElementById(`${prefix}_icon`).value,
+    public: document.getElementById(`${prefix}_public`).value,
   };
+
+  uploadedFile.imageWidth = isNaN(parseInt(uploadedFile.imageWidth))
+    ? null
+    : parseInt(uploadedFile.imageWidth);
+  uploadedFile.imageHeight = isNaN(parseInt(uploadedFile.imageHeight))
+    ? null
+    : parseInt(uploadedFile.imageHeight);
+  uploadedFile.uploadRelativePath = uploadedFile.directory
+    ? `${uploadedFile.directory}/${uploadedFile.filename}`
+    : uploadedFile.filename;
+  uploadedFile.public = uploadedFile.public === "1" ? true : false;
+
+  console.log(uploadedFile);
+  return uploadedFile;
 }
 
 export function collectFormData(elt, multiple) {

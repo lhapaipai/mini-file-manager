@@ -68,10 +68,13 @@ export default function createStoreWithOptions(
     getters: {
       sortedFiles(state) {
         return state.files.sort((a, b) => {
-          if (a.isDir === b.isDir) {
+          let aType = a.type === "temp-file" ? "file" : a.type;
+          let bType = b.type === "temp-file" ? "file" : b.type;
+
+          if (aType === bType) {
             return a[state.sortBy] > b[state.sortBy];
           } else {
-            return a.isDir ? false : true;
+            return aType === "dir" ? false : true;
           }
         });
       },
@@ -111,20 +114,20 @@ export default function createStoreWithOptions(
         }
         state.files.splice(pos, 1, newFile);
       },
-      replaceFileById(state, { fileId, newFile }) {
-        let pos = state.files.findIndex((f) => f.id === fileId);
+      replaceFileByLiipId(state, { fileLiipId, newFile }) {
+        let pos = state.files.findIndex((f) => f.liipId === fileLiipId);
         if (pos === -1) {
-          console.log("impossible de trouver le fichier", fileId);
+          console.log("impossible de trouver le fichier", fileLiipId);
         }
         state.files.splice(pos, 1, newFile);
       },
-      updateFileUploadProgress(state, { id, progression }) {
-        let pos = state.files.findIndex((f) => f.id === id);
+      updateFileUploadProgress(state, { liipId, progression }) {
+        let pos = state.files.findIndex((f) => f.liipId === liipId);
         if (pos === -1) {
           console.log(
             "impossible de trouver le fichier",
-            state.files.map((f) => f.id).join(","),
-            id,
+            state.files.map((f) => f.liipId).join(","),
+            liipId,
             progression,
           );
           return;
@@ -151,15 +154,15 @@ export default function createStoreWithOptions(
       addFile(state, file) {
         state.files.splice(0, 0, file);
       },
-      selectFileById(state, id) {
-        let file = state.files.find((f) => f.id === id);
+      selectFileByLiipId(state, liipId) {
+        let file = state.files.find((f) => f.liipId === liipId);
         if (!file) {
           return;
         }
         state.selectedFiles = [file];
       },
-      addFileByIdToSelection(state, fileId) {
-        let file = state.files.find((f) => f.id === fileId);
+      addFileByLiipIdToSelection(state, fileLiipId) {
+        let file = state.files.find((f) => f.liipId === fileLiipId);
         if (!file) {
           return;
         }
@@ -231,16 +234,16 @@ export default function createStoreWithOptions(
           return newFile;
         });
       },
-      async updateFile({ commit, state }, { oldId, newFile }) {
-        let isSelected = state.selectedFiles.some((f) => f.id === oldId);
+      async updateFile({ commit, state }, { oldLiipId, newFile }) {
+        let isSelected = state.selectedFiles.some((f) => f.liipId === oldLiipId);
 
         if (isSelected) {
           commit("clearSelection");
         }
 
-        commit("replaceFileById", { fileId: oldId, newFile });
+        commit("replaceFileByLiipId", { fileLiipId: oldLiipId, newFile });
         if (isSelected) {
-          commit("selectFileById", newFile.id);
+          commit("selectFileByLiipId", newFile.liipId);
         }
       },
       async updateFilename({ commit, state }, { file, newFilename }) {
@@ -258,11 +261,11 @@ export default function createStoreWithOptions(
         }).then(({ file: newFile }) => {
           commit("clearSelection");
           commit("replaceFile", { file, newFile });
-          commit("selectFileById", newFile.id);
+          commit("selectFileByLiipId", newFile.liipId);
         });
       },
       async download({ state }, { files = [] }) {
-        if (files.length === 1 && !files[0].isDir) {
+        if (files.length === 1 && files[0].type !== "dir") {
           let file = files[0];
           fetchOrNotify(
             `${state.endPoints.getFileContent}/download/${file.origin}/${file.uploadRelativePath}`,
@@ -277,7 +280,7 @@ export default function createStoreWithOptions(
 
         return formFetchOrNotify(state.endPoints.downloadArchive, {
           body: {
-            files: files.map((f) => f.id),
+            files: files.map((f) => f.liipId),
           },
         })
           .then((t) => t.blob())
@@ -288,7 +291,7 @@ export default function createStoreWithOptions(
       async deleteSelectedFiles({ commit, dispatch, state, getters }) {
         formFetchOrNotify(state.endPoints.deleteFile, {
           body: {
-            files: state.selectedFiles.map((f) => f.id),
+            files: state.selectedFiles.map((f) => f.liipId),
           },
         }).catch(() => {
           dispatch("getFiles");
@@ -300,18 +303,18 @@ export default function createStoreWithOptions(
 
         commit("clearSelection");
         for (let file of selection) {
-          let filePos = getters.sortedFiles.findIndex((f) => f.id === file.id);
+          let filePos = getters.sortedFiles.findIndex((f) => f.liipId === file.liipId);
           /* prettier-ignore */
           nextId = getters.sortedFiles[filePos + 1]
-            ? getters.sortedFiles[filePos + 1].id
+            ? getters.sortedFiles[filePos + 1].liipId
             : getters.sortedFiles[filePos - 1]
-              ? getters.sortedFiles[filePos - 1].id
+              ? getters.sortedFiles[filePos - 1].liipId
               : null;
           commit("removeFile", file);
         }
 
         if (nextId) {
-          commit("addFileByIdToSelection", nextId);
+          commit("addFileByLiipIdToSelection", nextId);
         }
       },
       async getFiles({ dispatch, state, getters, commit }) {
@@ -326,7 +329,7 @@ export default function createStoreWithOptions(
 
           if (state.initialSelectionPaths) {
             for (let initialSelectionPath of state.initialSelectionPaths) {
-              let file = files.find((f) => f.id === initialSelectionPath.id);
+              let file = files.find((f) => f.liipId === initialSelectionPath.liipId);
               if (file) {
                 commit("addFileToSelection", file);
               }

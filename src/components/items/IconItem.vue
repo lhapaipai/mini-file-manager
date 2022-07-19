@@ -16,7 +16,7 @@
       >
         <img
           :alt="file.filename"
-          :src="iconPath(file)"
+          :src="$uploadSrc(file, 'small')"
           @dragstart="handleDragStart($event, file)"
         />
         <div v-if="file.uploadInfos" class="spinner">
@@ -41,17 +41,10 @@ export default {
   emits: ["click", "dblclick"],
   computed: {
     isTemp() {
-      return this.file.inode === null;
+      return this.file.type === "temp-file";
     },
   },
   methods: {
-    iconPath(file) {
-      if (file.filters?.small) {
-        return file.filters.small.webPath;
-      } else {
-        return file.icon;
-      }
-    },
     isIcon(file) {
       if (file.filters?.small) {
         return false;
@@ -60,10 +53,11 @@ export default {
       }
     },
     handleDragStart(e, file) {
-      if (file.url) {
-        e.dataTransfer.setData("text/html", `<img src="${file.url}">`);
-        e.dataTransfer.setData("text/plain", file.url);
-        e.dataTransfer.setData("application/x-editor-js", file.url);
+      if (file.type === "file") {
+        let url = this.$uploadSrc(file);
+        e.dataTransfer.setData("text/html", `<img src="${url}">`);
+        e.dataTransfer.setData("text/plain", url);
+        e.dataTransfer.setData("application/x-editor-js", url);
       }
     },
   },

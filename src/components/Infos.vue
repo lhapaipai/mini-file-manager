@@ -50,7 +50,7 @@
           </button>
         </div>
       </form>
-      <div v-if="file.url" class="infos-row url">
+      <div v-if="file.type === 'file'" class="infos-row url">
         <label>{{ $t("url") }}</label>
         <div :class="`${themePrefix}-input-button mfm-input-button`">
           <input
@@ -59,7 +59,7 @@
             :class="`${themePrefix}-input-text mfm-input-text`"
             type="text"
             readOnly
-            :value="file.url"
+            :value="$uploadSrc(file)"
             @focus="$event.target.select()"
           />
           <button
@@ -76,18 +76,21 @@
       </div>
       <div class="infos-row extra">
         <label>{{ $t("infos") }}</label>
-        <template v-if="file.mimeGroup === 'image' && file.details">
+        <template v-if="file.mimeGroup === 'image' && file.imageWidth">
           <div>
-            <i class="famfm-picture"></i> {{ file.details.width }},
-            {{ file.details.height }} {{ $t("px") }}
+            <i class="famfm-picture"></i> {{ file.imageWidth }}, {{ file.imageHeight }}
+            {{ $t("px") }}
           </div>
-          <div><i class="famfm-ratio"></i> {{ formatRatio(file.details.ratio) }}</div>
+          <div>
+            <i class="famfm-ratio"></i>
+            {{ formatRatio(file.imageWidth / file.imageHeight) }}
+          </div>
         </template>
-        <div><i class="famfm-gauge"></i> {{ file.humanSize }}</div>
+        <div><i class="famfm-gauge"></i> {{ humanFileSize(file.size) }}</div>
       </div>
       <div :class="`infos-row ${themePrefix}-button-group mfm-button-group`">
         <button
-          v-if="file && !file.isDir"
+          v-if="file && file.type !== 'dir'"
           :class="`${themePrefix}-button outlined`"
           @click.prevent="handleOpen"
         >
@@ -119,6 +122,7 @@
 <script>
 import { notify } from "mini-notifier";
 import { mapActions, mapMutations, mapState } from "vuex";
+import { humanFileSize } from "../utils/filters";
 
 export default {
   props: {
@@ -192,7 +196,7 @@ export default {
       return !file.readOnly;
     },
     canEditContent(file) {
-      return !this.currentEntryPoint.readOnly && !!file.details;
+      return !this.currentEntryPoint.readOnly && !!file.imageWidth;
     },
     copyToClipboard() {
       let input = this.$refs.inputUrl;
@@ -239,19 +243,15 @@ export default {
       this.setEditing(!this.editing);
     },
     handleOpen() {
-      if (this.file.url) {
-        window.open(this.file.url, "_blank");
-      } else {
-        window.open(
-          `${window.location.origin}${this.endPoints.getFileContent}/show/${this.file.origin}/${this.file.uploadRelativePath}`,
-          "_blank",
-        );
-      }
+      window.open(this.$uploadSrc(this.file), "_blank");
     },
 
     handleDownload() {
       let files = this.files.length === 0 ? [this.directory] : this.files;
       this.download({ files });
+    },
+    humanFileSize(size) {
+      return humanFileSize(size);
     },
   },
 };

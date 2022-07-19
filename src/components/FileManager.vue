@@ -54,7 +54,7 @@
         <component
           :is="fileComponent"
           v-for="file in sortedFiles"
-          :key="file.id"
+          :key="file.liipId"
           class="file"
           :file="file"
           :class="{ selected: isSelected(file) }"
@@ -174,7 +174,7 @@ export default {
       }
       if (this.selectedFiles.length > 0) {
         let filePos = this.sortedFiles.findIndex(
-          (f) => f.id === this.selectedFiles[0].id,
+          (f) => f.liipId === this.selectedFiles[0].liipId,
         );
 
         if (e.key === "ArrowLeft" && filePos > 0) {

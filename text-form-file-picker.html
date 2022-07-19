@@ -32,9 +32,10 @@
   <div class="form-group">
     <label for="post_poster" class="required">Poster</label>
     <input type="text" id="post_poster" name="post[poster]" required="required" class="file-picker"
-      value="posts/autre/fermecharousse.jpg"
-      data-uploaded-files="[{&quot;mimeType&quot;:&quot;image/jpeg&quot;,&quot;width&quot;:1000,&quot;height&quot;:750,&quot;filename&quot;:&quot;fermecharousse.jpg&quot;,&quot;directory&quot;:&quot;posts/autre&quot;,&quot;origin&quot;:&quot;public_uploads&quot;}]">
+      value="@public_uploads:posts/fessebook.jpg"
+      data-uploaded-files="[{&quot;uploadRelativePath&quot;:&quot;posts/fessebook.jpg&quot;,&quot;empty&quot;:false,&quot;id&quot;:null,&quot;mimeType&quot;:&quot;image/jpeg&quot;,&quot;absolutePath&quot;:null,&quot;filename&quot;:&quot;fessebook.jpg&quot;,&quot;directory&quot;:&quot;posts&quot;,&quot;origin&quot;:&quot;public_uploads&quot;,&quot;mimeGroup&quot;:&quot;image&quot;,&quot;liipId&quot;:&quot;@public_uploads:posts/fessebook.jpg&quot;,&quot;imageWidth&quot;:200,&quot;imageHeight&quot;:456,&quot;type&quot;:&quot;file&quot;,&quot;size&quot;:77596,&quot;createdAt&quot;:&quot;2022-07-16T07:07:15+00:00&quot;,&quot;icon&quot;:&quot;image-jpg.svg&quot;,&quot;isPublic&quot;:true}]">
   </div>
+
 
   <script type="module">
     import "./src/css/other-theme.scss";
@@ -52,18 +53,20 @@
       isAdmin: false,
       entryPoints: [
         {
-          directory: "",
+          directory: "posts",
           origin: "public_uploads",
           readOnly: false,
-          icon: "fa-lock",
+          icon: "famfm-lock",
           label: "Posts",
+          webPrefix: '/uploads'
         },
         {
           directory: "posts/abc",
           origin: "public_uploads",
           readOnly: false,
-          icon: "fa-lock",
+          icon: "famfm-lock",
           label: "Posts abc",
+          webPrefix: '/uploads'
         },
       ],
       locale: "fr",
@@ -72,7 +75,8 @@
       form: {
         filter: "small",
         type: "image"
-      }
+      },
+      debug: true
     };
 
     textFormFilePicker(".file-picker", fileManagerOptions);

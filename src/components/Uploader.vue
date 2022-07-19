@@ -26,7 +26,7 @@ import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { notify } from "mini-notifier";
 import { nextTick } from "vue";
 
-import { createFileInfosFromUpload } from "../utils/creation";
+import { createUploadedFileFromUpload } from "../utils/creation";
 import { filename2dirname, humanFileSize, sanitizeFilename } from "../utils/filters";
 
 let resumable = null;
@@ -64,7 +64,7 @@ export default {
         return {
           directory: this.completeDirectory,
           origin: this.currentEntryPoint.origin,
-          id: fileUploadInfos.id,
+          liipId: fileUploadInfos.liipId,
         };
       },
       uploadMethod: "POST",
@@ -98,9 +98,9 @@ export default {
     resumable.on("fileSuccess", this.onFileSuccess);
     resumable.on("fileError", this.onFileError);
     resumable.on("fileProgress", (fileUploadInfos) => {
-      // console.log("onprogress", fileUploadInfos);
+      console.log("onprogress", fileUploadInfos);
       this.updateFileUploadProgress({
-        id: fileUploadInfos.id,
+        liipId: fileUploadInfos.liipId,
         progression: fileUploadInfos.progress(),
       });
     });
@@ -116,6 +116,7 @@ export default {
     },
 
     async onFileAdded(fileUploadInfos) {
+      console.log("onFileAdded", fileUploadInfos);
       if (!this.canUpload) {
         resumable.removeFile(fileUploadInfos);
         notify(this.$t("readonlyDir"), {
@@ -132,21 +133,20 @@ export default {
         fileUploadInfos.fileName,
       )}`;
       if (this.completeDirectory) {
-        fileUploadInfos.id = `#${this.currentEntryPoint.origin}:${this.completeDirectory}/${fileUploadInfos.fileName}`;
+        fileUploadInfos.liipId = `#${this.currentEntryPoint.origin}:${this.completeDirectory}/${fileUploadInfos.fileName}`;
       } else {
-        fileUploadInfos.id = `#${this.currentEntryPoint.origin}:${fileUploadInfos.fileName}`;
+        fileUploadInfos.liipId = `#${this.currentEntryPoint.origin}:${fileUploadInfos.fileName}`;
       }
 
       resumable.upload();
 
-      let fileInfos = await createFileInfosFromUpload(
+      let fileInfos = await createUploadedFileFromUpload(
         fileUploadInfos,
         this.completeDirectory,
         this.currentEntryPoint.origin,
       );
 
       this.addFile(fileInfos);
-      // console.log("fileadded", fileUploadInfos, this.files.map((f) => f.inode).join(","));
 
       // this.isUploading = true;
     },
@@ -154,17 +154,16 @@ export default {
       let response = JSON.parse(message);
       // console.log("fileSuccess", file, file.relativePath, response.file?.filename);
 
-      if (!response.file || !response.oldId) {
+      if (!response.file || !response.oldLiipId) {
         console.log(response);
         notify(this.$t("chunkError"), {
           style: "error",
         });
         return;
       }
-
       this.updateFile({
         newFile: response.file,
-        oldId: response.oldId,
+        oldLiipId: response.oldLiipId,
       });
     },
     onFileError(fileUploadInfos, message) {
@@ -187,7 +186,7 @@ export default {
       resumable.removeFile(fileUploadInfos);
       this.retries = 0;
 
-      let file = this.files.find((f) => f.id === fileUploadInfos.id);
+      let file = this.files.find((f) => f.liipId === fileUploadInfos.liipId);
       if (file) {
         this.removeFile(file);
       }

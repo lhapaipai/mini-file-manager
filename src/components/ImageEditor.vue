@@ -70,7 +70,7 @@
           ref="imageElt"
           class="original"
           :class="{ 'is-image-loading': isImageLoading }"
-          :src="file.urlTimestamped"
+          :src="$uploadSrc(file, null) + `?${counter}`"
           @load="onImageLoad"
         />
       </div>
@@ -207,6 +207,7 @@ export default {
       finalHeightLockedByValidation: false,
       isImageLoading: true,
       isCropping: false,
+      counter: 0,
     };
   },
   computed: {
@@ -462,7 +463,7 @@ export default {
         let finalWidth = this.finalWidth;
         let finalHeight = this.finalHeight;
         this.destroyCropper();
-        let newFile = await this.cropFile({
+        await this.cropFile({
           file: this.file,
           dimensions: data,
           finalWidth,
@@ -470,17 +471,14 @@ export default {
         });
         this.isImageLoading = true;
 
-        if (newFile.urlTimestamped) {
-          // fonctionne mal lorsque le nouveau fichier est le même que le précédent
-          // cropperInstance.replace(newFile.urlTimestamped);
-
-          // cropFile va aussi commiter setEditContent avec le nouveau
-          // nom de fichier donc initCropper sera appelé 1 voire 2 fois
-          // donc il est important d'avoir le test if (!cropperInstance ..
-          // dans initCropper
-
-          this.initCropper();
-        }
+        this.counter++;
+        // fonctionne mal lorsque le nouveau fichier est le même que le précédent
+        // cropperInstance.replace(newFile.urlTimestamped);
+        // cropFile va aussi commiter setEditContent avec le nouveau
+        // nom de fichier donc initCropper sera appelé 1 voire 2 fois
+        // donc il est important d'avoir le test if (!cropperInstance ..
+        // dans initCropper
+        this.initCropper();
       } finally {
         this.isCropping = false;
       }

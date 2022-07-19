@@ -42,6 +42,7 @@
           readOnly: false,
           icon: "famfm-lock",
           label: "Posts",
+          webPrefix: '/uploads'
         },
         {
           directory: "posts/abc",
@@ -49,11 +50,21 @@
           readOnly: false,
           icon: "famfm-lock",
           label: "Posts abc",
+          webPrefix: '/uploads'
+        },
+        {
+          directory: "bank",
+          origin: "private_uploads",
+          readOnly: false,
+          icon: "famfm-lock",
+          label: "Banque",
+          webPrefix: null
         },
       ],
       locale: "fr",
       multiple: true,
-      selection: ["@public_uploads:posts/autre/fermecharousse.jpg"]
+      selection: ["@public_uploads:posts/autre/fermecharousse.jpg"],
+      debug: true
     };
 
     let fm = fileManager(appElt, options);

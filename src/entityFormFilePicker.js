@@ -8,8 +8,6 @@ import createStoreWithOptions from "./store";
 import { createI18n } from "vue-i18n-lite";
 import localesData from "./locales";
 
-import "mini-notifier/dist/style.css";
-
 export default function entityFormFilePicker(elt, options, uploadedFiles) {
   if (typeof elt === "string") {
     elt = document.querySelector(elt);
@@ -35,7 +33,7 @@ export default function entityFormFilePicker(elt, options, uploadedFiles) {
       messages: localesData,
     }),
   );
-  app.use(vueLiipPlugin);
+  app.use(vueLiipPlugin(app.config.globalProperties.$store.state));
   const vm = app.mount(elt);
 
   function destroy() {

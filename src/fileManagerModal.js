@@ -5,8 +5,7 @@ import { prepareOptions } from "./utils/mainHelper";
 import { createI18n } from "vue-i18n-lite";
 import createStoreWithOptions from "./store";
 import localesData from "./locales";
-
-import "mini-notifier/dist/style.css";
+import vueLiipPlugin from "./utils/vueLiipPlugin";
 
 export default function fileManagerModal(
   options,
@@ -28,6 +27,7 @@ export default function fileManagerModal(
       messages: localesData,
     }),
   );
+  app.use(vueLiipPlugin(app.config.globalProperties.$store.state));
 
   const vm = app.mount(elt);
   vm.$el.addEventListener("selectFiles", onSelectFiles);

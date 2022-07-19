@@ -47,7 +47,6 @@ export type FormPreviewOptions = {
 };
 
 export type FileManagerFile = {
-  inode: number;
   id: string;
   filename: string;
   directory: string;
@@ -55,21 +54,14 @@ export type FileManagerFile = {
   mimeType: string;
   mimeGroup: string;
   type: "dir" | "file";
-  uploader: string;
   origin: string;
   size: number;
-  humanSize: string;
   createdAt: string;
-  isDir: boolean;
   url: string | null;
   urlTimestamped: string | null;
   icon: string;
-  details?: {
-    type: "image" | "file";
-    width?: number;
-    height?: number;
-    ratio?: number;
-  };
+  imageWidth?: number;
+  imageHeight?: number;
   thumbnails?: {
     [key: string]: string
   }

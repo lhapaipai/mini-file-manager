@@ -23,53 +23,53 @@ export function isValidFile(file, fileValidation) {
 
     // si on a des critères de dimension et que l'image n'en dispose pas
     // comme du svg alors le fichier n'est pas valide.
-    if (!file.details) {
+    if (!file.imageWidth) {
       return false;
     }
 
     if (
       fileValidation.imageOptions.ratio &&
       Math.round(fileValidation.imageOptions.ratio * 100000) !==
-        Math.round(file.details.ratio * 100000)
+        Math.round((100000 * file.imageWidth) / file.imageHeight)
     ) {
       return false;
     }
 
     if (
       fileValidation.imageOptions.width &&
-      fileValidation.imageOptions.width !== file.details.width
+      fileValidation.imageOptions.width !== file.imageWidth
     ) {
       return false;
     }
     if (
       fileValidation.imageOptions.height &&
-      fileValidation.imageOptions.height !== file.details.height
+      fileValidation.imageOptions.height !== file.imageHeight
     ) {
       return false;
     }
 
     if (
       fileValidation.imageOptions.minWidth &&
-      fileValidation.imageOptions.minWidth > file.details.width
+      fileValidation.imageOptions.minWidth > file.imageWidth
     ) {
       return false;
     }
     if (
       fileValidation.imageOptions.minHeight &&
-      fileValidation.imageOptions.minHeight > file.details.height
+      fileValidation.imageOptions.minHeight > file.imageHeight
     ) {
       return false;
     }
 
     if (
       fileValidation.imageOptions.maxWidth &&
-      fileValidation.imageOptions.maxWidth < file.details.width
+      fileValidation.imageOptions.maxWidth < file.imageWidth
     ) {
       return false;
     }
     if (
       fileValidation.imageOptions.maxHeight &&
-      fileValidation.imageOptions.maxHeight < file.details.height
+      fileValidation.imageOptions.maxHeight < file.imageHeight
     ) {
       return false;
     }

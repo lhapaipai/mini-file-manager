@@ -37,52 +37,81 @@
     <div>
       <div v-for="(file, key) in uploadedFiles" :key="file.directory + file.filename">
         <input
-          v-model="file.type"
-          type="text"
-          :name="generateName('type', key)"
-          maxlength="64"
+          v-model="file.liipId"
+          type="hidden"
+          :name="generateName('liipId', key)"
+          class="ogoxe-input-text"
+        />
+        <input
+          v-model="file.mimeGroup"
+          type="hidden"
+          :name="generateName('mimeGroup', key)"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.mimeType"
-          type="text"
+          type="hidden"
           :name="generateName('mimeType', key)"
-          maxlength="64"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.filename"
-          type="text"
+          type="hidden"
           :name="generateName('filename', key)"
-          maxlength="255"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.directory"
-          type="text"
+          type="hidden"
           :name="generateName('directory', key)"
-          maxlength="255"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.origin"
-          type="text"
+          type="hidden"
           :name="generateName('origin', key)"
-          maxlength="64"
           class="ogoxe-input-text"
         />
         <input
-          v-model="file.width"
-          type="text"
-          :name="generateName('width', key)"
-          maxlength="64"
+          v-model.number="file.imageWidth"
+          type="hidden"
+          :name="generateName('imageWidth', key)"
           class="ogoxe-input-text"
         />
         <input
-          v-model="file.height"
-          type="text"
-          :name="generateName('height', key)"
-          maxlength="64"
+          v-model.number="file.imageHeight"
+          type="hidden"
+          :name="generateName('imageHeight', key)"
+          class="ogoxe-input-text"
+        />
+        <input
+          v-model="file.type"
+          type="hidden"
+          :name="generateName('type', key)"
+          class="ogoxe-input-text"
+        />
+        <input
+          v-model.number="file.size"
+          type="hidden"
+          :name="generateName('size', key)"
+          class="ogoxe-input-text"
+        />
+        <input
+          v-model="file.createdAt"
+          type="hidden"
+          :name="generateName('createdAt', key)"
+          class="ogoxe-input-text"
+        />
+        <input
+          v-model="file.icon"
+          type="hidden"
+          :name="generateName('icon', key)"
+          class="ogoxe-input-text"
+        />
+        <input
+          :value="file.public ? 1 : 0"
+          type="hidden"
+          :name="generateName('public', key)"
           class="ogoxe-input-text"
         />
       </div>
@@ -149,19 +178,27 @@ export default {
       // console.log("selectedFiles", selectedFiles);
       if (this.multiple) {
         selectedFiles.forEach((selectedFile) => {
-          this.uploadedFiles.push(this.parseUploadedFile(selectedFile));
+          this.uploadedFiles.push(selectedFile);
         });
       } else {
-        this.uploadedFiles = [this.parseUploadedFile(selectedFiles[0])];
+        this.uploadedFiles = [selectedFiles[0]];
       }
       console.log(this.uploadedFiles);
     },
-    parseUploadedFile({ mimeGroup, mimeType, details, filename, directory, origin }) {
+    parseUploadedFile({
+      mimeGroup,
+      mimeType,
+      imageWidth,
+      imageHeight,
+      filename,
+      directory,
+      origin,
+    }) {
       return {
-        type: mimeGroup,
+        mimeGroup,
         mimeType,
-        width: details ? details.width : null,
-        height: details ? details.height : null,
+        imageWidth,
+        imageHeight,
         filename,
         directory,
         origin,
