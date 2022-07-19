@@ -8,7 +8,6 @@
         @select-files="handleNewSelection"
       ></FileManagerModal>
     </Teleport>
-
     <div v-if="uploadedFiles.length > 0" class="files">
       <div
         v-for="(file, key) in uploadedFiles"
