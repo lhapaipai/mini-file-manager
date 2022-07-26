@@ -1,23 +1,21 @@
 <template>
-  <div class="square">
-    <div v-lazy-load class="image-wrapper">
-      <div class="actions-container">
-        <img
-          :data-type="file.type"
-          :data-src="$uploadSrc(file, filter, backendOrigin)"
-          :height="$uploadHeight(file, filter)"
-          :width="$uploadWidth(file, filter)"
-          alt="random image"
-          @error="handleError"
-        />
-        <div class="actions">
-          <a href="#" class="remove" @click.prevent="$emit('remove')"
-            ><i class="famfm-trash"></i
-          ></a>
-          <a v-if="!multiple" href="#" class="browse" @click.prevent="$emit('browse')"
-            ><i class="famfm-folder"></i
-          ></a>
-        </div>
+  <div v-lazy-load class="image-wrapper">
+    <div class="actions-container">
+      <img
+        :data-type="file.type"
+        :data-src="$uploadSrc(file, filter, backendOrigin)"
+        :height="$uploadHeight(file, filter)"
+        :width="$uploadWidth(file, filter)"
+        alt="random image"
+        @error="handleError"
+      />
+      <div class="actions">
+        <a href="#" class="remove" @click.prevent="$emit('remove')"
+          ><i class="famfm-trash"></i
+        ></a>
+        <a v-if="!multiple" href="#" class="browse" @click.prevent="$emit('browse')"
+          ><i class="famfm-folder"></i
+        ></a>
       </div>
     </div>
   </div>
@@ -54,23 +52,12 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-.square {
-  position: relative;
-  padding-top: 100%;
-  width: 100%;
-}
 .actions-container {
   position: relative;
+  min-width: 100px;
 }
 
 .image-wrapper {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
   border-radius: 4px;
   display: flex;
   justify-content: center;
@@ -86,6 +73,7 @@ export default {
       height: auto;
       max-height: 100%;
       width: auto;
+      min-width: 150px;
     }
     .actions {
       display: flex;
@@ -100,7 +88,7 @@ export default {
   left: 0;
   right: 0;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   justify-content: flex-end;
   transition: var(--transition-color);
   border-radius: 0 0 4px 4px;
