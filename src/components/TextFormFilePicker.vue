@@ -111,7 +111,7 @@ export default {
             this.uploadedFiles.push(selectedFile);
           });
       } else {
-        this.uploadedFiles = [selectedFiles[0]];
+        this.uploadedFiles = selectedFiles;
       }
       console.log(this.uploadedFiles);
     },
