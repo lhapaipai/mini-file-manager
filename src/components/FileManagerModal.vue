@@ -109,6 +109,7 @@ export default {
     },
     handleSelect() {
       if (this.invalidSelectedFiles.length === 0) {
+        this.setEditContent(null);
         this.$emit("selectFiles", this.selectedFiles);
         let event = new CustomEvent("selectFiles", {
           detail: this.selectedFiles,
