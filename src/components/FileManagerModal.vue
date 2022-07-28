@@ -14,14 +14,17 @@
         >
           {{ $t("cancel") }}
         </button>
+        <div
+          class="validation-string-container"
+          :class="{
+            'is-invalid':
+              invalidSelectedFiles.length !== 0 && selectedFiles[0].type !== 'dir',
+          }"
+        >
+          <ValidationString v-if="fileValidation" />
+        </div>
         <div class="sep"></div>
-        <div v-if="selectedFiles.length > 0 && selectedFiles[0].type !== 'dir'">
-          <div
-            class="validation-string-container"
-            :class="{ 'is-invalid': invalidSelectedFiles.length !== 0 }"
-          >
-            <ValidationString v-if="fileValidation" />
-          </div>
+        <div v-if="selectedFiles.length > 0">
           <!-- la sélection n'est pas valide mais on peut éditer les fichiers pour la rendre valide -->
           <button
             v-if="
@@ -158,6 +161,7 @@ export default {
       align-items: center;
       .abort {
         margin-left: 0;
+        margin-right: 10px;
       }
       .sep {
         margin-right: auto;

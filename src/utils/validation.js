@@ -29,8 +29,8 @@ export function isValidFile(file, fileValidation) {
 
     if (
       fileValidation.imageOptions.ratio &&
-      Math.round(fileValidation.imageOptions.ratio * 100000) !==
-        Math.round((100000 * file.imageWidth) / file.imageHeight)
+      Math.round(fileValidation.imageOptions.ratio * 100) !==
+        Math.round((100 * file.imageWidth) / file.imageHeight)
     ) {
       return false;
     }
