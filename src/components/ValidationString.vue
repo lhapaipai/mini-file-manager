@@ -3,6 +3,10 @@
     <span v-if="fileValidation.mimeGroup === 'image'">
       <i class="famfm-picture"></i>
       <span v-if="imageOptions">
+        <span v-if="imageOptions.allowSvg !== true">
+          <i class="famfm-right-open"></i>
+          <span class="through">svg</span>
+        </span>
         <span v-if="imageOptions.ratio">
           <i class="famfm-right-open"></i>
           <i class="famfm-ratio"></i>
@@ -63,5 +67,8 @@ export default {
 <style lang="postcss" scoped>
 i.famfm-right-open {
   color: var(--grey);
+}
+.through {
+  text-decoration: line-through;
 }
 </style>
