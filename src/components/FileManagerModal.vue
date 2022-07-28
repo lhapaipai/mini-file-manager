@@ -192,7 +192,7 @@ export default {
   }
 
   .validation-string-container {
-    padding: 0.5rem 1rem;
+    padding: 0 1rem;
     font-size: 1rem;
     border-radius: var(--form-border-radius);
     border: var(--form-border-width) solid transparent;
@@ -200,6 +200,10 @@ export default {
     &.is-invalid {
       background-color: var(--red50);
     }
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--input-height);
   }
 }
 </style>
