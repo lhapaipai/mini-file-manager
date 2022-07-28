@@ -64,7 +64,19 @@
       locale: "fr",
       multiple: true,
       selection: ["@public_uploads:posts/autre/fermecharousse.jpg"],
-      debug: true
+      debug: true,
+      fileValidation: {
+        mimeGroup: "video",
+        // allowDir: false,
+        imageOptions: {
+          allowSvg: false,
+          width: 1200,
+          height: 900,
+        },
+      },
+      fileUpload: {
+        maxFileSize: 100 * 1024 * 1024
+      }
     };
 
     let fm = fileManager(appElt, options);

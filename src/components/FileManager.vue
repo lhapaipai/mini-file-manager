@@ -107,7 +107,7 @@ export default {
   },
   computed: {
     ...mapState([
-      "editing",
+      "editFilename",
       "files",
       "entryPoints",
       "secondaryDirectories",
@@ -165,7 +165,7 @@ export default {
       return this.selectedFiles.includes(file);
     },
     handleKeyPressed(e) {
-      if (this.editing) {
+      if (this.editFilename) {
         return;
       }
 

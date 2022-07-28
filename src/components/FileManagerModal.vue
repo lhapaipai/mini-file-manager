@@ -15,41 +15,52 @@
           {{ $t("cancel") }}
         </button>
         <div class="sep"></div>
-        <!-- <ValidationString v-if="fileValidation" /> -->
-        <!-- la sélection n'est pas valide mais on peut éditer les fichiers pour la rendre valide -->
-        <button
-          v-if="
-            invalidSelectedFiles.length > 0 &&
-            !editContent &&
-            uneditableSelectedFiles.length === 0
-          "
-          :class="`${themePrefix}-button`"
-          @click="goEditor"
-        >
-          {{ $t("editAndSelect") }}
-        </button>
-        <!-- on est en train d'éditer un élément la sélection n'est toujours pas valide mais on
+        <div v-if="selectedFiles.length > 0 && selectedFiles[0].type !== 'dir'">
+          <div
+            class="validation-string-container"
+            :class="{ 'is-invalid': invalidSelectedFiles.length !== 0 }"
+          >
+            <ValidationString v-if="fileValidation" />
+          </div>
+          <!-- la sélection n'est pas valide mais on peut éditer les fichiers pour la rendre valide -->
+          <button
+            v-if="
+              invalidSelectedFiles.length > 0 &&
+              fileValidation.mimeGroup === 'image' &&
+              !editContent &&
+              uneditableSelectedFiles.length === 0
+            "
+            :class="`${themePrefix}-button`"
+            @click="goEditor"
+          >
+            {{ $t("editAndSelect") }}
+          </button>
+          <!-- on est en train d'éditer un élément la sélection n'est toujours pas valide mais on
          peut éditer les fichiers pour la rendre valide -->
-        <button
-          v-else-if="
-            invalidSelectedFiles.length > 0 &&
-            invalidSelectedFiles[0] !== editContent &&
-            uneditableSelectedFiles.length === 0
-          "
-          :class="`${themePrefix}-button`"
-          :disabled="uneditableSelectedFiles.length > 0"
-          @click="handleNext"
-        >
-          <span> {{ $t("continue") }}</span>
-        </button>
-        <button
-          v-else-if="!editContent && invalidSelectedFiles.length === 0"
-          :class="`${themePrefix}-button primary-color`"
-          :disabled="invalidSelectedFiles.length > 0"
-          @click="handleSelect"
-        >
-          <span>{{ $t("select") }}</span>
-        </button>
+          <button
+            v-else-if="
+              invalidSelectedFiles.length > 0 &&
+              fileValidation.mimeGroup === 'image' &&
+              invalidSelectedFiles[0] !== editContent &&
+              uneditableSelectedFiles.length === 0
+            "
+            :class="`${themePrefix}-button`"
+            :disabled="uneditableSelectedFiles.length > 0"
+            @click="handleNext"
+          >
+            <span> {{ $t("continue") }}</span>
+          </button>
+          <button
+            v-else-if="
+              (editAndSelect || !editContent) && invalidSelectedFiles.length === 0
+            "
+            :class="`${themePrefix}-button primary-color`"
+            :disabled="invalidSelectedFiles.length > 0"
+            @click="handleSelect"
+          >
+            <span>{{ $t("select") }}</span>
+          </button>
+        </div>
       </div>
     </div>
     <div class="bg" @click="handleAbort"></div>
@@ -59,11 +70,14 @@
 <script>
 import { mapGetters, mapMutations, mapState } from "vuex";
 import FileManager from "./FileManager.vue";
+import ValidationString from "./ValidationString.vue";
 
 export default {
   components: {
     FileManager,
+    ValidationString,
   },
+  emits: ["selectFiles", "abortSelect"],
   data() {
     return {};
   },
@@ -74,11 +88,12 @@ export default {
       "editContent",
       "themePrefix",
       "injectCssVars",
+      "editAndSelect",
     ]),
     ...mapGetters(["invalidSelectedFiles", "uneditableSelectedFiles"]),
   },
   methods: {
-    ...mapMutations(["setEditContent"]),
+    ...mapMutations(["setEditContent", "setEditAndSelect"]),
     handleAbort() {
       this.$emit("abortSelect");
       let event = new CustomEvent("abortSelect");
@@ -86,6 +101,7 @@ export default {
     },
     // handleCrop() {},
     goEditor() {
+      this.setEditAndSelect(true);
       this.setEditContent(this.invalidSelectedFiles[0]);
     },
     handleNext() {
@@ -172,6 +188,17 @@ export default {
     height: 100%;
     background-color: var(--background-color);
     z-index: -1;
+  }
+
+  .validation-string-container {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: var(--form-border-radius);
+    border: var(--form-border-width) solid transparent;
+    display: inline-block;
+    &.is-invalid {
+      background-color: var(--red50);
+    }
   }
 }
 </style>

@@ -29,21 +29,43 @@
 </head>
 
 <body>
-  <div id="Station_photos" class="entity-form-file-picker" data-name="Station[photos]" data-file-picker>
-    <div class="">
-      <div class=" form-group">
-        <input type="text" id="Station_photos_0_type" name="Station[photos][0][type]" maxlength="64" value="image">
-        <input type="text" id="Station_photos_0_mimeType" name="Station[photos][0][mimeType]" maxlength="64"
-          value="image/png">
-        <input type="number" id="Station_photos_0_width" name="Station[photos][0][width]" value="404">
-        <input type="number" id="Station_photos_0_height" name="Station[photos][0][height]" value="543">
-        <input type="text" id="Station_photos_0_filename" name="Station[photos][0][filename]" maxlength="255"
-          value="plvg-fr-hyd-0001.png">
-        <input type="text" id="Station_photos_0_directory" name="Station[photos][0][directory]" maxlength="255"
-          value="station/plvg-fr-hyd-0001">
-        <input type="text" id="Station_photos_0_origin" name="Station[photos][0][origin]" maxlength="64"
-          value="public_uploads">
-      </div>
+  <div id="Station_photos" class="multiple entity-form-file-picker" data-name="Station[photos]" data-file-picker>
+    <div>
+      <input type="text" id="Station_photos_0_liipId" name="Station[photos][0][liipId]"
+        value="@public_uploads:manager/eugene.jpg">
+      <input type="text" id="Station_photos_0_mimeGroup" name="Station[photos][0][mimeGroup]" value="image">
+      <input type="text" id="Station_photos_0_mimeType" name="Station[photos][0][mimeType]" value="image/jpeg">
+      <input type="text" id="Station_photos_0_filename" name="Station[photos][0][filename]" value="eugene.jpg">
+      <input type="text" id="Station_photos_0_directory" name="Station[photos][0][directory]" value="manager">
+      <input type="text" id="Station_photos_0_origin" name="Station[photos][0][origin]" value="public_uploads">
+      <input type="text" id="Station_photos_0_imageWidth" name="Station[photos][0][imageWidth]" value="453">
+      <input type="text" id="Station_photos_0_imageHeight" name="Station[photos][0][imageHeight]" value="604">
+      <input type="text" id="Station_photos_0_type" name="Station[photos][0][type]" value="file">
+      <input type="text" id="Station_photos_0_size" name="Station[photos][0][size]" value="51931">
+      <input type="text" id="Station_photos_0_createdAt" name="Station[photos][0][createdAt]"
+        value="2022-07-18T13:19:59+00:00">
+      <input type="text" id="Station_photos_0_icon" name="Station[photos][0][icon]" value="image-jpg.svg">
+      <input type="text" id="Station_photos_0_public" name="Station[photos][0][public]" value="1">
+    </div>
+  </div>
+
+  <div id="Station_photos" class="simple entity-form-file-picker" data-name="Station[photos]" data-file-picker>
+    <div>
+      <input type="text" id="Station_photos_liipId" name="Station[photos][liipId]"
+        value="@public_uploads:manager/eugene.jpg">
+      <input type="text" id="Station_photos_mimeGroup" name="Station[photos][mimeGroup]" value="image">
+      <input type="text" id="Station_photos_mimeType" name="Station[photos][mimeType]" value="image/jpeg">
+      <input type="text" id="Station_photos_filename" name="Station[photos][filename]" value="eugene.jpg">
+      <input type="text" id="Station_photos_directory" name="Station[photos][directory]" value="manager">
+      <input type="text" id="Station_photos_origin" name="Station[photos][origin]" value="public_uploads">
+      <input type="text" id="Station_photos_imageWidth" name="Station[photos][imageWidth]" value="453">
+      <input type="text" id="Station_photos_imageHeight" name="Station[photos][imageHeight]" value="604">
+      <input type="text" id="Station_photos_type" name="Station[photos][type]" value="file">
+      <input type="text" id="Station_photos_size" name="Station[photos][size]" value="51931">
+      <input type="text" id="Station_photos_createdAt" name="Station[photos][createdAt]"
+        value="2022-07-18T13:19:59+00:00">
+      <input type="text" id="Station_photos_icon" name="Station[photos][icon]" value="image-jpg.svg">
+      <input type="text" id="Station_photos_public" name="Station[photos][public]" value="1">
     </div>
   </div>
   <script type="module">
@@ -79,7 +101,7 @@
         },
       ],
       locale: "fr",
-      multiple: true,
+      multiple: false,
 
       form: {
         filter: "small",
@@ -87,7 +109,7 @@
       }
     };
 
-    document.querySelectorAll('.entity-form-file-picker').forEach(($filePicker) => {
+    document.querySelectorAll('.simple.entity-form-file-picker').forEach(($filePicker) => {
       entityFormFilePicker($filePicker, fileManagerOptions)
     })
 

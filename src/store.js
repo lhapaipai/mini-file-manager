@@ -57,9 +57,9 @@ export default function createStoreWithOptions(
       directory: null,
       files: [],
       selectedFiles: [],
-      // when editing filename
-      editing: false,
+      editFilename: false,
       editContent: null,
+      editAndSelect: false,
       sortBy: "filename",
       isModal,
       form,
@@ -181,12 +181,16 @@ export default function createStoreWithOptions(
         state.selectedFiles = [];
       },
 
-      setEditing(state, focus) {
-        state.editing = focus;
+      setEditFilename(state, focus) {
+        state.editFilename = focus;
       },
       setEditContent(state, file = null) {
         state.editContent = file;
       },
+      setEditAndSelect(state, editAndSelect) {
+        state.editAndSelect = editAndSelect;
+      },
+
       setCurrentEntryPoint(state, entryPoint) {
         state.currentEntryPoint = entryPoint;
       },

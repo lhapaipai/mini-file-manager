@@ -67,39 +67,53 @@ export function formStringifier(selection) {
     .join(",");
 }
 
-/* for entityFormFilePicker */
-function collectItem(prefix) {
-  let filename = document.getElementById(`${prefix}_filename`).value;
-  if (filename === "") {
+function getUploadedFileElementValue(prefix, key) {
+  let elt = document.getElementById(`${prefix}_${key}`);
+  if (!elt) {
+    return null;
+  }
+  let value = elt.value;
+  if (value === "") {
     return null;
   }
 
-  let uploadedFile = {
-    liipId: document.getElementById(`${prefix}_liipId`).value,
-    mimeGroup: document.getElementById(`${prefix}_mimeGroup`).value,
-    mimeType: document.getElementById(`${prefix}_mimeType`).value,
-    filename: document.getElementById(`${prefix}_filename`).value,
-    directory: document.getElementById(`${prefix}_directory`).value,
-    origin: document.getElementById(`${prefix}_origin`).value,
-    imageWidth: document.getElementById(`${prefix}_imageWidth`).value,
-    imageHeight: document.getElementById(`${prefix}_imageHeight`).value,
-    type: document.getElementById(`${prefix}_type`).value,
-    size: document.getElementById(`${prefix}_size`).value,
-    createdAt: document.getElementById(`${prefix}_createdAt`).value,
-    icon: document.getElementById(`${prefix}_icon`).value,
-    public: document.getElementById(`${prefix}_public`).value,
-  };
+  if (["imageWidth", "imageHeight", "size"].indexOf(key) !== -1) {
+    return isNaN(parseInt(value)) ? null : parseInt(value);
+  } else if (key === "public") {
+    return value === "1" ? true : false;
+  }
+  return value;
+}
 
-  uploadedFile.imageWidth = isNaN(parseInt(uploadedFile.imageWidth))
-    ? null
-    : parseInt(uploadedFile.imageWidth);
-  uploadedFile.imageHeight = isNaN(parseInt(uploadedFile.imageHeight))
-    ? null
-    : parseInt(uploadedFile.imageHeight);
+/* for entityFormFilePicker */
+function collectItem(prefix) {
+  let filename = getUploadedFileElementValue(prefix, "filename");
+  if (filename === null) {
+    return null;
+  }
+
+  let uploadedFile = {};
+  for (let key of [
+    "liipId",
+    "mimeGroup",
+    "mimeType",
+    "filename",
+    "directory",
+    "origin",
+    "imageWidth",
+    "imageHeight",
+    "type",
+    "size",
+    "createdAt",
+    "icon",
+    "public",
+  ]) {
+    uploadedFile[key] = getUploadedFileElementValue(prefix, key);
+  }
+
   uploadedFile.uploadRelativePath = uploadedFile.directory
     ? `${uploadedFile.directory}/${uploadedFile.filename}`
     : uploadedFile.filename;
-  uploadedFile.public = uploadedFile.public === "1" ? true : false;
 
   console.log(uploadedFile);
   return uploadedFile;

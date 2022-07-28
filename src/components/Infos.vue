@@ -27,7 +27,7 @@
       </div>
     </div>
     <div v-else-if="files.length === 1">
-      <form class="infos-row filename" @submit.prevent="editFilename">
+      <form class="infos-row filename" @submit.prevent="onSubmitEditFilename">
         <label>{{ $t("name") }}</label>
         <div v-if="!canEdit(file)">
           <div>{{ file.filename }}</div>
@@ -39,13 +39,13 @@
             size="1"
             :class="`${themePrefix}-input-text mfm-input-text`"
             type="text"
-            :disabled="!editing"
+            :disabled="!editFilename"
           />
           <button
             :class="`${themePrefix}-button outlined ${themePrefix}-icon`"
-            @click.prevent="editFilename"
+            @click.prevent="onSubmitEditFilename"
           >
-            <i v-if="editing" class="famfm-ok"></i>
+            <i v-if="editFilename" class="famfm-ok"></i>
             <i v-else class="famfm-pencil"></i>
           </button>
         </div>
@@ -138,7 +138,7 @@ export default {
   computed: {
     ...mapState([
       "directory",
-      "editing",
+      "editFilename",
       "currentEntryPoint",
       "endPoints",
       "secondaryDirectories",
@@ -162,23 +162,10 @@ export default {
     file() {
       this.filename = this.file?.filename;
     },
-    files() {
-      // if (val.length === 1) {
-      //   let completeName = val[0].filename;
-      //   let extPos = completeName.lastIndexOf(".");
-      //   if (extPos === -1) {
-      //     this.filename = completeName;
-      //     this.ext = "";
-      //   } else {
-      //     this.filename = completeName.substring(0, extPos);
-      //     this.ext = completeName.substring(extPos);
-      //   }
-      // }
-    },
   },
   methods: {
     ...mapActions(["updateFilename", "download", "deleteSelectedFiles"]),
-    ...mapMutations(["setEditing", "setEditContent"]),
+    ...mapMutations(["setEditFilename", "setEditContent", "setEditAndSelect"]),
     formatDate(strDate) {
       let date = new Date(strDate);
       if (!(date instanceof Date) || isNaN(date)) {
@@ -205,10 +192,11 @@ export default {
       notify("URL copiée");
     },
     editContent() {
+      this.setEditAndSelect(false);
       this.setEditContent(this.file);
     },
-    editFilename() {
-      if (this.editing) {
+    onSubmitEditFilename() {
+      if (this.editFilename) {
         if (this.filename !== this.file.filename) {
           let oldLastDot, lastDot, oldExt, ext;
 
@@ -240,7 +228,7 @@ export default {
         }, 30);
       }
 
-      this.setEditing(!this.editing);
+      this.setEditFilename(!this.editFilename);
     },
     handleOpen() {
       window.open(this.$uploadSrc(this.file), "_blank");
