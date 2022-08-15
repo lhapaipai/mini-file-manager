@@ -62,9 +62,10 @@ Copy `dist/style.css` directory from `node_modules/mini-file-manager` to your we
 <script src="/dist/mini-file-manager.umd.js"></script>
 <script>
   let {
-    FileManager,
-    FileManagerModal,
-    FormFilePicker
+    fileManager,
+    fileManagerModal,
+    textFormFilePicker,
+    entityFormFilePicker
   } = miniFileManager;
     // etc...
 </script>
@@ -75,34 +76,40 @@ or
 ```js
 // with bundler
 import {
-  FileManager,
-  FileManagerModal,
-  FormFilePicker
+    fileManager,
+    fileManagerModal,
+    textFormFilePicker,
+    entityFormFilePicker
 } from "mini-file-manager";
-import "mini-file-manager/dist/mini-file-manager.css";
+import "mini-file-manager/dist/style.css";
 ```
 
 ## Configuration
 
-Mini File Manager export 3 functions
+Mini File Manager export 4 functions
 
 ```js
-FileManager(
+fileManager(
   "#selector",        // string | HTMLElement
   fileManagerOptions  // FileManagerOptions
 );
 
-FileManagerModal(
+fileManagerModal(
   fileManagerOptions, // FileManagerOptions
-  onSuccess,          // (selectedFiles: Files[]) => void
+  onSuccess,          // (selectedFiles: File[]) => void
   onAbort             // () => void
 );
 
-FormFilePicker(
+textFormFilePicker(
   inputElt,             // string | HTMLElement
-  formFilePickerOptions,// FormFilePickerOptions
   fileManagerOptions,   // FileManagerOptions
-  selection             // Files[]
+  selection             // File[]
+)
+
+entityFormFilePicker(
+  "#inputs-container",             // string | HTMLElement
+  fileManagerOptions,   // FileManagerOptions
+  selection             // File[]
 )
 ```
 
@@ -179,42 +186,28 @@ const options: FileManagerOptions = {
 
   multiple: false,
 
-  // not needed with FormFilePicker
+  // not needed with textFormFilePicker
   // selection is retrieved from input value
   originalSelection: ["posts/autre/ign.jpg"],
 
-  theme: "pentatrion-theme",
-  themePrefix: 'penta'
+  injectCssVars: true,
+  themePrefix: 'penta',
+
+  // only for textFormFilePicker and entityFormFilePicker
+  form: {
+    filter: "small",  // any filter defined in LiipImagineBundle
+    type: "image"     // "image" | "file"
+  }
 };
 
-const formFilePickerOptions: FormFilePickerOptions = {
-  type: "image",   // "image" | "file"
-  filter: "small", // any filter defined in LiipImagineBundle
-  multiple: true,
-};
+
 ```
 
 ### Theme
 
-if you wants to define your own theme, you can set the `theme` option with custom class and redefine the css variables from `src/css/variables.css` with this class.
-
-```js
-const options = {
-  //...
-  theme: 'my-own-theme'
-};
-```
-
-```css
-.my-own-theme {
-  --primary-color-light: #fff9d2;
-  --primary-color: #ffe64b;
-  --primary-color-active: #fadf30;
-  --primary-color700: #eac800;
-
-  /* etc... */
-}
-```
+if you wants to define your own theme, you have 2 levels of customization.
+- you can set `injectCssVars` to false and replace by your own css vars following this file : `src/css/variables.scss`
+- you can set the `themePrefix` option with custom class to redefine your buttons in depth.
 
 
 ## Screenshots

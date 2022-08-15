@@ -36,35 +36,35 @@ export type FileManagerOptions = {
     [key: string]: string;
   };
   multiple?: boolean;
-  originalSelection?: (string | FileManagerFile)[];
-  theme?: string;
+  originalSelection?: (string | File)[];
+  themePrefix?: string;
+  injectCssVars?: boolean;
+  form?: FormPreviewOptions;
 };
 
 export type FormPreviewOptions = {
   type?: "image" | "file";
   filter?: string;
-  multiple?: boolean;
 };
 
-export type FileManagerFile = {
-  id: string;
+export type File = {
+  id?: string;
+  liipId: string;
+  mimeGroup: string;
+  mimeType: string;
   filename: string;
   directory: string;
-  uploadRelativePath: string;
-  mimeType: string;
-  mimeGroup: string;
-  type: "dir" | "file";
   origin: string;
-  size: number;
-  createdAt: string;
-  url: string | null;
-  urlTimestamped: string | null;
-  icon: string;
   imageWidth?: number;
   imageHeight?: number;
-  thumbnails?: {
-    [key: string]: string
-  }
+  type: "dir" | "file";
+  size: number;
+  createdAt: string;
+  icon: string;
+  public: boolean;
+  uploadRelativePath: string;
+  absolutePath?: string;
+  empty: boolean;
 };
 
 export type FileManagerType = {
@@ -75,27 +75,36 @@ export type FileManagerModalType = {
   destroy: () => void;
 }
 
-export type FormFilePickerType = {
+export type TextFormFilePicker = {
   destroy: () => void;
 }
 
-declare function FileManager(
+export type EntityFormFilePicker = {
+  destroy: () => void;
+}
+
+declare function fileManager(
   elt: HTMLElement | string,
   options: FileManagerOptions
 ): FileManagerType;
 
-declare function FileManagerModal(
+declare function fileManagerModal(
   options: FileManagerOptions,
-  onSuccess: (files: FileManagerFile[]) => void,
+  onSuccess: (files: File[]) => void,
   onAbort: () => void
 ): FileManagerModalType;
 
-declare function FormFilePicker(
+declare function textFormFilePicker(
   inputElt: HTMLElement | string,
-  formPreviewOptions: FormPreviewOptions,
-  fileManagerOptions: FileManagerOptions,
-  files: FileManagerFile[],
+  options: FileManagerOptions,
+  files: File[],
   selectionChangeCallback: () => void | undefined
-): FormFilePickerType;
+): TextFormFilePicker;
 
-export {FileManager, FileManagerModal, FormFilePicker};
+declare function entityFormFilePicker(
+  inputElt: HTMLElement | string,
+  options: FileManagerOptions,
+  files: File[],
+): EntityFormFilePicker;
+
+export {fileManager, fileManagerModal, textFormFilePicker, entityFormFilePicker};

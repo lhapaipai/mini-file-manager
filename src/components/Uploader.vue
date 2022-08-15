@@ -13,9 +13,15 @@
       @dragleave="unhighlight"
       @drop="unhighlight"
     >
-      <span class="label"
-        ><i class="famfm-doc-add"></i>{{ $t(canUpload ? "add" : "readonlyDir") }}</span
-      >
+      <span class="label-container">
+        <span class="label">
+          <span>
+            <i class="famfm-doc-add"></i>{{ $t(canUpload ? "add" : "readonlyDir") }}
+          </span>
+          <span class="detail mime">{{ mimeGroups }}</span>
+          <span class="detail">{{ $t("maxFileSize") }} : {{ humanMaxFileSize }}</span>
+        </span>
+      </span>
     </div>
   </div>
 </template>
@@ -48,6 +54,16 @@ export default {
         return false;
       }
       return !this.currentEntryPoint.readOnly;
+    },
+    humanMaxFileSize() {
+      return humanFileSize(this.fileUpload.maxFileSize);
+    },
+    mimeGroups() {
+      let mimeGroups = this.fileUpload.fileType.map((mime) => mime.split("/")[0]);
+      let uniqueMimeGroups = Array.from(new Set(mimeGroups));
+      return uniqueMimeGroups
+        .map((mimeGroup) => this.$t(`mimeGroup.${mimeGroup}`))
+        .join(", ");
     },
   },
   watch: {
@@ -233,13 +249,13 @@ export default {
     cursor: default;
     border-color: var(--grey200);
 
-    .label {
+    .label-container {
       cursor: default;
       color: var(--grey200);
     }
   }
 
-  .label {
+  .label-container {
     width: 100%;
     height: 100%;
     display: flex;
@@ -250,6 +266,18 @@ export default {
   }
   &.highlight {
     background-color: var(--primary-color100);
+  }
+
+  .label {
+    display: flex;
+    flex-direction: column;
+  }
+  .detail {
+    font-size: 0.8rem;
+    color: var(--grey);
+    @media (max-width: 799.99px) {
+      display: none;
+    }
   }
 }
 

@@ -287,7 +287,7 @@ export default {
   gap: 10px;
 
   grid-template-columns: 96px 1fr;
-  grid-template-rows: 40px 40px 1fr 158px;
+  grid-template-rows: 40px 40px 1fr 200px;
   grid-template-areas:
     "action    dropzone"
     "hierarchy hierarchy"

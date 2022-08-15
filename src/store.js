@@ -59,7 +59,6 @@ export default function createStoreWithOptions(
       selectedFiles: [],
       editFilename: false,
       editContent: null,
-      editAndSelect: false,
       sortBy: "filename",
       isModal,
       form,
@@ -187,9 +186,6 @@ export default function createStoreWithOptions(
       setEditContent(state, file = null) {
         state.editContent = file;
       },
-      setEditAndSelect(state, editAndSelect) {
-        state.editAndSelect = editAndSelect;
-      },
 
       setCurrentEntryPoint(state, entryPoint) {
         state.currentEntryPoint = entryPoint;
@@ -203,9 +199,15 @@ export default function createStoreWithOptions(
     },
     actions: {
       async addDirectory({ state, getters, commit }, newDirectoryName) {
+        let suffix = 0,
+          filename = newDirectoryName;
+        while (state.files.some((f) => f.filename === filename)) {
+          suffix++;
+          filename = `${newDirectoryName}-${suffix}`;
+        }
         return formFetchOrNotify(state.endPoints.addDirectory, {
           body: {
-            filename: newDirectoryName,
+            filename,
             directory: getters.completeDirectory,
             origin: state.currentEntryPoint.origin,
           },
@@ -326,6 +328,7 @@ export default function createStoreWithOptions(
           body: {
             directory: getters.completeDirectory,
             origin: state.currentEntryPoint.origin,
+            mimeGroup: state.fileValidation ? state.fileValidation.mimeGroup : null,
           },
         }).then(({ files, directory }) => {
           dispatch("setFiles", files);

@@ -63,7 +63,7 @@ export default {
   }
 
   .size {
-    width: 70px;
+    width: 100px;
     margin-right: auto;
   }
   .date {
@@ -76,7 +76,6 @@ export default {
       width: auto;
     }
     .size {
-      width: 70px;
       margin-right: 0;
     }
   }

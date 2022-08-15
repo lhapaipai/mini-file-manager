@@ -1,67 +1,85 @@
 <template>
   <div v-if="file" class="image-editor">
     <div class="header">
-      <div v-if="isCropping" class="toolbar loader"><Spinner /></div>
-      <label
-        v-if="fileValidation && fileValidation.imageOptions"
-        :class="`${themePrefix}-button  mfm-button outlined validation-string`"
-      >
-        <input
-          v-model="isValidationActive"
-          type="checkbox"
-          :class="`${themePrefix}-input-checkbox`"
-        />
-        <ValidationString />
-      </label>
-      <div class="toolbar">
-        <div :class="`${themePrefix}-button-group`">
-          <button
-            :class="`${
-              dragMode === 'move' ? 'active' : ''
-            } ${themePrefix}-button  mfm-button outlined`"
-            @click="changeMode('move')"
-          >
-            <i class="famfm-move"></i>
-          </button>
-          <button
-            :class="`${
-              dragMode === 'crop' ? 'active' : ''
-            } ${themePrefix}-button  mfm-button outlined`"
-            @click="changeMode('crop')"
-          >
-            <i class="famfm-crop"></i>
-          </button>
+      <div>
+        <h2><i class="famfm-picture"></i>{{ $t("imageEditor") }}</h2>
+      </div>
+      <div v-if="isCropping" class="section loader"><Spinner /></div>
+      <div v-if="fileValidation && fileValidation.imageOptions" class="section">
+        <div class="section-label">{{ $t("constraint") }}</div>
+        <div class="section-content">
+          <label :class="`${themePrefix}-button  mfm-button outlined validation-string`">
+            <input
+              v-model="isValidationActive"
+              type="checkbox"
+              :class="`${themePrefix}-input-checkbox`"
+            />
+            <ValidationString />
+          </label>
         </div>
-        <div :class="`${themePrefix}-button-group`">
-          <button
-            :class="`${themePrefix}-button  mfm-button outlined`"
-            @click="rotate(-90)"
-          >
-            <i class="famfm-ccw"></i>
-          </button>
-          <button
-            :class="`${themePrefix}-button  mfm-button outlined`"
-            @click="rotate(90)"
-          >
-            <i class="famfm-cw"></i>
-          </button>
-        </div>
+      </div>
+      <div class="section">
+        <div class="section-label">{{ $t("tools") }}</div>
+        <div class="section-content">
+          <div :class="`${themePrefix}-button-group mfm-button-group`">
+            <button
+              :class="`${
+                dragMode === 'move' ? 'primary-color' : 'outlined'
+              } ${themePrefix}-button  mfm-button`"
+              @click="changeMode('move')"
+            >
+              <i class="famfm-move"></i>
+            </button>
+            <button
+              :class="`${
+                dragMode === 'crop' ? 'primary-color' : 'outlined'
+              } ${themePrefix}-button  mfm-button`"
+              @click="changeMode('crop')"
+            >
+              <i class="famfm-crop"></i>
+            </button>
+          </div>
+          <div :class="`${themePrefix}-button-group mfm-button-group`">
+            <button
+              :class="`${themePrefix}-button  mfm-button outlined`"
+              @click="rotate(-90)"
+            >
+              <i class="famfm-ccw"></i>
+            </button>
+            <button
+              :class="`${themePrefix}-button  mfm-button outlined`"
+              @click="rotate(90)"
+            >
+              <i class="famfm-cw"></i>
+            </button>
+          </div>
 
-        <button
-          :class="`${themePrefix}-button  mfm-button outlined`"
-          @click="handleClear"
-        >
-          <i class="famfm-cancel"></i>
-        </button>
-        <button :class="`${themePrefix}-button  mfm-button outlined`" @click="handleSave">
-          <i class="famfm-ok"></i>{{ $t("apply") }}
-        </button>
-        <button
-          :class="`${themePrefix}-button mfm-button outlined`"
-          @click="handleReturn"
-        >
-          {{ $t("return") }}
-        </button>
+          <button
+            :class="`${themePrefix}-button  mfm-button outlined`"
+            @click="handleClear"
+          >
+            <i class="famfm-cancel"></i>
+          </button>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-label">{{ $t("finalize") }}</div>
+        <div class="section-content">
+          <button
+            :class="`${themePrefix}-button mfm-button outlined`"
+            @click="handleReturn"
+          >
+            {{ $t("return") }}
+          </button>
+
+          <button
+            class="mfm-button primary-color"
+            :class="`${themePrefix}-button`"
+            @click="handleSave"
+          >
+            <i class="famfm-ok"></i>{{ $t("apply") }}
+          </button>
+        </div>
       </div>
     </div>
     <div class="content">
@@ -500,9 +518,6 @@ export default {
       this.$refs.imageElt.removeEventListener("ready", this.isReady);
       // console.log("destroyCropper 2", cropperInstance, this.$refs.imageElt);
     },
-    // mounted() {
-    //   this.localFile = this.file;
-    // },
 
     unmounted() {
       this.destroyCropper();
@@ -514,11 +529,13 @@ export default {
 input.mfm-input-text {
   padding: 3px 5px;
   border-color: var(--grey);
+  height: 2rem;
   &:hover,
   &:focus {
     border-color: var(--grey700);
   }
 }
+
 .is-image-loading {
   opacity: 0;
 }
@@ -532,36 +549,52 @@ input.mfm-input-text {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+
+  h2 {
+    margin: 0;
+  }
+
   & > * {
-    margin-bottom: 10px;
-    margin-right: 10px;
-
     &:first-child {
-      margin-left: auto;
+      margin-right: auto;
     }
+  }
 
+  .section {
+    border-left: 1px solid var(--grey200);
+
+    padding: 0 1rem;
+    &.loader {
+      border-left: 0;
+    }
     &:last-child {
-      margin-right: 0px;
+      padding-right: 0px;
     }
   }
-
-  .toolbar.loader {
-    margin-right: 10px;
+  .section-label {
+    color: var(--grey);
+    font-size: 0.8rem;
   }
-  .toolbar {
+  .section-content {
     display: flex;
-    align-items: center;
-    & > * {
-      margin-left: 10px;
-      &:first-child {
-        margin-left: 0;
+    flex-direction: row;
+
+    & > .mfm-button,
+    & > .mfm-button-group {
+      margin-right: 0.5rem;
+
+      &:last-child {
+        margin-right: 0;
       }
     }
   }
-  @media (max-width: 900px) {
-    .mfm-button {
-      padding: 0.25rem;
-    }
+  .mfm-button {
+    padding: 0.25rem;
+    height: auto;
+  }
+  .penta-button.primary-color {
+    background-color: var(--primary-color);
   }
 }
 
@@ -592,14 +625,12 @@ input.mfm-input-text {
   & > * {
     margin-top: 10px;
   }
-  @media (max-width: 900px) {
-    font-size: 0.9rem;
-    input {
-      font-size: 0.9rem;
-    }
-    i.famfm-right-open {
-      font-size: 0.8rem;
-    }
+  font-size: 0.8rem;
+  input {
+    font-size: 0.8rem;
+  }
+  i.famfm-right-open {
+    font-size: 0.8rem;
   }
 }
 

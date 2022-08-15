@@ -18,7 +18,7 @@
         <label>{{ $t("downloadAll") }}</label>
         <div :class="`${themePrefix}-button-group mfm-button-group`">
           <button
-            :class="`${themePrefix}-button outlined`"
+            :class="`${themePrefix}-button mfm-button outlined`"
             @click.prevent="handleDownload"
           >
             <i class="famfm-download"></i>
@@ -91,28 +91,42 @@
       <div :class="`infos-row ${themePrefix}-button-group mfm-button-group`">
         <button
           v-if="file && file.type !== 'dir'"
-          :class="`${themePrefix}-button outlined`"
+          :class="`${themePrefix}-button mfm-button outlined`"
           @click.prevent="handleOpen"
         >
           <i class="famfm-eye"></i>
         </button>
         <button
           v-if="canEditContent(file)"
-          :class="`${themePrefix}-button outlined`"
+          class="mfm-button"
+          :class="{ outlined: true, [`${themePrefix}-button`]: true, border: !isValid }"
           @click.prevent="editContent"
         >
           <i class="famfm-edit-image"></i>
         </button>
-        <button :class="`${themePrefix}-button outlined`" @click.prevent="handleDownload">
+        <button
+          :class="`${themePrefix}-button mfm-button outlined`"
+          @click.prevent="handleDownload"
+        >
           <i class="famfm-download"></i>
         </button>
         <button
           v-if="canEdit(file)"
-          :class="`${themePrefix}-button outlined`"
+          :class="`${themePrefix}-button mfm-button outlined`"
           @click.prevent="deleteSelectedFiles"
         >
           <i class="famfm-trash"></i>
         </button>
+      </div>
+
+      <div v-if="isValid === false && isEditable === true" class="info alert">
+        {{ $t("needEdition") }}
+      </div>
+      <div
+        v-else-if="isValid === false && isEditable === false && file.type === 'file'"
+        class="info alert"
+      >
+        {{ $t("notSelectable") }}
       </div>
     </div>
     <div v-else-if="files.length > 1">{{ files.length }} {{ $t("selectedFiles") }}</div>
@@ -123,6 +137,7 @@
 import { notify } from "mini-notifier";
 import { mapActions, mapMutations, mapState } from "vuex";
 import { humanFileSize } from "../utils/filters";
+import { isValidFile, isEditableFile } from "../utils/validation";
 
 export default {
   props: {
@@ -143,6 +158,7 @@ export default {
       "endPoints",
       "secondaryDirectories",
       "themePrefix",
+      "fileValidation",
     ]),
     currentDirectoryName() {
       if (this.secondaryDirectories.length > 0) {
@@ -157,6 +173,18 @@ export default {
       }
       return null;
     },
+    isValid() {
+      if (this.files.length !== 1) {
+        return null;
+      }
+      return isValidFile(this.files[0], this.fileValidation);
+    },
+    isEditable() {
+      if (this.files.length !== 1) {
+        return null;
+      }
+      return isEditableFile(this.files[0], this.fileValidation);
+    },
   },
   watch: {
     file() {
@@ -165,7 +193,7 @@ export default {
   },
   methods: {
     ...mapActions(["updateFilename", "download", "deleteSelectedFiles"]),
-    ...mapMutations(["setEditFilename", "setEditContent", "setEditAndSelect"]),
+    ...mapMutations(["setEditFilename", "setEditContent"]),
     formatDate(strDate) {
       let date = new Date(strDate);
       if (!(date instanceof Date) || isNaN(date)) {
@@ -192,7 +220,6 @@ export default {
       notify("URL copiée");
     },
     editContent() {
-      this.setEditAndSelect(false);
       this.setEditContent(this.file);
     },
     onSubmitEditFilename() {
@@ -255,15 +282,16 @@ export default {
 }
 .infos-row {
   /* 3px pour afficher les ombres de box-shadow malgré un overflow: auto */
-  margin: 1.5rem 3px;
+  margin: 0.5rem 3px;
   display: flex;
   flex-direction: column;
 
   & > label {
     display: block;
     margin: 4px 0;
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 500;
+    color: var(--grey);
   }
   & > input {
     display: block;
@@ -302,6 +330,13 @@ export default {
     padding: 0.25rem;
     justify-content: center;
   }
+}
+.mfm-button,
+.mfm-input-text,
+.mfm-input-button button {
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
 }
 .infos-row.filename {
   overflow: hidden;
@@ -345,6 +380,19 @@ export default {
   .div-filename {
     height: 21px;
     overflow: hidden;
+  }
+}
+.penta-button.border {
+  border: 2px solid var(--primary-color);
+  background-color: var(--primary-color100);
+}
+.info {
+  border-radius: var(--form-border-radius);
+  padding: 0.5rem;
+  color: var(--red-text);
+  font-size: 0.8rem;
+  &.alert {
+    background-color: var(--red50);
   }
 }
 </style>

@@ -29,24 +29,23 @@
     "serve": "spassr dist --entrypoint dist/index-examples.html"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^2.2.4",
-    "autoprefixer": "^10.4.4",
+    "@vitejs/plugin-vue": "^3.0.3",
     "cropperjs": "^1.5.12",
-    "eslint": "^8.11.0",
+    "eslint": "^8.22.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^9.3.0",
     "mini-notifier": "^0.5.0",
     "pentatrion-lib": "^0.3.6",
-    "pentatrion-theme": "^0.1.4",
-    "prettier": "^2.6.0",
+    "pentatrion-theme": "^0.2.2",
+    "prettier": "^2.7.1",
     "resumablejs": "github:23/resumable.js#b7580789f4d19bb180c08389538e0733f0f811d8",
     "sass": "^1.54.4",
     "scroll-blocker": "^1.0.1",
-    "simplebar": "^5.3.6",
+    "simplebar": "^5.3.8",
     "spassr": "^2.6.0",
-    "vite": "^2.9.14",
-    "vue": "^3.2.31",
+    "vite": "^3.0.7",
+    "vue": "^3.2.37",
     "vue-i18n-lite": "^1.0.2",
     "vuex": "^4.0.2"
   },
@@ -54,5 +53,8 @@
     "type": "git",
     "url": "https://github.com/lhapaipai/mini-file-manager.git"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "volta": {
+    "node": "16.16.0"
+  }
 }

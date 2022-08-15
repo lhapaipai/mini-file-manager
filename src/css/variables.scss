@@ -2,41 +2,45 @@
  * Variables *
  *************/
 
-.mini-file-manager, .mini-file-manager-modal, .mini-file-manager-form, .mini-notifier-container {
+.mini-file-manager,
+.mini-file-manager-modal,
+.mini-file-manager-form,
+.mini-notifier-container {
   &.with-css-vars {
     --primary-color100: #fff9d2;
     --primary-color: #ffe64b;
     --primary-color600: #fadf30;
     --primary-color-text: #000000;
     --primary-color700: #eac800;
-  
+
     --grey50: #e7e7e7;
     --grey200: #ccc;
     --grey: #999;
     --grey700: #333;
-  
+
     --form-border-radius: 0.25rem;
     --form-border-width: 1px;
     --form-ring-shadow: 0 0 1px 3px #eee;
-  
+
     --transition-border: border-color 0.3s ease;
     --transition-shadow: box-shadow 0.3s ease;
     --transition-background: background-color 0.3s ease;
     --transition-color: color 0.3s ease;
     --transition-opacity: opacity 0.3s ease;
-  
+
     --box-shadow: 0 0 48px rgba(0, 0, 0, 0.075);
-  
-    --background-color: rgba(255,255,255,.75);
-    
+
+    --background-color: rgba(255, 255, 255, .75);
+
     --red: #842029;
     --red50: #f8d7da;
     --red-text: #dc3545;
-    
+
     --green-light: #d1eacf;
     --green: #2b5229;
-    
+
     --orange: rgb(217, 142, 1);
+    --input-height: 2rem;
 
   }
 }
@@ -47,13 +51,14 @@
 
 .mini-file-manager {
   --main-content-padding: 1rem;
-  
+
   --aside-icon-width: 3rem;
   --aside-text-width: 8rem;
   --aside-item-padding: 0.5rem;
-  
+
   --aside-width: calc(var(--aside-icon-width) + 2 * var(--aside-item-padding));
   --aside-width-expanded: calc(var(--aside-icon-width) + var(--aside-text-width) + 2 * var(--aside-item-padding));
-  
+
   --aside-r-width: 300px;
+
 }
