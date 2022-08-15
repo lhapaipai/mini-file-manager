@@ -382,7 +382,7 @@ export default {
     overflow: hidden;
   }
 }
-.penta-button.border {
+.mfm-button.border {
   border: 2px solid var(--primary-color);
   background-color: var(--primary-color100);
 }
