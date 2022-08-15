@@ -30,7 +30,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .radial-progress {
   --hue: 220;
   --holesize: 50%;

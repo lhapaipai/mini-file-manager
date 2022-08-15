@@ -119,7 +119,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .files {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));

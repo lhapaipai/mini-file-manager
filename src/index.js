@@ -1,4 +1,4 @@
-import "./css/index.css";
+import "./css/index.scss";
 import "mini-notifier/dist/style.css";
 
 export { default as fileManager } from "./fileManager.js";

@@ -189,7 +189,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .file-manager-modal {
   position: fixed;
   top: 0;

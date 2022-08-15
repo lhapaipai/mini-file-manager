@@ -126,7 +126,7 @@ export default {
 };
 </script>
 
-<style lang="postcss">
+<style lang="scss">
 .mini-file-manager-modal {
   position: fixed;
   top: 0;

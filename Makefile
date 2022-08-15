@@ -45,14 +45,14 @@ icon-save:
 	rm -rf ${FONT_PUBLIC_DIR}/fontello.*
 	mv `find ./.fontello.src -maxdepth 1 -name 'fontello-*'` ./.fontello.src/fontello
 	
-	mv ./.fontello.src/fontello/css/fontello.css ${FONT_ASSETS_DIR}/
+	mv ./.fontello.src/fontello/css/fontello.css ${FONT_ASSETS_DIR}/fontello.scss
 	mv ./.fontello.src/fontello/config.json ${FONT_ASSETS_DIR}/
 	mv ./.fontello.src/fontello/font/* ${FONT_PUBLIC_DIR}
 	# ../font -> /file-manager/fonts
-	sed -i 's/\.\.\/font/\/file-manager\/fonts/g' ${FONT_ASSETS_DIR}/fontello.css
-	sed -i '/speak: never/d' ${FONT_ASSETS_DIR}/fontello.css
-	sed -i "s/font-family: 'fontello'/font-family: 'fontello-mfm'/g" ${FONT_ASSETS_DIR}/fontello.css
-	sed -i 's/font-family: "fontello"/font-family: "fontello-mfm"/g' ${FONT_ASSETS_DIR}/fontello.css
+	sed -i 's/\.\.\/font/\/file-manager\/fonts/g' ${FONT_ASSETS_DIR}/fontello.scss
+	sed -i '/speak: never/d' ${FONT_ASSETS_DIR}/fontello.scss
+	sed -i "s/font-family: 'fontello'/font-family: 'fontello-mfm'/g" ${FONT_ASSETS_DIR}/fontello.scss
+	sed -i 's/font-family: "fontello"/font-family: "fontello-mfm"/g' ${FONT_ASSETS_DIR}/fontello.scss
 	rm -rf .fontello.src .fontello.zip
 
 # le fichier ~/.fontello peut être supprimé manuellement lorsqu'on sait qu'on va plus avoir besoin de fontello dans la journée.

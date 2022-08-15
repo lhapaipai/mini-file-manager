@@ -107,7 +107,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .custom-select {
   position: relative;
   display: flex;

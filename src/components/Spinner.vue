@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .spinner {
   display: flex;
   justify-content: center;

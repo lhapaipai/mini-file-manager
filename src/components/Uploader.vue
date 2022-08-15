@@ -208,7 +208,7 @@ export default {
 }
 </style>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .uploader {
   display: flex;
   flex-direction: column;

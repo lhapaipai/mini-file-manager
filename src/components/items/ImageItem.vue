@@ -51,7 +51,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .actions-container {
   position: relative;
   min-width: 100px;

@@ -245,7 +245,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .infos {
   overflow: auto;
   scrollbar-color: transparent transparent;
@@ -269,7 +269,7 @@ export default {
     display: block;
   }
   .help-text {
-    color: $grey;
+    color: var(--grey);
     font-size: 0.9rem;
   }
 }

@@ -64,7 +64,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 i.famfm-right-open {
   color: var(--grey);
 }

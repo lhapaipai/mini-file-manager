@@ -1,12 +1,13 @@
-@import "./variables.css";
-@import "./fontello/fontello.css";
-@import "./pentatrion-theme.css";
-@import "./cropper.css";
+@import "./variables.scss";
+@import "./fontello/fontello.scss";
+@import "./pentatrion-theme.scss";
+@import "./cropper.scss";
 
 .mini-file-manager {
   * {
     box-sizing: border-box;
   }
+
   img {
     display: block;
     max-width: 100%;

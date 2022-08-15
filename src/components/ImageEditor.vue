@@ -510,7 +510,7 @@ export default {
   },
 };
 </script>
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 input.mfm-input-text {
   padding: 3px 5px;
   border-color: var(--grey);

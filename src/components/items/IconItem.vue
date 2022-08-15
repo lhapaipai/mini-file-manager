@@ -66,7 +66,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .file {
   text-decoration: none;
   cursor: pointer;

@@ -1,3 +1,13 @@
-@import "../../../../assets/ui/_variables.scss";
-@import "../../../../assets/ui/app.scss";
-@import "../../../../assets/pages/training-app/wizard.scss";
+@import "~otherTheme/assets/ui/_variables.scss";
+
+@import "~otherTheme/assets/ui/variables";
+@import "~otherTheme/assets/ui/base";
+// @import "~otherTheme/assets/ui/components";
+@import "~otherTheme/assets/ui/form";
+@import "~otherTheme/assets/ui/fonts";
+// @import "~otherTheme/assets/ui/layouts";
+
+@import "~otherTheme/assets/ui/packages/mini-notifier/mini-notifier.scss";
+
+@import "~otherTheme/assets/pages/training-app/wizard.scss";
+@import "mini-notifier/dist/style.css";
