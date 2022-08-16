@@ -1,6 +1,6 @@
 <template>
   <div v-if="file" class="image-editor">
-    <div class="header">
+    <div class="mfm-header">
       <div>
         <h2><i class="famfm-picture"></i>{{ $t("imageEditor") }}</h2>
       </div>
@@ -558,7 +558,7 @@ input.mfm-input-text {
   height: 100%;
 }
 
-.header {
+.mfm-header {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
