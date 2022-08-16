@@ -29,7 +29,7 @@ export default function (state) {
         return `/file-manager/icons/${file.icon}`;
       }
 
-      let suffix = `?${new Date(file.createdAt).getTime()}`;
+      let suffix = `?${new Date(file.createdAt.substring(0, 19)).getTime()}`;
 
       let host = backendOrigin ? backendOrigin : "";
       if (file.public) {
