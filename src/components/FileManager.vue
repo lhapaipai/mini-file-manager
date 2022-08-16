@@ -1,13 +1,13 @@
 <template>
   <ImageEditor
     v-if="editContent"
-    class="image-editor"
+    class="mini-file-manager"
     :file="editContent"
     :class="{ 'with-css-vars': !isModal && injectCssVars }"
   />
   <div
     v-else
-    class="mini-file-manager"
+    class="mini-file-manager manager"
     :class="{ 'with-css-vars': !isModal && injectCssVars }"
   >
     <div class="action">
@@ -16,8 +16,11 @@
         <i v-if="presentation === 'icons'" class="famfm-order-icons"></i>
       </button>
       <button
+        v-tooltip
         :class="`${themePrefix}-button outlined`"
         :disabled="!canEdit"
+        data-tooltip-position="bottom"
+        :aria-label="$t('addDirectory')"
         @click="handleAddDirectory"
       >
         <i class="famfm-folder-add"></i>
@@ -277,10 +280,8 @@ export default {
 * {
   box-sizing: border-box;
 }
-.image-editor {
-  padding: 10px;
-}
-.mini-file-manager {
+
+.manager {
   overflow: hidden;
   padding: 10px;
   display: grid;
@@ -293,11 +294,10 @@ export default {
     "hierarchy hierarchy"
     "files     files"
     "infos     infos";
-}
-@media (min-width: 800px) {
-  .mini-file-manager {
+
+  @media (min-width: 800px) {
     grid-template-columns: 96px 1fr 200px;
-    grid-template-rows: 42px 100px 1fr;
+    grid-template-rows: 42px 50px 1fr;
     grid-template-areas:
       "action hierarchy dropzone"
       "files  files     dropzone"

@@ -6,6 +6,7 @@ import { createI18n } from "vue-i18n-lite";
 import localesData from "./locales";
 import createStoreWithOptions from "./store";
 import vueLiipPlugin from "./utils/vueLiipPlugin";
+import { vueMiniTipDirective } from "./lib/mini-tip/mini-tip";
 
 export default function fileManager(elt, options) {
   if (typeof elt === "string") {
@@ -16,6 +17,8 @@ export default function fileManager(elt, options) {
 
   const app = createApp(VFileManager);
   app.directive("scroll-lock", scrollLockDirective);
+  app.directive("tooltip", vueMiniTipDirective);
+
   app.use(createStoreWithOptions(options, false));
   app.use(
     createI18n({

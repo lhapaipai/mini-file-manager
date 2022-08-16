@@ -7,6 +7,7 @@ import { formStringifier, prepareOptions } from "./utils/mainHelper";
 import vueLiipPlugin from "./utils/vueLiipPlugin";
 import localesData from "./locales";
 import { createI18n } from "vue-i18n-lite";
+import { vueMiniTipDirective } from "./lib/mini-tip/mini-tip";
 
 export default function textFormFilePicker(
   inputElt,
@@ -38,6 +39,8 @@ export default function textFormFilePicker(
   });
 
   app.directive("scroll-lock", scrollLockDirective);
+  app.directive("tooltip", vueMiniTipDirective);
+
   app.directive("lazy-load", lazyloadDirective);
   app.use(createStoreWithOptions(options, true));
   app.use(

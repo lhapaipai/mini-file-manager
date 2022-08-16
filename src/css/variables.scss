@@ -7,11 +7,22 @@
 .mini-file-manager-form,
 .mini-notifier-container {
   &.with-css-vars {
+
+    --primary-color50: #FFFCEB;
     --primary-color100: #fff9d2;
+    --primary-color200: #ffed7e;
+
+    --primary-color300: #FFF194;
+    --primary-color400: #FFEC70;
+
+    --primary-color500: #ffe64b;
     --primary-color: #ffe64b;
-    --primary-color600: #fadf30;
-    --primary-color-text: #000000;
+
+    --primary-color600: #FFDE0A;
     --primary-color700: #eac800;
+    --primary-color800: #D6B600;
+    --primary-color900: #BDA000;
+    --primary-color-text: #000000;
 
     --grey50: #e7e7e7;
     --grey200: #ccc;
@@ -60,5 +71,12 @@
   --aside-width-expanded: calc(var(--aside-icon-width) + var(--aside-text-width) + 2 * var(--aside-item-padding));
 
   --aside-r-width: 300px;
+
+  --tooltip-border-radius: 5px;
+  --tooltip-color: var(--primary-color300);
+  --tooltip-text-color: white;
+  --tooltip-font-size: 12px;
+  --tooltip-move: 4px;
+
 
 }

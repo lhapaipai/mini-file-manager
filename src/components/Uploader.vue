@@ -61,6 +61,14 @@ export default {
     mimeGroups() {
       let mimeGroups = this.fileUpload.fileType.map((mime) => mime.split("/")[0]);
       let uniqueMimeGroups = Array.from(new Set(mimeGroups));
+
+      if (uniqueMimeGroups.length === 1 && mimeGroups.length > 1) {
+        let mimeChilds = this.fileUpload.fileType.map((mime) => mime.split("/")[1]);
+
+        let mimeGroup = this.$t(`mimeGroup.${uniqueMimeGroups[0]}`);
+        return `${mimeGroup} (${mimeChilds.join(", ")})`;
+      }
+
       return uniqueMimeGroups
         .map((mimeGroup) => this.$t(`mimeGroup.${mimeGroup}`))
         .join(", ");
@@ -97,11 +105,15 @@ export default {
       },
       fileType: this.fileUpload.fileType,
       fileTypeErrorCallback: (file, errorCount) => {
-        notify(this.$t("fileTypeError", { name: file.name }), {
-          time: 500000,
+        console.log(file, errorCount);
+        notify(
+          this.$t("fileTypeError", { name: file.name, allowedFiles: this.mimeGroups }),
+          {
+            time: 10000,
 
-          style: "error",
-        });
+            style: "error",
+          },
+        );
         console.log(file, errorCount);
       },
     });
@@ -228,18 +240,12 @@ export default {
 .uploader {
   display: flex;
   flex-direction: column;
-
-  /* &.is-uploading {
-    border: 1px solid var(--grey200);
-  } */
 }
 
 .drop-area {
-  /* overflow: hidden; */
   flex: 1;
   position: relative;
   border: 2px dashed var(--primary-color100);
-  /* border-radius: var(--form-border-radius); */
   border-radius: 20px;
   transition: var(--transition-border), var(--transition-background);
   &:hover {

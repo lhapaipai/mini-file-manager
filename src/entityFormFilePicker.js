@@ -7,6 +7,7 @@ import lazyloadDirective from "./utils/lazyloadDirective";
 import createStoreWithOptions from "./store";
 import { createI18n } from "vue-i18n-lite";
 import localesData from "./locales";
+import { vueMiniTipDirective } from "./lib/mini-tip/mini-tip";
 
 export default function entityFormFilePicker(elt, options, uploadedFiles) {
   if (typeof elt === "string") {
@@ -24,6 +25,8 @@ export default function entityFormFilePicker(elt, options, uploadedFiles) {
   });
 
   app.directive("scroll-lock", scrollLockDirective);
+  app.directive("tooltip", vueMiniTipDirective);
+
   app.directive("lazy-load", lazyloadDirective);
   app.use(createStoreWithOptions(options, true));
   app.use(

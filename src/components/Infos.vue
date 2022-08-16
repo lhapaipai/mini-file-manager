@@ -91,20 +91,29 @@
       <div :class="`infos-row ${themePrefix}-button-group mfm-button-group`">
         <button
           v-if="file && file.type !== 'dir'"
+          v-tooltip
           :class="`${themePrefix}-button mfm-button outlined`"
+          :aria-label="$t('showFile')"
+          data-tooltip-position="top"
           @click.prevent="handleOpen"
         >
           <i class="famfm-eye"></i>
         </button>
         <button
           v-if="canEditContent(file)"
+          v-tooltip
           class="mfm-button"
           :class="{ outlined: true, [`${themePrefix}-button`]: true, border: !isValid }"
+          :aria-label="$t('editFile')"
+          data-tooltip-position="top"
           @click.prevent="editContent"
         >
           <i class="famfm-edit-image"></i>
         </button>
         <button
+          v-tooltip
+          :aria-label="$t('downloadFile')"
+          data-tooltip-position="top"
           :class="`${themePrefix}-button mfm-button outlined`"
           @click.prevent="handleDownload"
         >
@@ -112,6 +121,9 @@
         </button>
         <button
           v-if="canEdit(file)"
+          v-tooltip
+          :aria-label="$t('deleteFile')"
+          data-tooltip-position="top"
           :class="`${themePrefix}-button mfm-button outlined`"
           @click.prevent="deleteSelectedFiles"
         >
@@ -383,8 +395,7 @@ export default {
   }
 }
 .mfm-button.border {
-  border: 2px solid var(--primary-color);
-  background-color: var(--primary-color100);
+  background-color: var(--primary-color200);
 }
 .info {
   border-radius: var(--form-border-radius);

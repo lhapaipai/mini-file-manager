@@ -23,17 +23,21 @@
         <div class="section-content">
           <div :class="`${themePrefix}-button-group mfm-button-group`">
             <button
-              :class="`${
-                dragMode === 'move' ? 'primary-color' : 'outlined'
-              } ${themePrefix}-button  mfm-button`"
+              v-tooltip
+              data-tooltip-position="top"
+              :aria-label="$t('moveImage')"
+              class="outlined mfm-button"
+              :class="{ active: dragMode === 'move', [`${themePrefix}-button`]: true }"
               @click="changeMode('move')"
             >
               <i class="famfm-move"></i>
             </button>
             <button
-              :class="`${
-                dragMode === 'crop' ? 'primary-color' : 'outlined'
-              } ${themePrefix}-button  mfm-button`"
+              v-tooltip
+              data-tooltip-position="top"
+              :aria-label="$t('cropImage')"
+              class="outlined mfm-button"
+              :class="{ active: dragMode === 'crop', [`${themePrefix}-button`]: true }"
               @click="changeMode('crop')"
             >
               <i class="famfm-crop"></i>
@@ -41,12 +45,18 @@
           </div>
           <div :class="`${themePrefix}-button-group mfm-button-group`">
             <button
+              v-tooltip
+              data-tooltip-position="top"
+              :aria-label="$t('rotateImage')"
               :class="`${themePrefix}-button  mfm-button outlined`"
               @click="rotate(-90)"
             >
               <i class="famfm-ccw"></i>
             </button>
             <button
+              v-tooltip
+              data-tooltip-position="top"
+              :aria-label="$t('rotateImage')"
               :class="`${themePrefix}-button  mfm-button outlined`"
               @click="rotate(90)"
             >
@@ -55,6 +65,9 @@
           </div>
 
           <button
+            v-tooltip
+            data-tooltip-position="top"
+            :aria-label="$t('cancel')"
             :class="`${themePrefix}-button  mfm-button outlined`"
             @click="handleClear"
           >
@@ -549,11 +562,7 @@ input.mfm-input-text {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 0.75rem;
-
-  h2 {
-    margin: 0;
-  }
+  border-bottom: 1px solid var(--grey200);
 
   & > * {
     &:first-child {
@@ -561,40 +570,8 @@ input.mfm-input-text {
     }
   }
 
-  .section {
-    border-left: 1px solid var(--grey200);
-
-    padding: 0 1rem;
-    &.loader {
-      border-left: 0;
-    }
-    &:last-child {
-      padding-right: 0px;
-    }
-  }
-  .section-label {
-    color: var(--grey);
-    font-size: 0.8rem;
-  }
-  .section-content {
-    display: flex;
-    flex-direction: row;
-
-    & > .mfm-button,
-    & > .mfm-button-group {
-      margin-right: 0.5rem;
-
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-  }
-  .mfm-button {
-    padding: 0.25rem;
-    height: auto;
-  }
-  .penta-button.primary-color {
-    background-color: var(--primary-color);
+  @media (max-width: 1000px) {
+    border-bottom-width: 0;
   }
 }
 
@@ -621,17 +598,60 @@ input.mfm-input-text {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  border-top: 1px solid var(--grey200);
+  padding: 10px;
 
-  & > * {
-    margin-top: 10px;
-  }
   font-size: 0.8rem;
   input {
     font-size: 0.8rem;
   }
-  i.famfm-right-open {
-    font-size: 0.8rem;
+}
+
+h2 {
+  margin: 0 10px;
+}
+
+.section {
+  border-left: 1px solid var(--grey200);
+  padding: 5px 10px 10px 10px;
+  &.loader {
+    border-left: 0;
   }
+  @media (max-width: 1000px) {
+    border-left-width: 0;
+  }
+}
+
+.section-label {
+  color: var(--grey);
+  font-size: 0.8rem;
+}
+
+.section-content {
+  display: flex;
+  flex-direction: row;
+
+  & > .mfm-button,
+  & > .mfm-button-group {
+    margin-right: 0.5rem;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.mfm-button {
+  padding: 0.25rem;
+  height: auto;
+
+  &.active {
+    background-color: var(--primary-color);
+  }
+}
+.penta-button.primary-color {
+  background-color: var(--primary-color);
+  color: var(--primary-color-text);
 }
 
 input.nb {
