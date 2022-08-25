@@ -59,7 +59,7 @@ export type File = {
   imageHeight?: number;
   type: "dir" | "file";
   size: number;
-  createdAt: string;
+  updatedAt: string;
   icon: string;
   public: boolean;
   uploadRelativePath: string;

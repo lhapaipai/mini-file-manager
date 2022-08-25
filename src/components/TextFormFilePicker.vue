@@ -11,7 +11,7 @@
     <div v-if="uploadedFiles.length > 0" class="files">
       <div
         v-for="(file, key) in uploadedFiles"
-        :key="file.directory + file.filename + file.createdAt"
+        :key="file.directory + file.filename + file.updatedAt"
         class="preview"
       >
         <ImageItem

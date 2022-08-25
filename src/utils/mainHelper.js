@@ -104,7 +104,7 @@ function collectItem(prefix) {
     "imageHeight",
     "type",
     "size",
-    "createdAt",
+    "updatedAt",
     "icon",
     "public",
   ]) {

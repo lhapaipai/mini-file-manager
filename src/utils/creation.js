@@ -13,7 +13,7 @@ export async function createUploadedFileFromUpload(fileUploadInfos, directory, o
     imageHeight: null,
     type: "temp-file",
     size: fileUploadInfos.file.size,
-    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     icon: "other.svg",
     public: true,
     uploadInfos: {

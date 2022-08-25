@@ -97,9 +97,9 @@
           class="ogoxe-input-text"
         />
         <input
-          v-model="file.createdAt"
+          v-model="file.updatedAt"
           type="hidden"
-          :name="generateName('createdAt', key)"
+          :name="generateName('updatedAt', key)"
           class="ogoxe-input-text"
         />
         <input

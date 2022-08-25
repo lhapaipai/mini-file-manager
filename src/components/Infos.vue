@@ -71,8 +71,8 @@
         </div>
       </div>
       <div class="infos-row created-at">
-        <label>{{ $t("createdAt") }}</label>
-        <div>{{ formatDate(file.createdAt) }}</div>
+        <label>{{ $t("updatedAt") }}</label>
+        <div>{{ formatDate(file.updatedAt) }}</div>
       </div>
       <div class="infos-row extra">
         <label>{{ $t("infos") }}</label>

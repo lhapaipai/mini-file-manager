@@ -10,7 +10,7 @@
     </div>
     <div class="filename">{{ file.filename }}</div>
     <div class="size ref">{{ file.type === "file" ? humanFileSize(file.size) : "" }}</div>
-    <div class="date ref">{{ formatDate(file.createdAt) }}</div>
+    <div class="date ref">{{ formatDate(file.updatedAt) }}</div>
   </a>
 </template>
 

@@ -19,7 +19,7 @@ export default function (state) {
   let { backendOrigin, endPoints, entryPoints } = state;
 
   return {
-    uploadSrc(file, filterName) {
+    uploadSrc(file, filterName, withSuffix = true) {
       let entryPoint = entryPoints.find((e) => file.origin === e.origin);
       if (file.type === "temp-file" && file.thumbnail) {
         return file.thumbnail;
@@ -29,7 +29,9 @@ export default function (state) {
         return `/file-manager/icons/${file.icon}`;
       }
 
-      let suffix = `?${new Date(file.createdAt.substring(0, 19)).getTime()}`;
+      let suffix = withSuffix
+        ? `?${new Date(file.updatedAt.substring(0, 19)).getTime()}`
+        : "";
 
       let host = backendOrigin ? backendOrigin : "";
       if (file.public) {
