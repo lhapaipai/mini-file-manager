@@ -7,6 +7,7 @@ import createStoreWithOptions from "./store";
 import localesData from "./locales";
 import vueLiipPlugin from "./utils/vueLiipPlugin";
 import { vueMiniTipDirective } from "./lib/mini-tip/mini-tip";
+import { resolveLocale } from "./utils/complete";
 
 export default function fileManagerModal(
   options,
@@ -25,7 +26,7 @@ export default function fileManagerModal(
   app.use(createStoreWithOptions(options, true));
   app.use(
     createI18n({
-      locale: options.locale,
+      locale: resolveLocale(options),
       fallbackLocale: "en",
       messages: localesData,
     }),

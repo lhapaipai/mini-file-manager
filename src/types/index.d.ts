@@ -4,6 +4,7 @@ export type EntryPoint = {
   origin: string;
   readOnly?: boolean;
   icon?: string;
+  webPrefix?: string;
 };
 
 export type FileValidation = {

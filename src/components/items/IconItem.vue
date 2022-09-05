@@ -8,19 +8,13 @@
   >
     <div class="square">
       <div
-        class="img-container"
+        class="ratio-content"
         :class="{
           'is-icon': isIcon(file),
           'is-not-icon': !isIcon(file),
         }"
       >
-        <img
-          :alt="file.filename"
-          :width="$uploadWidth(file, 'small')"
-          :height="$uploadHeight(file, 'small')"
-          :src="$uploadSrc(file, 'small')"
-          @dragstart="handleDragStart($event, file)"
-        />
+        <LazyImage :image="file" filter="small" :skeleton="false"></LazyImage>
         <div v-if="file.uploadInfos" class="spinner">
           <Progression :value="file.uploadInfos.progression" />
         </div>
@@ -32,13 +26,17 @@
 
 <script>
 import Progression from "../Progression.vue";
-
+import LazyImage from "../LazyImage.vue";
 export default {
   components: {
     Progression,
+    LazyImage,
   },
   props: {
-    file: Object,
+    file: {
+      type: Object,
+      default: () => {},
+    },
   },
   emits: ["click", "dblclick"],
   computed: {
@@ -86,7 +84,7 @@ export default {
     padding-top: 100%;
     width: 100%;
 
-    .img-container {
+    .ratio-content {
       position: absolute;
       left: 0;
       top: 0;
@@ -97,7 +95,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: flex-end;
-      img {
+      :deep(img) {
         transition: var(--transition-opacity);
         display: block;
         max-width: 100%;
@@ -108,15 +106,12 @@ export default {
 
       &.is-not-icon {
         padding: 8%;
-        img {
+        :deep(img) {
           border-radius: 8px;
         }
       }
       &.is-icon {
         padding: 8%;
-        img {
-          border-radius: 20px;
-        }
       }
 
       .spinner {
@@ -130,7 +125,7 @@ export default {
     }
   }
 
-  &.is-temp img {
+  &.is-temp :deep(img) {
     opacity: 0.5;
   }
 
@@ -151,7 +146,7 @@ export default {
     &:hover,
     &:active {
       color: var(--grey700);
-      img {
+      :deep(img) {
         opacity: 0.8;
       }
     }
@@ -160,7 +155,7 @@ export default {
     &.selected {
       color: var(--primary-color-text);
 
-      img {
+      :deep(img) {
         box-shadow: 0 0 0 4px var(--primary-color), 0 3px 3px 2px rgba(74, 47, 47, 0.15),
           0 3px 7px 4px rgba(0, 0, 0, 0.15);
       }

@@ -23,3 +23,11 @@ export function completeUploadOptions(fileUpload) {
     fileUpload,
   );
 }
+
+export function resolveLocale(options) {
+  let bodyLocale = document.body.dataset.locale
+    ? document.body.dataset.locale.substring(0, 2)
+    : null;
+
+  return options.locale || bodyLocale || "en";
+}

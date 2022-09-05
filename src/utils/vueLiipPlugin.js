@@ -13,6 +13,11 @@ const filters = {
     imageHeight: 250,
     ratio: 1,
   },
+  card: {
+    imageWidth: 500,
+    imageHeight: 500,
+    ratio: 1,
+  },
 };
 
 export default function (state) {
@@ -59,7 +64,7 @@ export default function (state) {
       if (filterRatio > imageRatio) {
         return filter.imageHeight;
       } else {
-        return Math.round(filter.imageWidth * imageRatio);
+        return Math.round(filter.imageWidth / imageRatio);
       }
     },
     uploadWidth(image, filterName) {

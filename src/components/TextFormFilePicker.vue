@@ -8,7 +8,13 @@
         @select-files="handleNewSelection"
       ></FileManagerModal>
     </Teleport>
-    <div v-if="uploadedFiles.length > 0" class="files">
+    <PreviewArea
+      :uploaded-files="uploadedFiles"
+      @remove="handleRemove"
+      @browse="handleBrowse"
+    ></PreviewArea>
+
+    <!-- <div v-if="uploadedFiles.length > 0" class="files">
       <div
         v-for="(file, key) in uploadedFiles"
         :key="file.directory + file.filename + file.updatedAt"
@@ -30,19 +36,19 @@
       >
         {{ $t("filesManager") }}
       </button>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
 import FileManagerModal from "./FileManagerModal.vue";
-import ImageItem from "./items/ImageItem.vue";
+import PreviewArea from "./PreviewArea.vue";
 
 export default {
   components: {
     FileManagerModal,
-    ImageItem,
+    PreviewArea,
   },
   props: {
     // eslint-disable-next-line vue/require-default-prop

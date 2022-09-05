@@ -8,33 +8,13 @@
         @select-files="handleNewSelection"
       ></FileManagerModal>
     </Teleport>
-    <div>
-      <div v-if="uploadedFiles.length > 0" class="files">
-        <div
-          v-for="(file, key) in uploadedFiles"
-          :key="file.directory + file.filename"
-          class="preview"
-        >
-          <ImageItem
-            :file="file"
-            :filter="form.filter"
-            @remove="() => handleRemove(key)"
-            @browse="() => handleBrowse(file)"
-          />
-        </div>
-      </div>
-      <div v-if="uploadedFiles.length === 0 || multiple" class="no-preview-area">
-        <i class="famfm-pictures no-image"></i>
-        <button
-          :class="`${themePrefix}-button outlined`"
-          @click.prevent="() => handleBrowse(null)"
-        >
-          {{ $t("filesManager") }}
-        </button>
-      </div>
-    </div>
+    <PreviewArea
+      :uploaded-files="uploadedFiles"
+      @remove="handleRemove"
+      @browse="handleBrowse"
+    ></PreviewArea>
 
-    <div>
+    <div v-if="withForm">
       <div v-for="(file, key) in uploadedFiles" :key="file.directory + file.filename">
         <input
           v-model="file.liipId"
@@ -122,12 +102,12 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import FileManagerModal from "./FileManagerModal.vue";
-import ImageItem from "./items/ImageItem.vue";
+import PreviewArea from "./PreviewArea.vue";
 
 export default {
   components: {
     FileManagerModal,
-    ImageItem,
+    PreviewArea,
   },
   props: {
     name: {
@@ -137,6 +117,10 @@ export default {
     initialUploadedFiles: {
       type: Array,
       default: () => [],
+    },
+    withForm: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {
@@ -163,15 +147,13 @@ export default {
     handleRemove(key) {
       console.log("remove", key, this.uploadedFiles);
       this.uploadedFiles.splice(key, 1);
-    },
-    async handleBrowse(uploadedFile) {
-      let id = null;
-      if (uploadedFile) {
-        let dir = uploadedFile.directory ? uploadedFile.directory + "/" : "";
-        id = `@${uploadedFile.origin}:${dir}${uploadedFile.filename}`;
+
+      if (!this.withForm) {
+        let event = new CustomEvent("newFormFiles", {
+          detail: this.uploadedFiles,
+        });
+        this.$el.dispatchEvent(event);
       }
-      this.setSelectionPaths(id ? [id] : null);
-      this.showModal = true;
     },
     handleNewSelection(selectedFiles) {
       this.showModal = false;
@@ -183,7 +165,22 @@ export default {
       } else {
         this.uploadedFiles = selectedFiles;
       }
-      console.log(this.uploadedFiles);
+
+      if (!this.withForm) {
+        let event = new CustomEvent("newFormFiles", {
+          detail: this.uploadedFiles,
+        });
+        this.$el.dispatchEvent(event);
+      }
+    },
+    async handleBrowse(uploadedFile) {
+      let id = null;
+      if (uploadedFile) {
+        let dir = uploadedFile.directory ? uploadedFile.directory + "/" : "";
+        id = `@${uploadedFile.origin}:${dir}${uploadedFile.filename}`;
+      }
+      this.setSelectionPaths(id ? [id] : null);
+      this.showModal = true;
     },
   },
 };
@@ -201,24 +198,5 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.files {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  gap: 15px;
-}
-
-.no-preview-area {
-  margin-top: 1rem;
-  min-height: 14rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  .no-image {
-    color: var(--primary-color100);
-    font-size: 5rem;
-  }
 }
 </style>

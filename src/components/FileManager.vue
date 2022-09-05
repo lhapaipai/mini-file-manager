@@ -93,12 +93,6 @@ export default {
     RowItem,
     ImageEditor,
   },
-  props: {
-    isModal: {
-      type: Boolean,
-      default: false,
-    },
-  },
   emits: ["confirm"],
   data() {
     return {
