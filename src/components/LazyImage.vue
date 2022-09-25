@@ -10,7 +10,7 @@
       ref="image"
       :alt="image.filename"
       :class="imgClass"
-      :src="userRequestImage ? $uploadSrc(image, filter, backendOrigin) : null"
+      :src="userRequestImage ? $uploadSrc(image, filter) : null"
       :width="$uploadWidth(image, filter)"
       :height="$uploadHeight(image, filter)"
       @load="loaded = true"

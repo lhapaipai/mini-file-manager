@@ -107,9 +107,10 @@ textFormFilePicker(
 )
 
 entityFormFilePicker(
-  "#inputs-container",             // string | HTMLElement
+  "#inputs-container",  // string | HTMLElement
   fileManagerOptions,   // FileManagerOptions
-  selection             // File[]
+  uploadedFiles         // File[]
+  onNewFormFiles        // callBack (File[]) => {}
 )
 ```
 
