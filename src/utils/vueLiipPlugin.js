@@ -3,6 +3,11 @@ function getExtension(filename) {
 }
 
 const filters = {
+  mini: {
+    imageWidth: 40,
+    imageHeight: 40,
+    ratio: 1,
+  },
   station_small: {
     imageWidth: 250,
     imageHeight: 300,
@@ -16,6 +21,16 @@ const filters = {
   card: {
     imageWidth: 500,
     imageHeight: 500,
+    ratio: 1,
+  },
+  medium: {
+    imageWidth: 800,
+    imageHeight: 800,
+    ratio: 1,
+  },
+  large: {
+    imageWidth: 1500,
+    imageHeight: 1500,
     ratio: 1,
   },
 };
