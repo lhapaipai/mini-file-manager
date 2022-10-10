@@ -133,7 +133,6 @@ export default {
     ...mapState(["themePrefix", "form", "multiple"]),
   },
   mounted() {
-    console.log("initialUploadedFiles", this.initialUploadedFiles);
     this.uploadedFiles = [...this.initialUploadedFiles];
   },
   methods: {

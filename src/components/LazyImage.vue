@@ -90,7 +90,6 @@ export default {
       if (this.userRequestImage) {
         this.$emit("error", e);
       }
-      console.log("handleError", e);
     },
 
     createObserver() {

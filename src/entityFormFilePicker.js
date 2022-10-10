@@ -19,7 +19,6 @@ export default function entityFormFilePicker(
     elt = document.querySelector(elt);
   }
   options = prepareOptions(elt, options);
-  console.log(options);
 
   if (!uploadedFiles) {
     uploadedFiles = collectFormData(elt, options.multiple);
