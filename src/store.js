@@ -20,6 +20,7 @@ export default function createStoreWithOptions(
     themePrefix = "penta",
     debug = false,
     form = {},
+    indexes = true,
   },
   isModal,
 ) {
@@ -63,6 +64,7 @@ export default function createStoreWithOptions(
       isModal,
       form,
       initialSelectionPaths: parseSelection(selection, entryPoints),
+      indexes,
     },
     getters: {
       sortedFiles(state) {
@@ -331,7 +333,10 @@ export default function createStoreWithOptions(
             mimeGroup: state.fileValidation ? state.fileValidation.mimeGroup : null,
           },
         }).then(({ files, directory }) => {
-          dispatch("setFiles", files);
+          if (state.indexes) {
+            dispatch("setFiles", files);
+          }
+
           commit("setDirectory", directory);
 
           if (state.initialSelectionPaths) {
