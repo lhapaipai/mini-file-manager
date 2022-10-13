@@ -255,7 +255,6 @@ export default function createStoreWithOptions(
         }
       },
       async updateFilename({ commit, state }, { file, newFilename }) {
-        // console.log("before", file);
         let { origin, uploadRelativePath, directory, filename } = file;
         return formFetchOrNotify(state.endPoints.editFile, {
           body: {
