@@ -68,5 +68,9 @@ export default function entityFormFilePicker(
     vm.$el.remove();
   }
 
-  return { destroy };
+  function update(uploadedFiles) {
+    vm.$data.uploadedFiles = uploadedFiles;
+  }
+
+  return { destroy, update };
 }
