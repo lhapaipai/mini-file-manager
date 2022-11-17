@@ -1,5 +1,5 @@
 import localesData from "../locales";
-import { prepareContainer } from "mini-notifier";
+import { configure } from "mini-notifier";
 
 export const mfmDefaultOptions = {
   endPoint: "/media-manager",
@@ -50,7 +50,7 @@ export function prepareOptions(elt, options) {
   }
 
   // assign same theme to mini-notifier
-  prepareContainer(document.body, options.injectCssVars);
+  configure({ themePrefix: options.themePrefix, position: "top-right" });
 
   return options;
 }

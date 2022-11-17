@@ -7,6 +7,7 @@
   />
   <div
     v-else
+    ref="manager"
     class="mini-file-manager manager"
     :class="{ 'with-css-vars': !isModal && injectCssVars }"
   >
@@ -191,10 +192,12 @@ export default {
     handleAddDirectory() {
       let that = this;
       prompt("Nom du dossier", {
+        container: this.$refs.manager,
         okHandler: function (newDirectoryName) {
           if (newDirectoryName.length > 128) {
             notify("Le nom du dossier est trop long.", {
               style: "error",
+              container: that.$refs.manager,
             });
           } else {
             that.addDirectory(newDirectoryName);

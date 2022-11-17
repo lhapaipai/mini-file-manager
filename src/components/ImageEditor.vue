@@ -1,5 +1,5 @@
 <template>
-  <div v-if="file" class="image-editor">
+  <div v-if="file" ref="container" class="image-editor">
     <div class="mfm-header">
       <div>
         <h2><i class="famfm-picture"></i>{{ $t("imageEditor") }}</h2>
@@ -326,6 +326,7 @@ export default {
       if (this.finalWidthLockedByValidation || this.finalHeightLockedByValidation) {
         notify(this.$t("disableRules"), {
           style: "error",
+          container: this.$refs.container,
         });
         return;
       }
