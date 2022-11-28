@@ -77,9 +77,13 @@ export default function (state) {
       let filterRatio = filter.imageWidth / filter.imageHeight;
       let imageRatio = image.imageWidth / image.imageHeight;
       if (filterRatio > imageRatio) {
-        return filter.imageHeight;
+        return image.imageHeight < filter.imageHeight
+          ? image.imageHeight
+          : filter.imageHeight;
       } else {
-        return Math.round(filter.imageWidth / imageRatio);
+        return image.imageWidth < filter.imageWidth
+          ? image.imageHeight
+          : Math.round(filter.imageWidth / imageRatio);
       }
     },
     uploadWidth(image, filterName) {
@@ -93,9 +97,13 @@ export default function (state) {
       let filterRatio = filter.imageWidth / filter.imageHeight;
       let imageRatio = image.imageWidth / image.imageHeight;
       if (filterRatio < imageRatio) {
-        return filter.imageWidth;
+        return image.imageWidth < filter.imageWidth
+          ? image.imageWidth
+          : filter.imageWidth;
       } else {
-        return Math.round(filter.imageHeight * imageRatio);
+        return image.imageHeight < filter.imageHeight
+          ? image.imageWidth
+          : Math.round(filter.imageHeight * imageRatio);
       }
     },
     install(app) {
