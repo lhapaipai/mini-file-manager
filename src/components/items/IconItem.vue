@@ -14,7 +14,12 @@
           'is-not-icon': !isIcon(file),
         }"
       >
-        <LazyImage :image="file" filter="small" :skeleton="false"></LazyImage>
+        <LazyImage
+          v-if="canViewFile(file)"
+          :image="file"
+          filter="small"
+          :skeleton="false"
+        ></LazyImage>
         <div v-if="file.uploadInfos" class="spinner">
           <Progression :value="file.uploadInfos.progression" />
         </div>
@@ -45,6 +50,9 @@ export default {
     },
   },
   methods: {
+    canViewFile(file) {
+      return file.type !== "temp-file" || typeof file.thumbnail !== "undefined";
+    },
     isIcon(file) {
       if (file.filters?.small) {
         return false;
@@ -92,9 +100,6 @@ export default {
       right: 0;
       height: 100%;
       width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
       :deep(img) {
         transition: var(--transition-opacity);
         display: block;

@@ -5,7 +5,6 @@
       class="drop-area"
       :class="{
         highlight: dropActive,
-        'is-uploading': isUploading,
         readonly: !canUpload,
       }"
       @dragenter="highlight"
@@ -32,7 +31,7 @@ import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { notify } from "mini-notifier";
 import { nextTick } from "vue";
 
-import { createUploadedFileFromUpload } from "../utils/creation";
+import { createUploadedFileFromUpload, createThumbnail } from "../utils/creation";
 import { filename2dirname, humanFileSize, sanitizeFilename } from "../utils/filters";
 
 let resumable = null;
@@ -40,7 +39,6 @@ let resumable = null;
 export default {
   data() {
     return {
-      isUploading: false,
       dropActive: false,
       progressFilename: null,
       retries: 0,
@@ -93,7 +91,7 @@ export default {
       },
       uploadMethod: "POST",
       maxFileSize: this.fileUpload.maxFileSize,
-      maxFileSizeErrorCallback: (file, errorCount) => {
+      maxFileSizeErrorCallback: (file) => {
         notify(
           this.$t("exceedMaxSize", {
             name: file.name,
@@ -101,11 +99,9 @@ export default {
           }),
           { style: "error" },
         );
-        console.log(file, errorCount, resumable);
       },
       fileType: this.fileUpload.fileType,
-      fileTypeErrorCallback: (file, errorCount) => {
-        console.log(file, errorCount);
+      fileTypeErrorCallback: (file) => {
         notify(
           this.$t("fileTypeError", { name: file.name, allowedFiles: this.mimeGroups }),
           {
@@ -114,11 +110,9 @@ export default {
             style: "error",
           },
         );
-        console.log(file, errorCount);
       },
     });
     await nextTick();
-    // console.log(r.support, this.$refs.inputFile, this.$refs.dropArea)
     resumable.assignDrop(this.$refs.dropArea);
     resumable.assignBrowse(this.$refs.dropArea);
 
@@ -126,7 +120,6 @@ export default {
     resumable.on("fileSuccess", this.onFileSuccess);
     resumable.on("fileError", this.onFileError);
     resumable.on("fileProgress", (fileUploadInfos) => {
-      console.log("onprogress", fileUploadInfos);
       this.updateFileUploadProgress({
         liipId: fileUploadInfos.liipId,
         progression: fileUploadInfos.progress(),
@@ -144,7 +137,6 @@ export default {
     },
 
     async onFileAdded(fileUploadInfos) {
-      console.log("onFileAdded", fileUploadInfos);
       if (!this.canUpload) {
         resumable.removeFile(fileUploadInfos);
         notify(this.$t("readonlyDir"), {
@@ -166,24 +158,21 @@ export default {
         fileUploadInfos.liipId = `#${this.currentEntryPoint.origin}:${fileUploadInfos.fileName}`;
       }
 
-      resumable.upload();
-
-      let fileInfos = await createUploadedFileFromUpload(
+      let fileInfos = createUploadedFileFromUpload(
         fileUploadInfos,
         this.completeDirectory,
         this.currentEntryPoint.origin,
       );
 
       this.addFile(fileInfos);
+      await createThumbnail(fileUploadInfos, fileInfos);
 
-      // this.isUploading = true;
+      resumable.upload();
     },
     onFileSuccess(file, message) {
       let response = JSON.parse(message);
-      // console.log("fileSuccess", file, file.relativePath, response.file?.filename);
 
       if (!response.file || !response.oldLiipId) {
-        console.log(response);
         notify(this.$t("chunkError"), {
           style: "error",
         });
@@ -209,7 +198,7 @@ export default {
         return;
       }
 
-      console.log("on file error", fileUploadInfos, response);
+      console.log("file error", fileUploadInfos, response);
 
       resumable.removeFile(fileUploadInfos);
       this.retries = 0;

@@ -1,4 +1,4 @@
-export async function createUploadedFileFromUpload(fileUploadInfos, directory, origin) {
+export function createUploadedFileFromUpload(fileUploadInfos, directory, origin) {
   let uploadRelativePath = `${directory}/${fileUploadInfos.fileName}`;
   let mimeType = fileUploadInfos.file.type;
   let mimeGroup = mimeType.split("/")[0];
@@ -23,12 +23,17 @@ export async function createUploadedFileFromUpload(fileUploadInfos, directory, o
     uploadRelativePath,
   };
 
-  if (mimeGroup === "image") {
+  return infos;
+}
+
+export async function createThumbnail(fileUploadInfos, infos) {
+  if (infos.mimeGroup === "image") {
     infos.thumbnail = await generateThumbnail(fileUploadInfos.file, [250, 250]);
     infos.imageWidth = 250;
     infos.imageHeight = 250;
+  } else {
+    infos.thumbnail = null;
   }
-  return infos;
 }
 
 export function generateThumbnail(file, boundBox) {

@@ -118,7 +118,12 @@ export default function createStoreWithOptions(
       replaceFileByLiipId(state, { fileLiipId, newFile }) {
         let pos = state.files.findIndex((f) => f.liipId === fileLiipId);
         if (pos === -1) {
-          console.log("impossible de trouver le fichier", fileLiipId);
+          console.log(
+            "impossible de trouver le fichier à remplacer",
+            state.files.map((f) => f.liipId).join(","),
+            fileLiipId,
+          );
+          return;
         }
         state.files.splice(pos, 1, newFile);
       },
@@ -143,6 +148,7 @@ export default function createStoreWithOptions(
         let pos = state.files.indexOf(file);
         if (pos === -1) {
           console.log("impossible de trouver le fichier", file);
+          return;
         }
         state.files.splice(pos, 1);
       },

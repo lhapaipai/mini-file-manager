@@ -72,7 +72,7 @@ export default {
           return;
         } else {
           this.userRequestImage = true;
-          observer.unobserve(this.$refs.image);
+          observer.unobserve(entry.target);
         }
       });
     },
@@ -115,10 +115,12 @@ export default {
 
 <style lang="scss" scoped>
 .lazy-img-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  position: relative;
 
   img {
     opacity: 0;
