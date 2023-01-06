@@ -116,7 +116,6 @@ export default {
 <style lang="scss" scoped>
 .lazy-img-container {
   position: relative;
-  width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
