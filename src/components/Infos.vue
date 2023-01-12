@@ -103,7 +103,7 @@
           v-if="canEditContent(file)"
           v-tooltip
           class="mfm-button"
-          :class="{ outlined: true, [`${themePrefix}-button`]: true, border: !isValid }"
+          :class="{ outlined: true, [`${themePrefix}-button`]: true, alert: !isValid }"
           :aria-label="$t('editFile')"
           data-tooltip-position="top"
           @click.prevent="editContent"

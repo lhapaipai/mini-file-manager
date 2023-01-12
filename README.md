@@ -202,7 +202,10 @@ const options: FileManagerOptions = {
 
   // displays the files contained in the folder in the filemanager
   // (otherwise only the files imported into the current session will be visible)
-  indexes: true
+  indexes: true,
+
+  showValidationString: true,
+  canEditImageSize: true
 };
 
 

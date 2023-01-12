@@ -5,7 +5,10 @@
         <h2><i class="famfm-picture"></i>{{ $t("imageEditor") }}</h2>
       </div>
       <div v-if="isCropping" class="section loader"><Spinner /></div>
-      <div v-if="fileValidation && fileValidation.imageOptions" class="section">
+      <div
+        v-if="showValidationString && fileValidation && fileValidation.imageOptions"
+        class="section"
+      >
         <div class="section-label">{{ $t("constraint") }}</div>
         <div class="section-content">
           <label :class="`${themePrefix}-button  mfm-button outlined validation-string`">
@@ -92,6 +95,13 @@
           >
             <i class="famfm-ok"></i>{{ $t("apply") }}
           </button>
+          <button
+            :class="`${themePrefix}-button mfm-button outlined`"
+            :disabled="invalidSelectedFiles.length > 0"
+            @click="handleReturn"
+          >
+            {{ $t("next") }}
+          </button>
         </div>
       </div>
     </div>
@@ -110,82 +120,85 @@
       <span>
         <i class="famfm-picture"></i>
         <span>{{ naturalWidth }}, {{ naturalHeight }} px</span>
-        <i class="famfm-right-open"></i>
-        <i class="famfm-ratio"></i>
-        <input
-          type="text"
-          :class="[
-            'ratio',
-            `${themePrefix}-input-text mfm-input-text`,
-            !isValidRatio ? 'is-invalid' : '',
-          ]"
-          :value="ratio"
-          :disabled="ratioLockedByValidation"
-          placeholder="ex: 16:9"
-          @input="updateRatio"
-        />
       </span>
-      <span>
-        <i class="famfm-right-open"></i>
-        <i class="famfm-crop"></i>
-        <span>{{ cropWidth }}, {{ cropHeight }} px</span>
-      </span>
-      <span>
-        <i class="famfm-right-open"></i>
-        <i class="famfm-resize-horizontal"></i>
-        <input
-          v-model.number="finalWidth"
-          type="text"
-          :class="[
-            'nb',
-            `${themePrefix}-input-text`,
-            'mfm-input-text',
-            !isFinalWidthValid ? 'is-invalid' : '',
-          ]"
-          :disabled="
-            finalWidthLockedByValidation ||
-            finalHeightLockedByValidation ||
-            finalHeightLocked
-          "
-          @input="userChangeFinalWidth"
-        />
-
-        <span class="lock" @click="handleLock('width')">
-          <i
-            :class="{
-              'famfm-lock': finalWidthLockedByValidation || finalWidthLocked,
-              'famfm-lock-open': !(finalWidthLockedByValidation || finalWidthLocked),
-            }"
-          ></i>
+      <span v-if="canEditImageSize">
+        <span>
+          <i class="famfm-right-open"></i>
+          <i class="famfm-ratio"></i>
+          <input
+            type="text"
+            :class="[
+              'ratio',
+              `${themePrefix}-input-text mfm-input-text`,
+              !isValidRatio ? 'is-invalid' : '',
+            ]"
+            :value="ratio"
+            :disabled="ratioLockedByValidation"
+            placeholder="ex: 16:9"
+            @input="updateRatio"
+          />
         </span>
-      </span>
-      <span>
-        <i class="famfm-right-open"></i>
-        <i class="famfm-resize-vertical"></i>
+        <span>
+          <i class="famfm-right-open"></i>
+          <i class="famfm-crop"></i>
+          <span>{{ cropWidth }}, {{ cropHeight }} px</span>
+        </span>
+        <span>
+          <i class="famfm-right-open"></i>
+          <i class="famfm-resize-horizontal"></i>
+          <input
+            v-model.number="finalWidth"
+            type="text"
+            :class="[
+              'nb',
+              `${themePrefix}-input-text`,
+              'mfm-input-text',
+              !isFinalWidthValid ? 'is-invalid' : '',
+            ]"
+            :disabled="
+              finalWidthLockedByValidation ||
+              finalHeightLockedByValidation ||
+              finalHeightLocked
+            "
+            @input="userChangeFinalWidth"
+          />
 
-        <input
-          v-model.number="finalHeight"
-          type="text"
-          :class="[
-            'nb',
-            `${themePrefix}-input-text`,
-            'mfm-input-text',
-            !isFinalHeightValid ? 'is-invalid' : '',
-          ]"
-          :disabled="
-            finalWidthLockedByValidation ||
-            finalHeightLockedByValidation ||
-            finalWidthLocked
-          "
-          @input="userChangeFinalHeight"
-        />
-        <span class="lock" @click="handleLock('height')">
-          <i
-            :class="{
-              'famfm-lock': finalHeightLockedByValidation || finalHeightLocked,
-              'famfm-lock-open': !(finalHeightLockedByValidation || finalHeightLocked),
-            }"
-          ></i>
+          <span class="lock" @click="handleLock('width')">
+            <i
+              :class="{
+                'famfm-lock': finalWidthLockedByValidation || finalWidthLocked,
+                'famfm-lock-open': !(finalWidthLockedByValidation || finalWidthLocked),
+              }"
+            ></i>
+          </span>
+        </span>
+        <span>
+          <i class="famfm-right-open"></i>
+          <i class="famfm-resize-vertical"></i>
+          <input
+            v-model.number="finalHeight"
+            type="text"
+            :class="[
+              'nb',
+              `${themePrefix}-input-text`,
+              'mfm-input-text',
+              !isFinalHeightValid ? 'is-invalid' : '',
+            ]"
+            :disabled="
+              finalWidthLockedByValidation ||
+              finalHeightLockedByValidation ||
+              finalWidthLocked
+            "
+            @input="userChangeFinalHeight"
+          />
+          <span class="lock" @click="handleLock('height')">
+            <i
+              :class="{
+                'famfm-lock': finalHeightLockedByValidation || finalHeightLocked,
+                'famfm-lock-open': !(finalHeightLockedByValidation || finalHeightLocked),
+              }"
+            ></i>
+          </span>
         </span>
       </span>
     </div>
@@ -198,7 +211,7 @@ import Cropper from "cropperjs";
 import Spinner from "./Spinner.vue";
 
 import { nextTick } from "vue";
-import { mapActions, mapMutations, mapState } from "vuex";
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { notify } from "mini-notifier";
 
 let cropperInstance = null;
@@ -242,7 +255,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(["fileValidation", "themePrefix"]),
+    ...mapState([
+      "fileValidation",
+      "themePrefix",
+      "showValidationString",
+      "canEditImageSize",
+    ]),
+    ...mapGetters(["invalidSelectedFiles"]),
     imageValidation() {
       return this.fileValidation?.imageOptions;
     },

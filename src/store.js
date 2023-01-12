@@ -21,6 +21,8 @@ export default function createStoreWithOptions(
     debug = false,
     form = {},
     indexes = true,
+    showValidationString = true,
+    canEditImageSize = true,
   },
   isModal,
 ) {
@@ -65,6 +67,8 @@ export default function createStoreWithOptions(
       form,
       initialSelectionPaths: parseSelection(selection, entryPoints),
       indexes,
+      showValidationString,
+      canEditImageSize,
     },
     getters: {
       sortedFiles(state) {

@@ -10,9 +10,4 @@ export default defineConfig({
       name: "miniFileManager",
     },
   },
-  resolve: {
-    alias: {
-      "~otherTheme": "/home/lhapaipai/projets/bric/bric-rwp", // "../bric/bric-rwp"
-    },
-  },
 });

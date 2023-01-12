@@ -41,6 +41,9 @@ export type FileManagerOptions = {
   themePrefix?: string;
   injectCssVars?: boolean;
   form?: FormPreviewOptions;
+  indexes?: boolean;
+  showValidationString?: boolean;
+  canEditImageSize?: boolean; 
 };
 
 export type FormPreviewOptions = {
