@@ -10,23 +10,22 @@ import { isValidFile, isEditableFile } from "./utils/validation";
 
 export default function createStoreWithOptions(
   {
-    entryPoints,
+    canEditImageSize,
+    debug,
     endPoint,
-    fileValidation,
-    selection,
+    entryPoints,
+    form,
     fileUpload,
-    multiple = false,
-    injectCssVars = true,
-    themePrefix = "penta",
-    debug = false,
-    form = {},
-    indexes = true,
-    showValidationString = true,
-    canEditImageSize = true,
+    fileValidation,
+    indexes,
+    selection,
+    showValidationString,
+    themePrefix,
+
+    multiple,
   },
   isModal,
 ) {
-  // console.log(entryPoints);
   let debugStr = debug ? "?XDEBUG_TRIGGER" : "";
 
   let backendOrigin = null;
@@ -38,6 +37,12 @@ export default function createStoreWithOptions(
   return createStore({
     state: {
       backendOrigin,
+      canEditImageSize,
+      currentEntryPoint: null,
+      debug,
+      directory: null,
+      editContent: null,
+      editFilename: false,
       endPoints: {
         deleteFile: `${endPoint}/delete${debugStr}`,
         downloadArchive: `${endPoint}/download-archive${debugStr}`,
@@ -50,25 +55,19 @@ export default function createStoreWithOptions(
         cropFile: `${endPoint}/crop${debugStr}`,
       },
       entryPoints,
-      fileValidation: checkAndFixValidation(fileValidation),
-      fileUpload: completeUploadOptions(fileUpload),
-      currentEntryPoint: null,
-      secondaryDirectories: [],
-      multiple,
-      injectCssVars,
-      themePrefix,
-      directory: null,
       files: [],
-      selectedFiles: [],
-      editFilename: false,
-      editContent: null,
-      sortBy: "filename",
-      isModal,
       form,
-      initialSelectionPaths: parseSelection(selection, entryPoints),
+      fileUpload: completeUploadOptions(fileUpload),
+      fileValidation: checkAndFixValidation(fileValidation),
       indexes,
+      initialSelectionPaths: parseSelection(selection, entryPoints),
+      isModal,
+      multiple,
+      selectedFiles: [],
       showValidationString,
-      canEditImageSize,
+      sortBy: "filename",
+      secondaryDirectories: [],
+      themePrefix,
     },
     getters: {
       sortedFiles(state) {

@@ -289,7 +289,7 @@ export default {
   overflow: auto;
   scrollbar-color: transparent transparent;
   &:hover {
-    scrollbar-color: var(--grey200) transparent;
+    scrollbar-color: var(--mfm-grey200) transparent;
   }
 }
 .infos-row {
@@ -303,13 +303,13 @@ export default {
     margin: 4px 0;
     font-size: 0.8rem;
     font-weight: 500;
-    color: var(--grey);
+    color: var(--mfm-grey);
   }
   & > input {
     display: block;
   }
   .help-text {
-    color: var(--grey);
+    color: var(--mfm-grey);
     font-size: 0.9rem;
   }
 }
@@ -320,7 +320,7 @@ export default {
   .mfm-input-text {
     width: 0;
     flex: 1 1 0px;
-    border-radius: var(--form-border-radius) 0 0 var(--form-border-radius);
+    border-radius: var(--mfm-form-border-radius) 0 0 var(--mfm-form-border-radius);
   }
 
   button {
@@ -328,7 +328,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 0 var(--form-border-radius) var(--form-border-radius) 0;
+    border-radius: 0 var(--mfm-form-border-radius) var(--mfm-form-border-radius) 0;
     box-shadow: none;
     height: auto;
   }
@@ -370,9 +370,9 @@ export default {
 }
 .rename {
   font-size: 0.8rem;
-  color: var(--grey);
+  color: var(--mfm-grey);
   &:hover {
-    color: var(--grey700);
+    color: var(--mfm-grey700);
   }
 }
 @media (max-width: 799.99px) {
@@ -395,15 +395,15 @@ export default {
   }
 }
 .mfm-button.border {
-  background-color: var(--primary-color200);
+  background-color: var(--mfm-primary-color200);
 }
 .info {
-  border-radius: var(--form-border-radius);
+  border-radius: var(--mfm-form-border-radius);
   padding: 0.5rem;
-  color: var(--red-text);
+  color: var(--mfm-red-text);
   font-size: 0.8rem;
   &.alert {
-    background-color: var(--red50);
+    background-color: var(--mfm-red50);
   }
 }
 </style>

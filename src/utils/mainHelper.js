@@ -2,8 +2,15 @@ import localesData from "../locales";
 import { configure } from "mini-notifier";
 
 export const mfmDefaultOptions = {
+  canEditImageSize: true,
+  debug: false,
   endPoint: "/media-manager",
   entryPoints: [],
+
+  form: {
+    filter: "small",
+    type: "image",
+  },
 
   // if you wants to filter files you can upload
   fileUpload: {
@@ -16,6 +23,10 @@ export const mfmDefaultOptions = {
     ],
   },
 
+  fileValidation: null,
+
+  indexes: true,
+
   locale: "en", // "en" | "fr" | "custom"
   localeData: null,
 
@@ -25,13 +36,9 @@ export const mfmDefaultOptions = {
   // selection is retrieved from input value
   originalSelection: ["posts/autre/ign.jpg"],
 
-  themePrefix: "penta",
-  injectCssVars: true,
+  showValidationString: true,
 
-  form: {
-    filter: "small",
-    type: "image",
-  },
+  themePrefix: "penta",
 };
 
 export function prepareOptions(elt, options) {

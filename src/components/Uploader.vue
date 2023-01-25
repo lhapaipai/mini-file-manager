@@ -234,19 +234,19 @@ export default {
 .drop-area {
   flex: 1;
   position: relative;
-  border: 2px dashed var(--primary-color100);
+  border: 2px dashed var(--mfm-primary-color100);
   border-radius: 20px;
-  transition: var(--transition-border), var(--transition-background);
+  transition: var(--mfm-transition-border), var(--mfm-transition-background);
   &:hover {
-    border-color: var(--primary-color700);
+    border-color: var(--mfm-primary-color500);
   }
   &.readonly {
     cursor: default;
-    border-color: var(--grey200);
+    border-color: var(--mfm-grey200);
 
     .label-container {
       cursor: default;
-      color: var(--grey200);
+      color: var(--mfm-grey200);
     }
   }
 
@@ -260,7 +260,7 @@ export default {
     cursor: pointer;
   }
   &.highlight {
-    background-color: var(--primary-color100);
+    background-color: var(--mfm-primary-color100);
   }
 
   .label {
@@ -269,7 +269,7 @@ export default {
   }
   .detail {
     font-size: 0.8rem;
-    color: var(--grey);
+    color: var(--mfm-grey);
     @media (max-width: 799.99px) {
       display: none;
     }
@@ -277,7 +277,7 @@ export default {
 }
 
 .progress-value {
-  background: var(--primary-color);
+  background: var(--mfm-primary-color);
   transition: width 0.1s ease;
   height: 4px;
   display: flex;

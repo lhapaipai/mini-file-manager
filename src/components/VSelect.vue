@@ -127,14 +127,14 @@ export default {
 }
 .select-selected {
   align-items: center;
-  border-radius: var(--form-border-radius);
+  border-radius: var(--mfm-form-border-radius);
   padding: 0.5rem 0.5rem;
   flex: 1;
   .is-open & {
-    /* border-color: var(--primary-color700); */
+    /* border-color: var(--mfm-primary-color500); */
   }
   .with-split-button & {
-    border-radius: var(--form-border-radius) 0 0 var(--form-border-radius);
+    border-radius: var(--mfm-form-border-radius) 0 0 var(--mfm-form-border-radius);
   }
   .icon {
     margin-right: 0.25rem;
@@ -147,7 +147,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 0 var(--form-border-radius) var(--form-border-radius) 0;
+  border-radius: 0 var(--mfm-form-border-radius) var(--mfm-form-border-radius) 0;
   border-left-width: 0px;
   width: 40px;
 }
@@ -164,17 +164,17 @@ export default {
   right: 0;
   z-index: 20;
   background-color: white;
-  border: 1px solid var(--grey50);
-  border-radius: var(--form-border-radius);
+  border: 1px solid var(--mfm-grey50);
+  border-radius: var(--mfm-form-border-radius);
 
   .select-item {
     margin: 2px;
     padding: 0.5rem 1rem;
     cursor: pointer;
-    color: var(--grey);
+    color: var(--mfm-grey);
     &:hover {
-      background-color: var(--grey50);
-      color: var(--grey700);
+      background-color: var(--mfm-grey50);
+      color: var(--mfm-grey700);
     }
   }
 }
@@ -184,7 +184,7 @@ export default {
   align-items: center;
   svg {
     margin-right: 0.5rem;
-    color: var(--grey);
+    color: var(--mfm-grey);
   }
 }
 </style>

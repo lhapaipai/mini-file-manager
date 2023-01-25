@@ -18,79 +18,79 @@
       <div v-for="(file, key) in uploadedFiles" :key="file.directory + file.filename">
         <input
           v-model="file.liipId"
-          type="hidden"
+          :type="inputType"
           :name="generateName('liipId', key)"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.mimeGroup"
-          type="hidden"
+          :type="inputType"
           :name="generateName('mimeGroup', key)"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.mimeType"
-          type="hidden"
+          :type="inputType"
           :name="generateName('mimeType', key)"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.filename"
-          type="hidden"
+          :type="inputType"
           :name="generateName('filename', key)"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.directory"
-          type="hidden"
+          :type="inputType"
           :name="generateName('directory', key)"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.origin"
-          type="hidden"
+          :type="inputType"
           :name="generateName('origin', key)"
           class="ogoxe-input-text"
         />
         <input
           v-model.number="file.imageWidth"
-          type="hidden"
+          :type="inputType"
           :name="generateName('imageWidth', key)"
           class="ogoxe-input-text"
         />
         <input
           v-model.number="file.imageHeight"
-          type="hidden"
+          :type="inputType"
           :name="generateName('imageHeight', key)"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.type"
-          type="hidden"
+          :type="inputType"
           :name="generateName('type', key)"
           class="ogoxe-input-text"
         />
         <input
           v-model.number="file.size"
-          type="hidden"
+          :type="inputType"
           :name="generateName('size', key)"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.updatedAt"
-          type="hidden"
+          :type="inputType"
           :name="generateName('updatedAt', key)"
           class="ogoxe-input-text"
         />
         <input
           v-model="file.icon"
-          type="hidden"
+          :type="inputType"
           :name="generateName('icon', key)"
           class="ogoxe-input-text"
         />
         <input
           :value="file.public ? 1 : 0"
-          type="hidden"
+          :type="inputType"
           :name="generateName('public', key)"
           class="ogoxe-input-text"
         />
@@ -130,7 +130,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(["themePrefix", "form", "multiple"]),
+    ...mapState(["themePrefix", "form", "multiple", "debug"]),
+    inputType() {
+      return this.debug ? "text" : "hidden";
+    },
   },
   mounted() {
     this.uploadedFiles = [...this.initialUploadedFiles];

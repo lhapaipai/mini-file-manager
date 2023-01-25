@@ -124,9 +124,9 @@ export default {
   img {
     opacity: 0;
     visibility: hidden;
-    transition: var(--transition-opacity);
+    transition: var(--mfm-transition-opacity);
 
-    box-shadow: var(--box-shadow-light);
+    box-shadow: var(--mfm-box-shadow-light);
     border: 0;
     border-radius: 4px;
     display: block;
@@ -196,14 +196,14 @@ export default {
     right: 0;
     align-items: center;
     justify-content: center;
-    transition: var(--transition-color), var(--transition-transform),
-      var(--transition-opacity);
+    transition: var(--mfm-transition-color), var(--transition-transform),
+      var(--mfm-transition-opacity);
     transform: translateY(100%);
     opacity: 0;
 
     a {
       transition: all 0.2s;
-      color: var(--grey);
+      color: var(--mfm-grey);
       font-size: 1.3rem;
       padding: 0.5rem;
       margin: 0 0.5rem;

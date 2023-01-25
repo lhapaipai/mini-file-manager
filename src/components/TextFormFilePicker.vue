@@ -1,5 +1,5 @@
 <template>
-  <div class="mini-file-manager-form" :class="{ 'with-css-vars': injectCssVars }">
+  <div class="mini-file-manager-form mini-file-manager-vars">
     <Teleport to="body">
       <FileManagerModal
         v-if="showModal"
@@ -65,7 +65,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["themePrefix", "form", "injectCssVars", "multiple"]),
+    ...mapState(["themePrefix", "form", "multiple"]),
   },
   watch: {
     uploadedFiles: {
@@ -140,7 +140,7 @@ export default {
   align-items: center;
   justify-content: center;
   .no-image {
-    color: var(--primary-color100);
+    color: var(--mfm-primary-color100);
     font-size: 5rem;
   }
 }

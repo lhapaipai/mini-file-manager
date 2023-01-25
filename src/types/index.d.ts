@@ -39,7 +39,6 @@ export type FileManagerOptions = {
   multiple?: boolean;
   originalSelection?: (string | File)[];
   themePrefix?: string;
-  injectCssVars?: boolean;
   form?: FormPreviewOptions;
   indexes?: boolean;
   showValidationString?: boolean;

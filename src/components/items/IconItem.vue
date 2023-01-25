@@ -84,8 +84,8 @@ export default {
   align-items: center;
   outline: 0;
 
-  color: var(--grey);
-  transition: var(--transition-color);
+  color: var(--mfm-grey);
+  transition: var(--mfm-transition-color);
 
   .square {
     position: relative;
@@ -101,7 +101,7 @@ export default {
       height: 100%;
       width: 100%;
       :deep(img) {
-        transition: var(--transition-opacity);
+        transition: var(--mfm-transition-opacity);
         display: block;
         max-width: 100%;
         height: auto;
@@ -150,7 +150,7 @@ export default {
   &.is-selectable {
     &:hover,
     &:active {
-      color: var(--grey700);
+      color: var(--mfm-grey700);
       :deep(img) {
         opacity: 0.8;
       }
@@ -158,14 +158,14 @@ export default {
 
     &:active,
     &.selected {
-      color: var(--primary-color-text);
+      color: var(--mfm-primary-color-text);
 
       :deep(img) {
-        box-shadow: 0 0 0 4px var(--primary-color), 0 3px 3px 2px rgba(74, 47, 47, 0.15),
-          0 3px 7px 4px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 0 0 4px var(--mfm-primary-color),
+          0 3px 3px 2px rgba(74, 47, 47, 0.15), 0 3px 7px 4px rgba(0, 0, 0, 0.15);
       }
       .filename {
-        background-color: var(--primary-color);
+        background-color: var(--mfm-primary-color);
       }
     }
   }

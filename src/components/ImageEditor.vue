@@ -561,11 +561,11 @@ export default {
 <style lang="scss" scoped>
 input.mfm-input-text {
   padding: 3px 5px;
-  border-color: var(--grey);
+  border-color: var(--mfm-grey);
   height: 2rem;
   &:hover,
   &:focus {
-    border-color: var(--grey700);
+    border-color: var(--mfm-grey700);
   }
 }
 
@@ -582,7 +582,7 @@ input.mfm-input-text {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  border-bottom: 1px solid var(--grey200);
+  border-bottom: 1px solid var(--mfm-grey200);
 
   & > * {
     &:first-child {
@@ -618,7 +618,7 @@ input.mfm-input-text {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  border-top: 1px solid var(--grey200);
+  border-top: 1px solid var(--mfm-grey200);
   padding: 10px;
 
   font-size: 0.8rem;
@@ -632,7 +632,7 @@ h2 {
 }
 
 .section {
-  border-left: 1px solid var(--grey200);
+  border-left: 1px solid var(--mfm-grey200);
   padding: 5px 10px 10px 10px;
   &.loader {
     border-left: 0;
@@ -643,7 +643,7 @@ h2 {
 }
 
 .section-label {
-  color: var(--grey);
+  color: var(--mfm-grey);
   font-size: 0.8rem;
 }
 
@@ -666,12 +666,12 @@ h2 {
   height: auto;
 
   &.active {
-    background-color: var(--primary-color);
+    background-color: var(--mfm-primary-color);
   }
 }
 .penta-button.primary-color {
-  background-color: var(--primary-color);
-  color: var(--primary-color-text);
+  background-color: var(--mfm-primary-color);
+  color: var(--mfm-primary-color-text);
 }
 
 input.nb {
@@ -683,14 +683,14 @@ input.ratio {
 }
 
 input.is-invalid {
-  background-color: var(--red50);
+  background-color: var(--mfm-red50);
 }
 i.famfm-right-open {
-  color: var(--grey);
+  color: var(--mfm-grey);
 }
 .lock {
   cursor: pointer;
-  color: var(--grey700);
+  color: var(--mfm-grey700);
   &:hover {
     color: black;
   }

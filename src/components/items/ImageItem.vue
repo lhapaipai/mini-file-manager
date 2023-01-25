@@ -6,13 +6,16 @@
     @error="handleError"
   >
     <div class="actions">
-      <a href="#" class="bric-icon white-bg-color" @click.prevent="$emit('remove')"
+      <a
+        href="#"
+        :class="`${themePrefix}-icon white-bg-color`"
+        @click.prevent="$emit('remove')"
         ><i class="famfm-trash"></i
       ></a>
       <a
         v-if="!multiple"
         href="#"
-        class="bric-icon white-bg-color"
+        :class="`${themePrefix}-icon white-bg-color`"
         @click.prevent="$emit('browse')"
         ><i class="famfm-folder"></i
       ></a>
@@ -42,7 +45,7 @@ export default {
   },
   emits: ["browse", "remove"],
   computed: {
-    ...mapState(["backendOrigin", "multiple"]),
+    ...mapState(["backendOrigin", "multiple", "themePrefix"]),
   },
   methods: {
     handleError(e) {

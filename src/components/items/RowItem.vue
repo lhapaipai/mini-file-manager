@@ -44,8 +44,8 @@ export default {
   align-items: center;
   padding: 0.5rem 0.5rem;
   flex-wrap: wrap;
-  border-bottom: 1px solid var(--grey50);
-  color: var(--grey);
+  border-bottom: 1px solid var(--mfm-grey50);
+  color: var(--mfm-grey);
 
   .icon-container {
     display: flex;
@@ -82,12 +82,12 @@ export default {
 
   &:hover {
     background-color: #f7f7f7;
-    color: var(--grey700);
+    color: var(--mfm-grey700);
   }
   &.selected,
   &:active {
-    background-color: var(--primary-color);
-    color: var(--primary-color-text);
+    background-color: var(--mfm-primary-color);
+    color: var(--mfm-primary-color-text);
   }
 }
 </style>

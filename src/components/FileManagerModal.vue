@@ -1,9 +1,5 @@
 <template>
-  <div
-    v-scroll-lock:enabled
-    class="mini-file-manager-modal"
-    :class="{ 'with-css-vars': injectCssVars }"
-  >
+  <div v-scroll-lock:enabled class="mini-file-manager-modal mini-file-manager-vars">
     <div class="box">
       <FileManager class="main-content" :is-modal="true" @confirm="handleSelect" />
       <div v-if="!editContent" class="actions">
@@ -40,13 +36,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapState([
-      "selectedFiles",
-      "fileValidation",
-      "editContent",
-      "themePrefix",
-      "injectCssVars",
-    ]),
+    ...mapState(["selectedFiles", "fileValidation", "editContent", "themePrefix"]),
     ...mapGetters(["invalidSelectedFiles"]),
   },
   methods: {
@@ -90,8 +80,8 @@ export default {
     height: 90%;
     background-color: white;
     overflow: auto;
-    box-shadow: var(--box-shadow);
-    border: 1px solid var(--grey200);
+    box-shadow: var(--mfm-box-shadow);
+    border: 1px solid var(--mfm-grey200);
 
     display: flex;
     flex-direction: column;
@@ -137,7 +127,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--background-color);
+    background-color: var(--mfm-background-color);
     z-index: -1;
   }
 }

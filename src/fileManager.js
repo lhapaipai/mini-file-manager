@@ -1,35 +1,13 @@
 import { createApp } from "vue";
 import VFileManager from "./components/FileManager.vue";
-import { scrollLockDirective } from "scroll-blocker/scroll-lock-directive";
+import { prepareApp } from "./appHelper";
 import { prepareOptions } from "./utils/mainHelper";
-import { createI18n } from "vue-i18n-lite";
-import localesData from "./locales";
-import createStoreWithOptions from "./store";
-import vueLiipPlugin from "./utils/vueLiipPlugin";
-import { vueMiniTipDirective } from "./lib/mini-tip/mini-tip";
-import { resolveLocale } from "./utils/complete";
 
 export default function fileManager(elt, options) {
-  if (typeof elt === "string") {
-    elt = document.querySelector(elt);
-  }
-
-  options = prepareOptions(elt, options);
+  elt = elt instanceof HTMLElement ? elt : document.querySelector(elt);
 
   const app = createApp(VFileManager);
-  app.directive("scroll-lock", scrollLockDirective);
-  app.directive("tooltip", vueMiniTipDirective);
-
-  app.use(createStoreWithOptions(options, false));
-  app.use(
-    createI18n({
-      locale: resolveLocale(options),
-      fallbackLocale: "en",
-      messages: localesData,
-    }),
-  );
-  app.use(vueLiipPlugin(app.config.globalProperties.$store.state));
-
+  prepareApp(app, prepareOptions(elt, options));
   const vm = app.mount(elt);
 
   function destroy() {

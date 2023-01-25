@@ -191,7 +191,6 @@ const options: FileManagerOptions = {
   // selection is retrieved from input value
   originalSelection: ["posts/autre/ign.jpg"],
 
-  injectCssVars: true,
   themePrefix: 'penta',
 
   // only for textFormFilePicker and entityFormFilePicker
@@ -214,7 +213,16 @@ const options: FileManagerOptions = {
 ### Theme
 
 if you wants to define your own theme, you have 2 levels of customization.
-- you can set `injectCssVars` to false and replace by your own css vars following this file : `src/css/variables.scss`
+
+- you can define your own css vars following this file : `src/css/variables.scss`
+
+```css
+:root {
+  --primary-color500: #ffea66;
+  --border-radius: .25rem;
+}
+```
+
 - you can set the `themePrefix` option with custom class to redefine your buttons in depth.
 
 

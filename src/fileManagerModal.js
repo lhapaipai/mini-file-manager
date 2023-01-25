@@ -1,13 +1,7 @@
 import { createApp, toRaw } from "vue";
 import VFileManagerModal from "./components/FileManagerModal.vue";
-import { scrollLockDirective } from "scroll-blocker/scroll-lock-directive";
 import { prepareOptions } from "./utils/mainHelper";
-import { createI18n } from "vue-i18n-lite";
-import createStoreWithOptions from "./store";
-import localesData from "./locales";
-import vueLiipPlugin from "./utils/vueLiipPlugin";
-import { vueMiniTipDirective } from "./lib/mini-tip/mini-tip";
-import { resolveLocale } from "./utils/complete";
+import { prepareApp } from "./appHelper";
 
 export default function fileManagerModal(
   options,
@@ -17,23 +11,10 @@ export default function fileManagerModal(
   let elt = document.createElement("div");
   document.body.appendChild(elt);
 
-  options = prepareOptions(elt, options);
-
   const app = createApp(VFileManagerModal);
-  app.directive("scroll-lock", scrollLockDirective);
-  app.directive("tooltip", vueMiniTipDirective);
-
-  app.use(createStoreWithOptions(options, true));
-  app.use(
-    createI18n({
-      locale: resolveLocale(options),
-      fallbackLocale: "en",
-      messages: localesData,
-    }),
-  );
-  app.use(vueLiipPlugin(app.config.globalProperties.$store.state));
-
+  prepareApp(app, prepareOptions(elt, options, true));
   const vm = app.mount(elt);
+
   vm.$el.addEventListener("selectFiles", onSelectFiles);
   vm.$el.addEventListener("abortSelect", onAbortSelect);
 
@@ -42,8 +23,8 @@ export default function fileManagerModal(
     for (let index = 0; index < e.detail.length; index++) {
       files.push(toRaw(e.detail[index]));
     }
-    onSuccess(toRaw(files));
 
+    onSuccess(toRaw(files));
     destroy();
   }
 

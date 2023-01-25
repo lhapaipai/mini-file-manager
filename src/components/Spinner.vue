@@ -41,7 +41,7 @@
   float: none;
   background-color: currentColor;
   border: 0 solid currentColor;
-  color: var(--primary-color);
+  color: var(--mfm-primary-color);
 }
 .la-ball-spin-rotate {
   width: 32px;

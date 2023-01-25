@@ -49,8 +49,8 @@
   &-view-box {
     display: block;
     height: 100%;
-    outline: 1px solid var(--primary-color700);
-    outline-color: var(--primary-color700);
+    outline: 1px solid var(--mfm-primary-color500);
+    outline-color: var(--mfm-primary-color500);
     overflow: hidden;
     width: 100%;
   }
@@ -129,7 +129,7 @@
   }
 
   &-line {
-    background-color: var(--primary-color700);
+    background-color: var(--mfm-primary-color500);
 
     &.line-e {
       cursor: ew-resize;

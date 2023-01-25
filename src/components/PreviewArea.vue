@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mini-file-manager-vars">
     <div
       v-if="uploadedFiles.length > 0"
       class="files preview-area"
@@ -82,7 +82,7 @@ export default {
   align-items: center;
   justify-content: center;
   .no-image {
-    color: var(--primary-color100);
+    color: var(--mfm-primary-color100);
     font-size: 5rem;
   }
 }

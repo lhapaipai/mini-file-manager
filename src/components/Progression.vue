@@ -56,8 +56,8 @@ export default {
     border-radius: 50%;
     z-index: -1;
     background: conic-gradient(
-      var(--primary-color),
-      var(--primary-color) var(--progress, 0%),
+      var(--mfm-primary-color),
+      var(--mfm-primary-color) var(--progress, 0%),
       var(--track-bg) var(--progress, 0%) 100%
     );
 

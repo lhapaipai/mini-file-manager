@@ -66,7 +66,7 @@ export default {
 
 <style lang="scss" scoped>
 i.famfm-right-open {
-  color: var(--grey);
+  color: var(--mfm-grey);
 }
 .through {
   text-decoration: line-through;
