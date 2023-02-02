@@ -12,7 +12,7 @@ export default function fileManagerModal(
   document.body.appendChild(elt);
 
   const app = createApp(VFileManagerModal);
-  prepareApp(app, prepareOptions(elt, options, true));
+  prepareApp(app, prepareOptions(elt, options), true);
   const vm = app.mount(elt);
 
   vm.$el.addEventListener("selectFiles", onSelectFiles);
