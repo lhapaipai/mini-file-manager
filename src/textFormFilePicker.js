@@ -49,7 +49,7 @@ export default function textFormFilePicker(
       messages: localesData,
     }),
   );
-  app.use(vueLiipPlugin(app.config.globalProperties.$store.state));
+  app.use(vueLiipPlugin(app.config.globalProperties.$store.state, options));
 
   const vm = app.mount(appElt);
   vm.$el.addEventListener("selectionChange", onSelectionChange);

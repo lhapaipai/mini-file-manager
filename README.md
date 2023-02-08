@@ -116,6 +116,8 @@ entityFormFilePicker(
 
 ```ts
 const options: FileManagerOptions = {
+  canEditImageSize: true,
+  debug: false,
   endPoint: "http://url-to-backend.com/media-manager",
   entryPoints: [
     {
@@ -129,24 +131,10 @@ const options: FileManagerOptions = {
     },
   ],
 
-  // if you wants to filter files you can select
-  // only for the modal "openFileManager"
-  fileValidation: {
-    mimeGroup: "image",
-    allowDir: false,
-    imageOptions: {
-      allowSvg: false,
-      width: 1200,
-      height: 900,
-      minWidth: 1200,
-      maxWidth: 800,
-      minHeight: 1200,
-      maxHeight: 800,
-      ratio: 0.66, // float number : width/height
-
-      // note : if you give a width and a height, the ratio is calculated
-      // and only the width and the ratio are used.
-    },
+  // only for textFormFilePicker and entityFormFilePicker
+  form: {
+    filter: "small",  // any filter defined in LiipImagineBundle
+    type: "image"     // "image" | "file"
   }
 
   // if you wants to filter files you can upload
@@ -175,6 +163,32 @@ const options: FileManagerOptions = {
     ]
   },
   
+  // if you wants to filter files you can select
+  // only for the modal "openFileManager"
+  fileValidation: {
+    mimeGroup: "image",
+    allowDir: false,
+    imageOptions: {
+      allowSvg: false,
+      width: 1200,
+      height: 900,
+      minWidth: 1200,
+      maxWidth: 800,
+      minHeight: 1200,
+      maxHeight: 800,
+      ratio: 0.66, // float number : width/height
+
+      // note : if you give a width and a height, the ratio is calculated
+      // and only the width and the ratio are used.
+    },
+  }
+
+  // displays the files contained in the folder in the filemanager
+  // (otherwise only the files imported into the current session will be visible)
+  indexes: true,
+
+  liipResolverPrefix: '/media/cache/resolve'
+
   locale: "en", // "en" | "fr" | "custom"
   localeData: {
     // if "custom" write here your translations by referring to the file
@@ -191,20 +205,9 @@ const options: FileManagerOptions = {
   // selection is retrieved from input value
   originalSelection: ["posts/autre/ign.jpg"],
 
-  themePrefix: 'penta',
-
-  // only for textFormFilePicker and entityFormFilePicker
-  form: {
-    filter: "small",  // any filter defined in LiipImagineBundle
-    type: "image"     // "image" | "file"
-  }
-
-  // displays the files contained in the folder in the filemanager
-  // (otherwise only the files imported into the current session will be visible)
-  indexes: true,
-
   showValidationString: true,
-  canEditImageSize: true
+
+  themePrefix: 'penta',
 };
 
 

@@ -27,6 +27,8 @@ export const mfmDefaultOptions = {
 
   indexes: true,
 
+  liipResolverPrefix: "/media/cache/resolve",
+
   locale: "en", // "en" | "fr" | "custom"
   localeData: null,
 

@@ -35,7 +35,9 @@ const filters = {
   },
 };
 
-export default function (state) {
+export default function (state, options = {}) {
+  let liipResolverPrefix = options.liipResolverPrefix || "/media/cache/resolve";
+
   let { backendOrigin, endPoints, entryPoints } = state;
 
   return {
@@ -58,12 +60,12 @@ export default function (state) {
         if (!filterName || getExtension(file.uploadRelativePath) === "svg") {
           return `${host}${entryPoint.webPrefix}/${file.uploadRelativePath}${suffix}`;
         }
-        return `${host}/media/cache/resolve/${filterName}${entryPoint.webPrefix}/${file.uploadRelativePath}${suffix}`;
+        return `${host}${liipResolverPrefix}/${filterName}${entryPoint.webPrefix}/${file.uploadRelativePath}${suffix}`;
       } else {
         if (!filterName || getExtension(file.uploadRelativePath) === "svg") {
           return `${endPoints.getFileContent}/download/${file.origin}/${file.uploadRelativePath}${suffix}`;
         }
-        return `${host}/media/cache/resolve/${filterName}${entryPoint.webPrefix}/${file.uploadRelativePath}${suffix}`;
+        return `${host}${liipResolverPrefix}/${filterName}${entryPoint.webPrefix}/${file.uploadRelativePath}${suffix}`;
       }
     },
     uploadHeight(image, filterName) {

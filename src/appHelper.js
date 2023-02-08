@@ -17,5 +17,5 @@ export function prepareApp(app, options, isModal) {
       messages: localesData,
     }),
   );
-  app.use(vueLiipPlugin(app.config.globalProperties.$store.state));
+  app.use(vueLiipPlugin(app.config.globalProperties.$store.state, options));
 }
