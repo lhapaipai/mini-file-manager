@@ -164,6 +164,7 @@ export default {
   }),
   computed: {
     ...mapState([
+      "canRenameFile",
       "directory",
       "editFilename",
       "currentEntryPoint",
@@ -217,7 +218,7 @@ export default {
       return Math.round(floatRatio * 100) / 100;
     },
     canEdit(file) {
-      if (this.currentEntryPoint.readOnly) {
+      if (this.currentEntryPoint.readOnly || !this.canRenameFile) {
         return false;
       }
       return !file.readOnly;

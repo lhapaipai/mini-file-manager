@@ -42,7 +42,8 @@ export type FileManagerOptions = {
   form?: FormPreviewOptions;
   indexes?: boolean;
   showValidationString?: boolean;
-  canEditImageSize?: boolean; 
+  canEditImageSize?: boolean;
+  canRenameFile?: boolean 
 };
 
 export type FormPreviewOptions = {

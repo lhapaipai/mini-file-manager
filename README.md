@@ -117,6 +117,8 @@ entityFormFilePicker(
 ```ts
 const options: FileManagerOptions = {
   canEditImageSize: true,
+  canRenameFile: true,
+  
   debug: false,
   endPoint: "http://url-to-backend.com/media-manager",
   entryPoints: [

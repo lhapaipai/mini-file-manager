@@ -3,6 +3,7 @@ import { configure } from "mini-notifier";
 
 export const mfmDefaultOptions = {
   canEditImageSize: true,
+  canRenameFile: true,
   debug: false,
   endPoint: "/media-manager",
   entryPoints: [],

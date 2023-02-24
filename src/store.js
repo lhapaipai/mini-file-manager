@@ -11,6 +11,7 @@ import { isValidFile, isEditableFile } from "./utils/validation";
 export default function createStoreWithOptions(
   {
     canEditImageSize,
+    canRenameFile,
     debug,
     endPoint,
     entryPoints,
@@ -38,6 +39,7 @@ export default function createStoreWithOptions(
     state: {
       backendOrigin,
       canEditImageSize,
+      canRenameFile,
       currentEntryPoint: null,
       debug,
       directory: null,
