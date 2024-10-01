@@ -8,7 +8,7 @@ Mini File Manager is very flexible, you can :
   - custom easily the theme with CSS variables.
   - localize the application.
 
-You can see an example here : [**Live Demo**](https://mini-file-manager.pentatrion.com/) (TinyMCE integration / File Picker with form)
+<!-- You can see an example here : [**Live Demo**](https://mini-file-manager.pentatrion.com/) (TinyMCE integration / File Picker with form) -->
 
 <img alt="Mini File Manager" src="https://user-images.githubusercontent.com/1088155/128615403-2b41fbb4-dd4e-452e-b2c2-6926642bf146.jpg">
 
